@@ -1,6 +1,6 @@
 # ERP Warehouse System
 
-A Go-based ERP Warehouse System built with Clean Architecture principles and Domain-Driven Design, featuring comprehensive authentication, authorization, and audit logging.
+A Go-based ERP Warehouse System built with Clean Architecture principles and Domain-Driven Design, featuring comprehensive authentication, authorization, audit logging, and an API Gateway for microservices integration.
 
 ## Technology Stack
 
@@ -10,6 +10,8 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 - JWT Authentication with refresh tokens
 - Role-based Access Control (RBAC)
 - Audit Logging
+- API Gateway with rate limiting and circuit breaking
+- WebSocket support for real-time updates
 - Docker & Docker Compose
 
 ## Features
@@ -18,7 +20,13 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 - Role-based Authorization with granular permissions
 - Password reset functionality
 - Comprehensive audit logging
-- API authentication between modules
+- API Gateway for microservices integration
+  - Single entry point for all API requests
+  - Routing and load balancing
+  - Centralized authentication and authorization
+  - Rate limiting and circuit breaking
+  - Logging and monitoring
+  - WebSocket support for real-time updates
 - Warehouse and Inventory Management
 - Supplier Management
 - Manufacturing Process Management
@@ -34,7 +42,8 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 ```
 .
 ├── cmd
-│   └── server              # Application entry point
+│   ├── server              # Main application entry point
+│   └── gateway             # API Gateway entry point
 ├── internal
 │   ├── domain
 │   │   └── entity         # Domain entities (User, Role, AuditLog)
@@ -44,6 +53,10 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 │       ├── auth           # Authentication services
 │       ├── config         # Configuration management
 │       ├── database       # Database connection
+│       ├── gateway        # API Gateway implementation
+│       │   ├── middleware # Gateway middleware (rate limiting, circuit breaking)
+│       │   ├── proxy      # Service proxy for routing requests
+│       │   └── websocket  # WebSocket support for real-time updates
 │       ├── repository     # Data persistence
 │       ├── service        # Application services
 │       └── server         # HTTP server and handlers
@@ -69,7 +82,18 @@ cd erp-warehouse-simple
 docker-compose up --build
 ```
 
-The application will be available at `http://localhost:8080`
+The main application will be available at `http://localhost:8080`
+The API Gateway will be available at `http://localhost:8000`
+
+### Running the API Gateway Separately
+
+You can also run the API Gateway separately:
+
+```bash
+go run cmd/gateway/main.go
+```
+
+The API Gateway will be available at `http://localhost:8000`
 
 ## Default Admin Account
 
@@ -80,7 +104,76 @@ The system creates a default admin account on first run:
 
 Please change these credentials after first login.
 
+## API Gateway
+
+The API Gateway serves as a single entry point for all API requests and provides the following features:
+
+### Features
+
+- **Centralized Routing**: All API requests go through a single entry point
+- **Load Balancing**: Distributes requests across multiple service instances
+- **Authentication & Authorization**: Centralized security for all services
+- **Rate Limiting**: Prevents abuse by limiting request rates
+- **Circuit Breaking**: Prevents cascading failures
+- **Logging & Monitoring**: Centralized logging and monitoring
+- **WebSocket Support**: Real-time updates and notifications
+
+### Configuration
+
+The API Gateway is configured in the application configuration:
+
+```yaml
+apigateway:
+  enabled: true
+  port: 8000
+  tracing: true
+  logging: true
+  ratelimit:
+    requests_per_second: 100
+    burst: 50
+  circuitbreak:
+    max_requests: 100
+    interval: 60
+    timeout: 30
+    consecutive_error: 5
+  services:
+    warehouse:
+      url: http://localhost:8081
+      timeout: 30
+      retry_count: 3
+      health_check: /health
+    inventory:
+      url: http://localhost:8082
+      timeout: 30
+      retry_count: 3
+      health_check: /health
+    # Other services...
+```
+
+### WebSocket Support
+
+The API Gateway provides WebSocket support for real-time updates:
+
+```javascript
+// Connect to WebSocket
+const socket = new WebSocket('ws://localhost:8000/ws');
+
+// Handle messages
+socket.onmessage = function(event) {
+  const data = JSON.parse(event.data);
+  console.log('Received:', data);
+};
+
+// Send a message
+socket.send(JSON.stringify({
+  type: 'subscribe',
+  channel: 'inventory_updates'
+}));
+```
+
 ## API Endpoints
+
+All API endpoints are accessible through the API Gateway at `http://localhost:8000`.
 
 ### Authentication Endpoints
 

@@ -15,9 +15,39 @@ services:
       - ERP_DATABASE_NAME=erp_db
       - ERP_JWT_ACCESS_SECRET=your-access-secret-key
       - ERP_JWT_REFRESH_SECRET=your-refresh-secret-key
+      - ERP_SERVER_PORT=8080
     depends_on:
       postgres:
         condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - erp-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    ports:
+      - "8000:8000"
+    environment:
+      - ERP_JWT_ACCESS_SECRET=your-access-secret-key
+      - ERP_JWT_REFRESH_SECRET=your-refresh-secret-key
+      - ERP_APIGATEWAY_PORT=8000
+      - ERP_APIGATEWAY_ENABLED=true
+      - ERP_APIGATEWAY_TRACING=true
+      - ERP_APIGATEWAY_LOGGING=true
+      - ERP_APIGATEWAY_RATELIMIT_REQUESTS_PER_SECOND=100
+      - ERP_APIGATEWAY_RATELIMIT_BURST=50
+      - ERP_APIGATEWAY_CIRCUITBREAK_MAX_REQUESTS=100
+      - ERP_APIGATEWAY_CIRCUITBREAK_INTERVAL=60
+      - ERP_APIGATEWAY_CIRCUITBREAK_TIMEOUT=30
+      - ERP_APIGATEWAY_CIRCUITBREAK_CONSECUTIVE_ERROR=5
+      - ERP_APIGATEWAY_SERVICES_WAREHOUSE_URL=http://app:8080
+      - ERP_APIGATEWAY_SERVICES_WAREHOUSE_TIMEOUT=30
+      - ERP_APIGATEWAY_SERVICES_WAREHOUSE_RETRY_COUNT=3
+      - ERP_APIGATEWAY_SERVICES_WAREHOUSE_HEALTH_CHECK=/health
+    depends_on:
+      - app
     restart: unless-stopped
     networks:
       - erp-network
