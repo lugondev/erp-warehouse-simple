@@ -1,0 +1,12 @@
+DROP INDEX IF EXISTS idx_inventory_history_reference;
+DROP INDEX IF EXISTS idx_inventory_history_inventory_id;
+DROP INDEX IF EXISTS idx_stock_entries_product_id;
+DROP INDEX IF EXISTS idx_stock_entries_warehouse_id;
+DROP INDEX IF EXISTS idx_inventories_product_id;
+DROP INDEX IF EXISTS idx_inventories_warehouse_id;
+DROP TABLE IF EXISTS inventory_history;
+DROP TABLE IF EXISTS stock_entries;
+DROP TABLE IF EXISTS inventories;
+DROP TABLE IF EXISTS warehouses;
+DROP TYPE IF EXISTS warehouse_status;
+DROP TYPE IF EXISTS warehouse_type;

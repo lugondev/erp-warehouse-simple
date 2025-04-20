@@ -1,0 +1,6622 @@
+basePath: /api/v1
+definitions:
+  entity.ActionType:
+    enum:
+    - create
+    - read
+    - update
+    - delete
+    - login
+    - logout
+    type: string
+    x-enum-varnames:
+    - ActionCreate
+    - ActionRead
+    - ActionUpdate
+    - ActionDelete
+    - ActionLogin
+    - ActionLogout
+  entity.AddressType:
+    enum:
+    - BILLING
+    - SHIPPING
+    - BOTH
+    type: string
+    x-enum-varnames:
+    - AddressTypeBilling
+    - AddressTypeShipping
+    - AddressTypeBoth
+  entity.AuditLog:
+    properties:
+      action:
+        $ref: '#/definitions/entity.ActionType'
+      created_at:
+        type: string
+      detail:
+        type: string
+      id:
+        type: integer
+      ip:
+        type: string
+      resource:
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+      user_agent:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  entity.BillOfMaterial:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      product_id:
+        type: integer
+      updated_at:
+        type: string
+      version:
+        type: string
+    type: object
+  entity.ContactInfo:
+    properties:
+      address:
+        type: string
+      country:
+        type: string
+      email:
+        type: string
+      phone:
+        type: string
+      tax_id:
+        type: string
+      website:
+        type: string
+    type: object
+  entity.Contract:
+    properties:
+      contract_no:
+        type: string
+      created_at:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      start_date:
+        type: string
+      status:
+        type: string
+      supplier_id:
+        type: integer
+      terms:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.CreateFinanceInvoiceRequest:
+    properties:
+      discount_amount:
+        type: number
+      due_date:
+        type: string
+      entity_id:
+        type: integer
+      entity_type:
+        enum:
+        - CUSTOMER
+        - SUPPLIER
+        type: string
+      issue_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.FinanceInvoiceItem'
+        type: array
+      notes:
+        type: string
+      reference_id:
+        type: string
+      type:
+        allOf:
+        - $ref: '#/definitions/entity.FinanceInvoiceType'
+        enum:
+        - SALES
+        - PURCHASE
+    required:
+    - due_date
+    - entity_id
+    - entity_type
+    - issue_date
+    - items
+    - type
+    type: object
+  entity.CreateFinancePaymentRequest:
+    properties:
+      amount:
+        type: number
+      invoice_id:
+        type: integer
+      notes:
+        type: string
+      payment_date:
+        type: string
+      payment_method:
+        $ref: '#/definitions/entity.FinancePaymentMethod'
+      reference_number:
+        type: string
+    required:
+    - amount
+    - invoice_id
+    - payment_date
+    - payment_method
+    type: object
+  entity.CreateReportRequest:
+    properties:
+      description:
+        type: string
+      end_date:
+        type: string
+      format:
+        $ref: '#/definitions/entity.ReportFormat'
+      name:
+        type: string
+      parameters:
+        $ref: '#/definitions/entity.ReportParameters'
+      start_date:
+        type: string
+      type:
+        $ref: '#/definitions/entity.ReportType'
+    required:
+    - end_date
+    - format
+    - name
+    - start_date
+    - type
+    type: object
+  entity.CreateReportScheduleRequest:
+    properties:
+      description:
+        type: string
+      format:
+        $ref: '#/definitions/entity.ReportFormat'
+      frequency:
+        $ref: '#/definitions/entity.ReportScheduleFrequency'
+      name:
+        type: string
+      parameters:
+        $ref: '#/definitions/entity.ReportParameters'
+      recipients:
+        items:
+          type: string
+        type: array
+      report_type:
+        $ref: '#/definitions/entity.ReportType'
+    required:
+    - format
+    - frequency
+    - name
+    - recipients
+    - report_type
+    type: object
+  entity.Customer:
+    properties:
+      addresses:
+        items:
+          $ref: '#/definitions/entity.CustomerAddress'
+        type: array
+      code:
+        type: string
+      contacts:
+        items:
+          $ref: '#/definitions/entity.CustomerContact'
+        type: array
+      created_at:
+        type: string
+      credit_limit:
+        type: number
+      current_debt:
+        type: number
+      email:
+        type: string
+      id:
+        type: integer
+      loyalty_points:
+        type: integer
+      loyalty_tier:
+        $ref: '#/definitions/entity.CustomerLoyaltyTier'
+      name:
+        type: string
+      notes:
+        type: string
+      phone_number:
+        type: string
+      sales_orders:
+        items:
+          $ref: '#/definitions/entity.SalesOrder'
+        type: array
+      tax_id:
+        type: string
+      type:
+        $ref: '#/definitions/entity.CustomerType'
+      updated_at:
+        type: string
+    type: object
+  entity.CustomerAddress:
+    properties:
+      city:
+        type: string
+      country:
+        type: string
+      created_at:
+        type: string
+      customer_id:
+        type: integer
+      id:
+        type: integer
+      is_default:
+        type: boolean
+      postal_code:
+        type: string
+      state:
+        type: string
+      street:
+        type: string
+      type:
+        $ref: '#/definitions/entity.AddressType'
+      updated_at:
+        type: string
+    type: object
+  entity.CustomerContact:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      phone_number:
+        type: string
+      position:
+        type: string
+    type: object
+  entity.CustomerDebt:
+    properties:
+      last_payment_amount:
+        type: number
+      last_payment_date:
+        type: string
+      overdue_debt:
+        type: number
+      total_debt:
+        type: number
+      upcoming_payments:
+        type: number
+    type: object
+  entity.CustomerLoyaltyTier:
+    enum:
+    - STANDARD
+    - SILVER
+    - GOLD
+    - PLATINUM
+    type: string
+    x-enum-varnames:
+    - CustomerLoyaltyTierStandard
+    - CustomerLoyaltyTierSilver
+    - CustomerLoyaltyTierGold
+    - CustomerLoyaltyTierPlatinum
+  entity.CustomerOrderHistory:
+    properties:
+      average_order_value:
+        type: number
+      first_order_date:
+        type: string
+      frequent_items:
+        items:
+          type: string
+        type: array
+      last_order_date:
+        type: string
+      total_orders:
+        type: integer
+      total_spent:
+        type: number
+    type: object
+  entity.CustomerType:
+    enum:
+    - INDIVIDUAL
+    - CORPORATE
+    - RESELLER
+    - WHOLESALER
+    type: string
+    x-enum-varnames:
+    - CustomerTypeIndividual
+    - CustomerTypeCorporate
+    - CustomerTypeReseller
+    - CustomerTypeWholesaler
+  entity.DeliveryOrder:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/entity.User'
+      created_by_id:
+        type: integer
+      delivery_date:
+        type: string
+      delivery_number:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.DeliveryOrderItem'
+        type: array
+      notes:
+        type: string
+      sales_order:
+        $ref: '#/definitions/entity.SalesOrder'
+      sales_order_id:
+        type: string
+      shipping_address:
+        type: string
+      shipping_method:
+        type: string
+      status:
+        $ref: '#/definitions/entity.DeliveryOrderStatus'
+      tracking_number:
+        type: string
+      updated_at:
+        type: string
+      warehouse_id:
+        type: string
+    type: object
+  entity.DeliveryOrderItem:
+    properties:
+      item:
+        $ref: '#/definitions/entity.Item'
+      item_id:
+        type: string
+      notes:
+        type: string
+      ordered_quantity:
+        type: number
+      remaining_quantity:
+        type: number
+      shipped_quantity:
+        type: number
+    type: object
+  entity.DeliveryOrderStatus:
+    enum:
+    - PENDING
+    - PREPARING
+    - IN_TRANSIT
+    - DELIVERED
+    - CANCELLED
+    - RETURNED
+    type: string
+    x-enum-varnames:
+    - DeliveryOrderStatusPending
+    - DeliveryOrderStatusPreparing
+    - DeliveryOrderStatusInTransit
+    - DeliveryOrderStatusDelivered
+    - DeliveryOrderStatusCancelled
+    - DeliveryOrderStatusReturned
+  entity.FinanceAccountsPayable:
+    properties:
+      amount_due:
+        type: number
+      amount_paid:
+        type: number
+      days_overdue:
+        type: integer
+      due_date:
+        type: string
+      entity_id:
+        type: integer
+      entity_name:
+        type: string
+      invoice_date:
+        type: string
+      invoice_id:
+        type: integer
+      invoice_number:
+        type: string
+      last_payment_date:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+    type: object
+  entity.FinanceAccountsReceivable:
+    properties:
+      amount_due:
+        type: number
+      amount_paid:
+        type: number
+      days_overdue:
+        type: integer
+      due_date:
+        type: string
+      entity_id:
+        type: integer
+      entity_name:
+        type: string
+      invoice_date:
+        type: string
+      invoice_id:
+        type: integer
+      invoice_number:
+        type: string
+      last_payment_date:
+        type: string
+      status:
+        type: string
+      total_amount:
+        type: number
+    type: object
+  entity.FinanceInvoice:
+    properties:
+      amount_due:
+        type: number
+      amount_paid:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      discount_amount:
+        type: number
+      due_date:
+        type: string
+      entity_id:
+        type: integer
+      entity_name:
+        type: string
+      entity_type:
+        description: '"CUSTOMER" or "SUPPLIER"'
+        type: string
+      id:
+        type: integer
+      invoice_number:
+        type: string
+      issue_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.FinanceInvoiceItem'
+        type: array
+      notes:
+        type: string
+      reference_id:
+        type: string
+      status:
+        $ref: '#/definitions/entity.FinanceInvoiceStatus'
+      subtotal:
+        type: number
+      tax_total:
+        type: number
+      total:
+        type: number
+      type:
+        $ref: '#/definitions/entity.FinanceInvoiceType'
+      updated_at:
+        type: string
+    type: object
+  entity.FinanceInvoiceItem:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      invoice_id:
+        type: integer
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      quantity:
+        type: number
+      subtotal:
+        type: number
+      tax_amount:
+        type: number
+      tax_rate:
+        type: number
+      total:
+        type: number
+      unit_price:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  entity.FinanceInvoiceListResponse:
+    properties:
+      error:
+        type: string
+      invoices:
+        items:
+          $ref: '#/definitions/entity.FinanceInvoice'
+        type: array
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+    type: object
+  entity.FinanceInvoiceResponse:
+    properties:
+      error:
+        type: string
+      invoice:
+        $ref: '#/definitions/entity.FinanceInvoice'
+    type: object
+  entity.FinanceInvoiceStatus:
+    enum:
+    - DRAFT
+    - PENDING
+    - APPROVED
+    - PAID
+    - PARTIALLY_PAID
+    - CANCELLED
+    - OVERDUE
+    type: string
+    x-enum-varnames:
+    - FinanceInvoiceDraft
+    - FinanceInvoicePending
+    - FinanceInvoiceApproved
+    - FinanceInvoicePaid
+    - FinanceInvoicePartiallyPaid
+    - FinanceInvoiceCancelled
+    - FinanceInvoiceOverdue
+  entity.FinanceInvoiceType:
+    enum:
+    - SALES
+    - PURCHASE
+    type: string
+    x-enum-varnames:
+    - FinanceSalesInvoice
+    - FinancePurchaseInvoice
+  entity.FinancePayment:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        type: integer
+      entity_id:
+        type: integer
+      entity_name:
+        type: string
+      entity_type:
+        description: '"CUSTOMER" or "SUPPLIER"'
+        type: string
+      id:
+        type: integer
+      invoice_id:
+        type: integer
+      invoice_number:
+        type: string
+      notes:
+        type: string
+      payment_date:
+        type: string
+      payment_method:
+        $ref: '#/definitions/entity.FinancePaymentMethod'
+      payment_number:
+        type: string
+      reference_number:
+        type: string
+      status:
+        $ref: '#/definitions/entity.FinancePaymentStatus'
+      updated_at:
+        type: string
+    type: object
+  entity.FinancePaymentListResponse:
+    properties:
+      error:
+        type: string
+      page:
+        type: integer
+      page_size:
+        type: integer
+      payments:
+        items:
+          $ref: '#/definitions/entity.FinancePayment'
+        type: array
+      total:
+        type: integer
+    type: object
+  entity.FinancePaymentMethod:
+    enum:
+    - CASH
+    - BANK_TRANSFER
+    - CREDIT_CARD
+    - CHECK
+    - DIGITAL_WALLET
+    - OTHER
+    type: string
+    x-enum-varnames:
+    - FinancePaymentMethodCash
+    - FinancePaymentMethodBankTransfer
+    - FinancePaymentMethodCreditCard
+    - FinancePaymentMethodCheck
+    - FinancePaymentMethodDigitalWallet
+    - FinancePaymentMethodOther
+  entity.FinancePaymentResponse:
+    properties:
+      error:
+        type: string
+      payment:
+        $ref: '#/definitions/entity.FinancePayment'
+    type: object
+  entity.FinancePaymentStatus:
+    enum:
+    - PENDING
+    - COMPLETED
+    - FAILED
+    - CANCELLED
+    - REFUNDED
+    type: string
+    x-enum-varnames:
+    - FinancePaymentPending
+    - FinancePaymentCompleted
+    - FinancePaymentFailed
+    - FinancePaymentCancelled
+    - FinancePaymentRefunded
+  entity.FinanceReport:
+    properties:
+      end_date:
+        type: string
+      gross_profit:
+        type: number
+      net_profit:
+        type: number
+      start_date:
+        type: string
+      total_cost:
+        type: number
+      total_revenue:
+        type: number
+      total_tax:
+        type: number
+    type: object
+  entity.Inventory:
+    properties:
+      batch_number:
+        type: string
+      bin_location:
+        type: string
+      created_at:
+        type: string
+      expiry_date:
+        type: string
+      id:
+        type: string
+      lot_number:
+        type: string
+      manufacture_date:
+        type: string
+      product_id:
+        type: string
+      quantity:
+        type: number
+      shelf_number:
+        type: string
+      updated_at:
+        type: string
+      warehouse_id:
+        type: string
+      zone_code:
+        type: string
+    type: object
+  entity.InventoryHistory:
+    properties:
+      created_at:
+        type: string
+      created_by:
+        type: string
+      id:
+        type: string
+      inventory_id:
+        type: string
+      new_qty:
+        type: number
+      note:
+        type: string
+      previous_qty:
+        type: number
+      quantity:
+        type: number
+      reference:
+        description: Stock Entry ID
+        type: string
+      type:
+        description: IN/OUT/ADJUST
+        type: string
+    type: object
+  entity.Invoice:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/entity.User'
+      created_by_id:
+        type: integer
+      due_date:
+        type: string
+      id:
+        type: string
+      invoice_number:
+        type: string
+      issue_date:
+        type: string
+      notes:
+        type: string
+      sales_order:
+        $ref: '#/definitions/entity.SalesOrder'
+      sales_order_id:
+        type: string
+      status:
+        $ref: '#/definitions/entity.InvoiceStatus'
+      tax_amount:
+        type: number
+      total_amount:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  entity.InvoiceStatus:
+    enum:
+    - DRAFT
+    - ISSUED
+    - PAID
+    - PARTIAL
+    - OVERDUE
+    - CANCELLED
+    type: string
+    x-enum-varnames:
+    - InvoiceStatusDraft
+    - InvoiceStatusIssued
+    - InvoiceStatusPaid
+    - InvoiceStatusPartial
+    - InvoiceStatusOverdue
+    - InvoiceStatusCancelled
+  entity.Item:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      manufacturer:
+        $ref: '#/definitions/entity.Supplier'
+      manufacturer_id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      sku:
+        type: string
+      status:
+        $ref: '#/definitions/entity.ItemStatus'
+      supplier:
+        $ref: '#/definitions/entity.Supplier'
+      supplier_id:
+        type: integer
+      technical_specs:
+        $ref: '#/definitions/entity.TechnicalSpecs'
+      unit_of_measure:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.ItemCategory:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/entity.ItemCategory'
+        type: array
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      parent:
+        $ref: '#/definitions/entity.ItemCategory'
+      parent_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.ItemStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    - ARCHIVED
+    type: string
+    x-enum-varnames:
+    - ItemStatusActive
+    - ItemStatusInactive
+    - ItemStatusArchived
+  entity.LocationUpdate:
+    properties:
+      bin_location:
+        type: string
+      shelf_number:
+        type: string
+      zone_code:
+        type: string
+    type: object
+  entity.ManufacturingFacility:
+    properties:
+      address:
+        type: string
+      capacity:
+        description: Production capacity per day
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      manager:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.PaymentMethod:
+    enum:
+    - CASH
+    - CREDIT_CARD
+    - BANK_TRANSFER
+    - DIGITAL_WALLET
+    type: string
+    x-enum-varnames:
+    - PaymentMethodCash
+    - PaymentMethodCreditCard
+    - PaymentMethodBankTransfer
+    - PaymentMethodDigitalWallet
+  entity.PaymentStatus:
+    enum:
+    - PENDING
+    - PARTIAL
+    - PAID
+    - OVERDUE
+    - CANCELLED
+    type: string
+    x-enum-varnames:
+    - PaymentStatusPending
+    - PaymentStatusPartial
+    - PaymentStatusPaid
+    - PaymentStatusOverdue
+    - PaymentStatusCancelled
+  entity.PaymentTerms:
+    properties:
+      currency:
+        type: string
+      payment_days:
+        type: integer
+      payment_method:
+        type: string
+    type: object
+  entity.Permission:
+    enum:
+    - user:create
+    - user:read
+    - user:update
+    - user:delete
+    - role:create
+    - role:read
+    - role:update
+    - role:delete
+    - audit:read
+    - module:integrate
+    - warehouse:create
+    - warehouse:read
+    - warehouse:update
+    - warehouse:delete
+    - inventory:read
+    - inventory:update
+    - stock:create
+    - stock:read
+    - supplier:create
+    - supplier:read
+    - supplier:update
+    - supplier:delete
+    - product:create
+    - product:read
+    - product:update
+    - product:delete
+    - contract:create
+    - contract:read
+    - contract:update
+    - contract:delete
+    - rating:create
+    - rating:read
+    - manufacturing:facility:create
+    - manufacturing:facility:read
+    - manufacturing:facility:update
+    - manufacturing:facility:delete
+    - manufacturing:order:create
+    - manufacturing:order:read
+    - manufacturing:order:update
+    - manufacturing:order:delete
+    - manufacturing:bom:create
+    - manufacturing:bom:read
+    - manufacturing:bom:update
+    - manufacturing:bom:delete
+    - purchase:request:create
+    - purchase:request:read
+    - purchase:request:update
+    - purchase:request:delete
+    - purchase:request:approve
+    - purchase:order:create
+    - purchase:order:read
+    - purchase:order:update
+    - purchase:order:delete
+    - purchase:order:approve
+    - purchase:receipt:create
+    - purchase:receipt:read
+    - purchase:receipt:update
+    - purchase:payment:create
+    - purchase:payment:read
+    - purchase:payment:update
+    - customer:create
+    - customer:read
+    - customer:update
+    - customer:delete
+    - customer:address:create
+    - customer:address:read
+    - customer:address:update
+    - customer:address:delete
+    - customer:debt:read
+    - customer:debt:update
+    - customer:loyalty:read
+    - customer:loyalty:update
+    - sales:order:create
+    - sales:order:read
+    - sales:order:update
+    - sales:order:delete
+    - sales:order:confirm
+    - sales:order:cancel
+    - delivery:order:create
+    - delivery:order:read
+    - delivery:order:update
+    - delivery:order:process
+    - invoice:create
+    - invoice:read
+    - invoice:update
+    - invoice:issue
+    - invoice:pay
+    - finance:invoice:create
+    - finance:invoice:read
+    - finance:invoice:update
+    - finance:invoice:delete
+    - finance:payment:create
+    - finance:payment:read
+    - finance:payment:update
+    - finance:payment:process
+    - finance:report:read
+    - report:create
+    - report:read
+    - report:update
+    - report:delete
+    - report:export
+    - report:schedule:create
+    - report:schedule:read
+    - report:schedule:update
+    - report:schedule:delete
+    type: string
+    x-enum-varnames:
+    - UserCreate
+    - UserRead
+    - UserUpdate
+    - UserDelete
+    - RoleCreate
+    - RoleRead
+    - RoleUpdate
+    - RoleDelete
+    - AuditLogRead
+    - ModuleIntegrate
+    - WarehouseCreate
+    - WarehouseRead
+    - WarehouseUpdate
+    - WarehouseDelete
+    - InventoryRead
+    - InventoryUpdate
+    - StockEntryCreate
+    - StockEntryRead
+    - SupplierCreate
+    - SupplierRead
+    - SupplierUpdate
+    - SupplierDelete
+    - ProductCreate
+    - ProductRead
+    - ProductUpdate
+    - ProductDelete
+    - ContractCreate
+    - ContractRead
+    - ContractUpdate
+    - ContractDelete
+    - RatingCreate
+    - RatingRead
+    - ManufacturingFacilityCreate
+    - ManufacturingFacilityRead
+    - ManufacturingFacilityUpdate
+    - ManufacturingFacilityDelete
+    - ProductionOrderCreate
+    - ProductionOrderRead
+    - ProductionOrderUpdate
+    - ProductionOrderDelete
+    - BOMCreate
+    - BOMRead
+    - BOMUpdate
+    - BOMDelete
+    - PurchaseRequestCreate
+    - PurchaseRequestRead
+    - PurchaseRequestUpdate
+    - PurchaseRequestDelete
+    - PurchaseRequestApprove
+    - PurchaseOrderCreate
+    - PurchaseOrderRead
+    - PurchaseOrderUpdate
+    - PurchaseOrderDelete
+    - PurchaseOrderApprove
+    - PurchaseReceiptCreate
+    - PurchaseReceiptRead
+    - PurchaseReceiptUpdate
+    - PurchasePaymentCreate
+    - PurchasePaymentRead
+    - PurchasePaymentUpdate
+    - CustomerCreate
+    - CustomerRead
+    - CustomerUpdate
+    - CustomerDelete
+    - CustomerAddressCreate
+    - CustomerAddressRead
+    - CustomerAddressUpdate
+    - CustomerAddressDelete
+    - CustomerDebtRead
+    - CustomerDebtUpdate
+    - CustomerLoyaltyRead
+    - CustomerLoyaltyUpdate
+    - SalesOrderCreate
+    - SalesOrderRead
+    - SalesOrderUpdate
+    - SalesOrderDelete
+    - SalesOrderConfirm
+    - SalesOrderCancel
+    - DeliveryOrderCreate
+    - DeliveryOrderRead
+    - DeliveryOrderUpdate
+    - DeliveryOrderProcess
+    - InvoiceCreate
+    - InvoiceRead
+    - InvoiceUpdate
+    - InvoiceIssue
+    - InvoicePay
+    - FinanceInvoiceCreate
+    - FinanceInvoiceRead
+    - FinanceInvoiceUpdate
+    - FinanceInvoiceDelete
+    - FinancePaymentCreate
+    - FinancePaymentRead
+    - FinancePaymentUpdate
+    - FinancePaymentProcess
+    - FinanceReportRead
+    - ReportCreate
+    - ReportRead
+    - ReportUpdate
+    - ReportDelete
+    - ReportExport
+    - ReportScheduleCreate
+    - ReportScheduleRead
+    - ReportScheduleUpdate
+    - ReportScheduleDelete
+  entity.Product:
+    properties:
+      code:
+        type: string
+      currency:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      unit_price:
+        type: number
+    type: object
+  entity.ProductionOrder:
+    properties:
+      completed_qty:
+        type: integer
+      created_at:
+        type: string
+      deadline:
+        type: string
+      defect_qty:
+        type: integer
+      facility_id:
+        type: integer
+      id:
+        type: integer
+      notes:
+        type: string
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+      start_date:
+        type: string
+      status:
+        $ref: '#/definitions/entity.ProductionOrderStatus'
+      updated_at:
+        type: string
+    type: object
+  entity.ProductionOrderStatus:
+    enum:
+    - pending
+    - in_process
+    - completed
+    - cancelled
+    type: string
+    x-enum-varnames:
+    - OrderStatusPending
+    - OrderStatusInProcess
+    - OrderStatusCompleted
+    - OrderStatusCancelled
+  entity.PurchaseOrder:
+    properties:
+      approval_date:
+        type: string
+      approved_by:
+        $ref: '#/definitions/entity.User'
+      approved_by_id:
+        type: integer
+      attachment_urls:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/entity.User'
+      created_by_id:
+        type: integer
+      currency_code:
+        type: string
+      discount_total:
+        type: number
+      expected_date:
+        type: string
+      grand_total:
+        type: number
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.PurchaseOrderItem'
+        type: array
+      notes:
+        type: string
+      order_date:
+        type: string
+      order_number:
+        type: string
+      payment_status:
+        $ref: '#/definitions/entity.PaymentStatus'
+      payment_terms:
+        type: string
+      purchase_requests:
+        items:
+          $ref: '#/definitions/entity.PurchaseRequest'
+        type: array
+      shipping_address:
+        type: string
+      shipping_method:
+        type: string
+      status:
+        $ref: '#/definitions/entity.PurchaseOrderStatus'
+      sub_total:
+        type: number
+      supplier:
+        $ref: '#/definitions/entity.Supplier'
+      supplier_id:
+        type: integer
+      tax_total:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  entity.PurchaseOrderItem:
+    properties:
+      description:
+        type: string
+      discount:
+        type: number
+      item:
+        $ref: '#/definitions/entity.Item'
+      item_id:
+        type: string
+      quantity:
+        type: number
+      tax_amount:
+        type: number
+      tax_rate:
+        type: number
+      total_price:
+        type: number
+      unit_price:
+        type: number
+    type: object
+  entity.PurchaseOrderStatus:
+    enum:
+    - DRAFT
+    - SUBMITTED
+    - APPROVED
+    - SENT
+    - CONFIRMED
+    - PARTIALLY_RECEIVED
+    - RECEIVED
+    - CANCELLED
+    - CLOSED
+    type: string
+    x-enum-varnames:
+    - PurchaseOrderStatusDraft
+    - PurchaseOrderStatusSubmitted
+    - PurchaseOrderStatusApproved
+    - PurchaseOrderStatusSent
+    - PurchaseOrderStatusConfirmed
+    - PurchaseOrderStatusPartial
+    - PurchaseOrderStatusReceived
+    - PurchaseOrderStatusCancelled
+    - PurchaseOrderStatusClosed
+  entity.PurchasePayment:
+    properties:
+      amount:
+        type: number
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/entity.User'
+      created_by_id:
+        type: integer
+      id:
+        type: string
+      notes:
+        type: string
+      payment_date:
+        type: string
+      payment_method:
+        type: string
+      payment_number:
+        type: string
+      purchase_order:
+        $ref: '#/definitions/entity.PurchaseOrder'
+      purchase_order_id:
+        type: string
+      reference_number:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.PurchaseReceipt:
+    properties:
+      attachment_urls:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: string
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.PurchaseReceiptItem'
+        type: array
+      notes:
+        type: string
+      purchase_order:
+        $ref: '#/definitions/entity.PurchaseOrder'
+      purchase_order_id:
+        type: string
+      receipt_date:
+        type: string
+      receipt_number:
+        type: string
+      received_by:
+        $ref: '#/definitions/entity.User'
+      received_by_id:
+        type: integer
+      updated_at:
+        type: string
+      warehouse_id:
+        type: string
+    type: object
+  entity.PurchaseReceiptItem:
+    properties:
+      item:
+        $ref: '#/definitions/entity.Item'
+      item_id:
+        type: string
+      notes:
+        type: string
+      ordered_quantity:
+        type: number
+      received_quantity:
+        type: number
+      rejected_quantity:
+        type: number
+      total_price:
+        type: number
+      unit_price:
+        type: number
+    type: object
+  entity.PurchaseRequest:
+    properties:
+      approval_date:
+        type: string
+      approval_notes:
+        type: string
+      approver:
+        $ref: '#/definitions/entity.User'
+      approver_id:
+        type: integer
+      attachment_urls:
+        items:
+          type: string
+        type: array
+      created_at:
+        type: string
+      currency_code:
+        type: string
+      department_id:
+        type: integer
+      id:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.PurchaseRequestItem'
+        type: array
+      purchase_order:
+        $ref: '#/definitions/entity.PurchaseOrder'
+      purchase_order_id:
+        type: string
+      reason:
+        type: string
+      request_date:
+        type: string
+      request_number:
+        type: string
+      requester:
+        $ref: '#/definitions/entity.User'
+      requester_id:
+        type: integer
+      required_date:
+        type: string
+      status:
+        $ref: '#/definitions/entity.PurchaseRequestStatus'
+      total_estimated:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  entity.PurchaseRequestItem:
+    properties:
+      description:
+        type: string
+      item:
+        $ref: '#/definitions/entity.Item'
+      item_id:
+        type: string
+      quantity:
+        type: number
+    type: object
+  entity.PurchaseRequestStatus:
+    enum:
+    - DRAFT
+    - SUBMITTED
+    - APPROVED
+    - REJECTED
+    - CANCELLED
+    - ORDERED
+    type: string
+    x-enum-varnames:
+    - PurchaseRequestStatusDraft
+    - PurchaseRequestStatusSubmitted
+    - PurchaseRequestStatusApproved
+    - PurchaseRequestStatusRejected
+    - PurchaseRequestStatusCancelled
+    - PurchaseRequestStatusOrdered
+  entity.ReportFormat:
+    enum:
+    - CSV
+    - EXCEL
+    - PDF
+    - JSON
+    type: string
+    x-enum-varnames:
+    - ReportFormatCSV
+    - ReportFormatExcel
+    - ReportFormatPDF
+    - ReportFormatJSON
+  entity.ReportParameters:
+    additionalProperties: true
+    type: object
+  entity.ReportScheduleFrequency:
+    enum:
+    - DAILY
+    - WEEKLY
+    - MONTHLY
+    - QUARTERLY
+    - YEARLY
+    type: string
+    x-enum-varnames:
+    - ReportScheduleDaily
+    - ReportScheduleWeekly
+    - ReportScheduleMonthly
+    - ReportScheduleQuarterly
+    - ReportScheduleYearly
+  entity.ReportType:
+    enum:
+    - INVENTORY
+    - PURCHASE
+    - SALES
+    - PROFIT_LOSS
+    - FINANCIAL
+    - CUSTOM
+    type: string
+    x-enum-varnames:
+    - ReportTypeInventory
+    - ReportTypePurchase
+    - ReportTypeSales
+    - ReportTypeProfitAndLoss
+    - ReportTypeFinancial
+    - ReportTypeCustom
+  entity.Role:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/entity.Permission'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  entity.SalesOrder:
+    properties:
+      billing_address:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        $ref: '#/definitions/entity.User'
+      created_by_id:
+        type: integer
+      customer:
+        allOf:
+        - $ref: '#/definitions/entity.User'
+        description: Using User as Customer for now
+      customer_id:
+        type: integer
+      delivery_orders:
+        items:
+          $ref: '#/definitions/entity.DeliveryOrder'
+        type: array
+      discount_total:
+        type: number
+      grand_total:
+        type: number
+      id:
+        type: string
+      invoices:
+        items:
+          $ref: '#/definitions/entity.Invoice'
+        type: array
+      items:
+        items:
+          $ref: '#/definitions/entity.SalesOrderItem'
+        type: array
+      notes:
+        type: string
+      order_date:
+        type: string
+      order_number:
+        type: string
+      payment_method:
+        $ref: '#/definitions/entity.PaymentMethod'
+      payment_status:
+        $ref: '#/definitions/entity.PaymentStatus'
+      shipping_address:
+        type: string
+      status:
+        $ref: '#/definitions/entity.SalesOrderStatus'
+      sub_total:
+        type: number
+      tax_total:
+        type: number
+      updated_at:
+        type: string
+    type: object
+  entity.SalesOrderItem:
+    properties:
+      description:
+        type: string
+      discount:
+        type: number
+      item:
+        $ref: '#/definitions/entity.Item'
+      item_id:
+        type: string
+      quantity:
+        type: number
+      tax_amount:
+        type: number
+      tax_rate:
+        type: number
+      total_price:
+        type: number
+      unit_price:
+        type: number
+    type: object
+  entity.SalesOrderStatus:
+    enum:
+    - DRAFT
+    - CONFIRMED
+    - PROCESSING
+    - SHIPPED
+    - DELIVERED
+    - COMPLETED
+    - CANCELLED
+    type: string
+    x-enum-varnames:
+    - SalesOrderStatusDraft
+    - SalesOrderStatusConfirmed
+    - SalesOrderStatusProcessing
+    - SalesOrderStatusShipped
+    - SalesOrderStatusDelivered
+    - SalesOrderStatusCompleted
+    - SalesOrderStatusCancelled
+  entity.StockEntry:
+    properties:
+      batch_number:
+        type: string
+      created_at:
+        type: string
+      created_by:
+        type: string
+      id:
+        type: string
+      lot_number:
+        type: string
+      note:
+        type: string
+      product_id:
+        type: string
+      quantity:
+        type: number
+      reference:
+        description: PO/SO number
+        type: string
+      type:
+        description: IN/OUT
+        type: string
+      warehouse_id:
+        type: string
+    type: object
+  entity.Supplier:
+    properties:
+      code:
+        type: string
+      contact_info:
+        $ref: '#/definitions/entity.ContactInfo'
+      contracts:
+        items:
+          $ref: '#/definitions/entity.Contract'
+        type: array
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      payment_terms:
+        $ref: '#/definitions/entity.PaymentTerms'
+      products:
+        items:
+          $ref: '#/definitions/entity.Product'
+        type: array
+      rating:
+        type: number
+      type:
+        $ref: '#/definitions/entity.SupplierType'
+      updated_at:
+        type: string
+    type: object
+  entity.SupplierType:
+    enum:
+    - manufacturer
+    - wholesaler
+    - distributor
+    - retailer
+    type: string
+    x-enum-varnames:
+    - Manufacturer
+    - Wholesaler
+    - Distributor
+    - Retailer
+  entity.TechnicalSpecs:
+    additionalProperties: true
+    type: object
+  entity.UpdateFinanceInvoiceRequest:
+    properties:
+      discount_amount:
+        type: number
+      due_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.FinanceInvoiceItem'
+        type: array
+      notes:
+        type: string
+      reference_id:
+        type: string
+      status:
+        $ref: '#/definitions/entity.FinanceInvoiceStatus'
+    type: object
+  entity.UpdateFinancePaymentRequest:
+    properties:
+      amount:
+        type: number
+      notes:
+        type: string
+      payment_method:
+        $ref: '#/definitions/entity.FinancePaymentMethod'
+      reference_number:
+        type: string
+      status:
+        $ref: '#/definitions/entity.FinancePaymentStatus'
+    type: object
+  entity.UpdateReportScheduleRequest:
+    properties:
+      active:
+        type: boolean
+      description:
+        type: string
+      format:
+        $ref: '#/definitions/entity.ReportFormat'
+      frequency:
+        $ref: '#/definitions/entity.ReportScheduleFrequency'
+      name:
+        type: string
+      parameters:
+        $ref: '#/definitions/entity.ReportParameters'
+      recipients:
+        items:
+          type: string
+        type: array
+    type: object
+  entity.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      last_login:
+        type: string
+      role:
+        $ref: '#/definitions/entity.Role'
+      role_id:
+        type: integer
+      status:
+        $ref: '#/definitions/entity.UserStatus'
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+  entity.UserStatus:
+    enum:
+    - active
+    - inactive
+    - locked
+    type: string
+    x-enum-varnames:
+    - StatusActive
+    - StatusInactive
+    - StatusLocked
+  entity.Warehouse:
+    properties:
+      address:
+        type: string
+      contact:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: string
+      manager_id:
+        type: string
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/entity.WarehouseStatus'
+      type:
+        $ref: '#/definitions/entity.WarehouseType'
+      updated_at:
+        type: string
+    type: object
+  entity.WarehouseStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    type: string
+    x-enum-varnames:
+    - WarehouseStatusActive
+    - WarehouseStatusInactive
+  entity.WarehouseType:
+    enum:
+    - RAW
+    - FINISHED
+    - GENERAL
+    type: string
+    x-enum-varnames:
+    - WarehouseTypeRaw
+    - WarehouseTypeFinished
+    - WarehouseTypeGeneral
+  server.AuditLogResponse:
+    properties:
+      logs:
+        items:
+          $ref: '#/definitions/entity.AuditLog'
+        type: array
+      total:
+        example: 100
+        type: integer
+    type: object
+  server.CreateDeliveryOrderRequest:
+    properties:
+      delivery_date:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/entity.DeliveryOrderItem'
+        type: array
+      notes:
+        type: string
+      shipping_address:
+        type: string
+      shipping_method:
+        type: string
+      tracking_number:
+        type: string
+      warehouse_id:
+        type: string
+    required:
+    - delivery_date
+    - items
+    - warehouse_id
+    type: object
+  server.CreateInvoiceRequest:
+    properties:
+      amount:
+        type: number
+      due_date:
+        type: string
+      notes:
+        type: string
+      tax_amount:
+        type: number
+      total_amount:
+        type: number
+    required:
+    - due_date
+    type: object
+  server.CreateRoleRequest:
+    properties:
+      name:
+        example: manager
+        type: string
+      permissions:
+        example:
+        - '["user:read"'
+        - '"user:create"]'
+        items:
+          $ref: '#/definitions/entity.Permission'
+        type: array
+    required:
+    - name
+    - permissions
+    type: object
+  server.CreateSalesOrderRequest:
+    properties:
+      billing_address:
+        type: string
+      customer_id:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/entity.SalesOrderItem'
+        type: array
+      notes:
+        type: string
+      payment_method:
+        $ref: '#/definitions/entity.PaymentMethod'
+      shipping_address:
+        type: string
+      warehouse_id:
+        type: string
+    required:
+    - customer_id
+    - items
+    - warehouse_id
+    type: object
+  server.ErrorResponse:
+    properties:
+      error:
+        example: Error message
+        type: string
+    type: object
+  server.ForgotPasswordRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+    required:
+    - email
+    type: object
+  server.LoginRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: secret123
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  server.LoginResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJ...
+        type: string
+      refresh_token:
+        example: eyJhbGciOiJ...
+        type: string
+      user:
+        $ref: '#/definitions/entity.User'
+    type: object
+  server.MessageResponse:
+    properties:
+      message:
+        example: Operation successful
+        type: string
+    type: object
+  server.PaginatedResponse:
+    properties:
+      data: {}
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total:
+        type: integer
+      total_page:
+        type: integer
+    type: object
+  server.RefreshTokenRequest:
+    properties:
+      refresh_token:
+        example: eyJhbGciOiJ...
+        type: string
+    required:
+    - refresh_token
+    type: object
+  server.RegisterRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      password:
+        example: secret123
+        minLength: 6
+        type: string
+      role_id:
+        example: 2
+        type: integer
+      username:
+        example: johnsmith
+        type: string
+    required:
+    - email
+    - password
+    - role_id
+    - username
+    type: object
+  server.ResetPasswordRequest:
+    properties:
+      new_password:
+        example: newpass123
+        minLength: 6
+        type: string
+      token:
+        example: reset_token_123
+        type: string
+    required:
+    - new_password
+    - token
+    type: object
+  server.SuccessResponse:
+    properties:
+      message:
+        example: Operation successful
+        type: string
+    type: object
+  server.TokenResponse:
+    properties:
+      access_token:
+        example: eyJhbGciOiJ...
+        type: string
+    type: object
+  server.UpdateRoleRequest:
+    properties:
+      name:
+        example: manager
+        type: string
+      permissions:
+        example:
+        - '["user:read"'
+        - '"user:create"]'
+        items:
+          $ref: '#/definitions/entity.Permission'
+        type: array
+    required:
+    - name
+    - permissions
+    type: object
+  server.UpdateUserRequest:
+    properties:
+      email:
+        example: john@example.com
+        type: string
+      role_id:
+        example: 2
+        type: integer
+      status:
+        allOf:
+        - $ref: '#/definitions/entity.UserStatus'
+        example: active
+      username:
+        example: johnsmith
+        type: string
+    required:
+    - email
+    - role_id
+    - status
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: https://github.com/lugondev/erp-warehouse-simple
+  description: Simple ERP Warehouse Management System API
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: ERP Warehouse API
+  version: "1.0"
+paths:
+  /api/customers:
+    get:
+      description: List customers with optional filtering
+      parameters:
+      - description: Filter by code
+        in: query
+        name: code
+        type: string
+      - description: Filter by name
+        in: query
+        name: name
+        type: string
+      - description: Filter by type
+        in: query
+        name: type
+        type: string
+      - description: Filter by email
+        in: query
+        name: email
+        type: string
+      - description: Filter by phone number
+        in: query
+        name: phone_number
+        type: string
+      - description: Filter by loyalty tier
+        in: query
+        name: loyalty_tier
+        type: string
+      - description: Filter by city
+        in: query
+        name: city
+        type: string
+      - description: Filter by country
+        in: query
+        name: country
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Customer'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List customers
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new customer with the provided details
+      parameters:
+      - description: Customer details
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Customer'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Customer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new customer
+      tags:
+      - customers
+  /api/customers/{id}:
+    delete:
+      description: Delete a customer by their ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete a customer
+      tags:
+      - customers
+    get:
+      description: Get a customer's details by their ID
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Customer'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a customer by ID
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update a customer's details
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated customer details
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Customer'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Customer'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a customer
+      tags:
+      - customers
+  /api/customers/{id}/addresses:
+    get:
+      description: Get all addresses for a customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.CustomerAddress'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get all addresses for a customer
+      tags:
+      - customers
+    post:
+      consumes:
+      - application/json
+      description: Create a new address for a customer
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CustomerAddress'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.CustomerAddress'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new address for a customer
+      tags:
+      - customers
+  /api/customers/{id}/debt:
+    get:
+      description: Get a customer's debt information
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CustomerDebt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a customer's debt information
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update a customer's debt amount
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Debt amount
+        in: body
+        name: debt
+        required: true
+        schema:
+          additionalProperties:
+            type: number
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a customer's debt amount
+      tags:
+      - customers
+  /api/customers/{id}/loyalty/calculate-tier:
+    get:
+      description: Calculate a customer's loyalty tier based on points and purchase
+        history
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Calculate a customer's loyalty tier
+      tags:
+      - customers
+  /api/customers/{id}/loyalty/points:
+    put:
+      consumes:
+      - application/json
+      description: Update a customer's loyalty points
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Loyalty points
+        in: body
+        name: points
+        required: true
+        schema:
+          additionalProperties:
+            type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a customer's loyalty points
+      tags:
+      - customers
+  /api/customers/{id}/loyalty/tier:
+    put:
+      consumes:
+      - application/json
+      description: Update a customer's loyalty tier
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Loyalty tier
+        in: body
+        name: tier
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a customer's loyalty tier
+      tags:
+      - customers
+  /api/customers/{id}/orders:
+    get:
+      description: Get a summary of a customer's order history
+      parameters:
+      - description: Customer ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CustomerOrderHistory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a customer's order history
+      tags:
+      - customers
+  /api/customers/addresses/{addressId}:
+    delete:
+      description: Delete a customer address
+      parameters:
+      - description: Address ID
+        in: path
+        name: addressId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete a customer address
+      tags:
+      - customers
+    put:
+      consumes:
+      - application/json
+      description: Update a customer address
+      parameters:
+      - description: Address ID
+        in: path
+        name: addressId
+        required: true
+        type: integer
+      - description: Updated address details
+        in: body
+        name: address
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CustomerAddress'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.CustomerAddress'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a customer address
+      tags:
+      - customers
+  /api/finance/invoices:
+    get:
+      description: List finance invoices based on filter criteria
+      parameters:
+      - description: Invoice number
+        in: query
+        name: invoice_number
+        type: string
+      - description: Invoice type (SALES/PURCHASE)
+        in: query
+        name: type
+        type: string
+      - description: Entity ID
+        in: query
+        name: entity_id
+        type: integer
+      - description: Entity type (CUSTOMER/SUPPLIER)
+        in: query
+        name: entity_type
+        type: string
+      - description: Invoice status
+        in: query
+        name: status
+        type: string
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceListResponse'
+      summary: List invoices
+      tags:
+      - Finance
+    post:
+      consumes:
+      - application/json
+      description: Create a new finance invoice
+      parameters:
+      - description: Invoice details
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateFinanceInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      summary: Create a new invoice
+      tags:
+      - Finance
+  /api/finance/invoices/{id}:
+    get:
+      description: Get a finance invoice by its ID
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      summary: Get an invoice by ID
+      tags:
+      - Finance
+    put:
+      consumes:
+      - application/json
+      description: Update a finance invoice
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Invoice details
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateFinanceInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      summary: Update an invoice
+      tags:
+      - Finance
+  /api/finance/invoices/{id}/cancel:
+    post:
+      description: Cancel a finance invoice
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Cancel an invoice
+      tags:
+      - Finance
+  /api/finance/invoices/{id}/status:
+    patch:
+      consumes:
+      - application/json
+      description: Update a finance invoice status
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status
+        in: body
+        name: status
+        required: true
+        schema:
+          additionalProperties:
+            type: string
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update an invoice status
+      tags:
+      - Finance
+  /api/finance/payments:
+    get:
+      description: List finance payments based on filter criteria
+      parameters:
+      - description: Payment number
+        in: query
+        name: payment_number
+        type: string
+      - description: Invoice ID
+        in: query
+        name: invoice_id
+        type: integer
+      - description: Invoice number
+        in: query
+        name: invoice_number
+        type: string
+      - description: Entity ID
+        in: query
+        name: entity_id
+        type: integer
+      - description: Entity type (CUSTOMER/SUPPLIER)
+        in: query
+        name: entity_type
+        type: string
+      - description: Payment status
+        in: query
+        name: status
+        type: string
+      - description: Payment method
+        in: query
+        name: payment_method
+        type: string
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentListResponse'
+      summary: List payments
+      tags:
+      - Finance
+    post:
+      consumes:
+      - application/json
+      description: Create a new finance payment
+      parameters:
+      - description: Payment details
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateFinancePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+      summary: Create a new payment
+      tags:
+      - Finance
+  /api/finance/payments/{id}:
+    get:
+      description: Get a finance payment by its ID
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+      summary: Get a payment by ID
+      tags:
+      - Finance
+    put:
+      consumes:
+      - application/json
+      description: Update a finance payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Payment details
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateFinancePaymentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/entity.FinancePaymentResponse'
+      summary: Update a payment
+      tags:
+      - Finance
+  /api/finance/payments/{id}/cancel:
+    post:
+      description: Cancel a finance payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Cancel a payment
+      tags:
+      - Finance
+  /api/finance/payments/{id}/confirm:
+    post:
+      description: Confirm a finance payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Confirm a payment
+      tags:
+      - Finance
+  /api/finance/payments/{id}/refund:
+    post:
+      description: Refund a finance payment
+      parameters:
+      - description: Payment ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Refund a payment
+      tags:
+      - Finance
+  /api/finance/reports/accounts-payable:
+    get:
+      description: Get accounts payable data
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.FinanceAccountsPayable'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get accounts payable
+      tags:
+      - Finance
+  /api/finance/reports/accounts-receivable:
+    get:
+      description: Get accounts receivable data
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.FinanceAccountsReceivable'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get accounts receivable
+      tags:
+      - Finance
+  /api/finance/reports/finance:
+    get:
+      description: Get a finance report for the specified period
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.FinanceReport'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get finance report
+      tags:
+      - Finance
+  /api/orders:
+    get:
+      description: List sales orders with optional filtering
+      parameters:
+      - description: Order Number
+        in: query
+        name: order_number
+        type: string
+      - description: Customer ID
+        in: query
+        name: customer_id
+        type: integer
+      - description: Order Status
+        in: query
+        name: status
+        type: string
+      - description: Payment Status
+        in: query
+        name: payment_status
+        type: string
+      - description: Start Date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End Date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Item ID
+        in: query
+        name: item_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.SalesOrder'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List sales orders
+      tags:
+      - orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new sales order with items
+      parameters:
+      - description: Sales Order
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateSalesOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.SalesOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new sales order
+      tags:
+      - orders
+  /api/orders/{id}:
+    get:
+      description: Get a sales order by ID
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SalesOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a sales order
+      tags:
+      - orders
+  /api/orders/{id}/cancel:
+    post:
+      description: Cancel a sales order
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Cancel a sales order
+      tags:
+      - orders
+  /api/orders/{id}/complete:
+    post:
+      description: Mark a sales order as completed
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Complete a sales order
+      tags:
+      - orders
+  /api/orders/{id}/confirm:
+    post:
+      description: Change a sales order status from draft to confirmed
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Confirm a sales order
+      tags:
+      - orders
+  /api/orders/{id}/deliveries:
+    post:
+      consumes:
+      - application/json
+      description: Create a delivery order for a sales order
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Delivery Order
+        in: body
+        name: delivery
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateDeliveryOrderRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.DeliveryOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a delivery order
+      tags:
+      - orders
+  /api/orders/{id}/invoices:
+    post:
+      consumes:
+      - application/json
+      description: Create an invoice for a sales order
+      parameters:
+      - description: Sales Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Invoice
+        in: body
+        name: invoice
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateInvoiceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Invoice'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create an invoice
+      tags:
+      - orders
+  /api/orders/deliveries:
+    get:
+      description: List delivery orders with optional filtering
+      parameters:
+      - description: Delivery Number
+        in: query
+        name: delivery_number
+        type: string
+      - description: Sales Order ID
+        in: query
+        name: sales_order_id
+        type: string
+      - description: Delivery Status
+        in: query
+        name: status
+        type: string
+      - description: Start Date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End Date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Warehouse ID
+        in: query
+        name: warehouse_id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.DeliveryOrder'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List delivery orders
+      tags:
+      - orders
+  /api/orders/deliveries/{id}:
+    get:
+      description: Get a delivery order by ID
+      parameters:
+      - description: Delivery Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.DeliveryOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a delivery order
+      tags:
+      - orders
+  /api/orders/deliveries/{id}/complete:
+    post:
+      description: Mark a delivery as delivered
+      parameters:
+      - description: Delivery Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Complete a delivery
+      tags:
+      - orders
+  /api/orders/deliveries/{id}/prepare:
+    post:
+      description: Update a delivery order status to preparing
+      parameters:
+      - description: Delivery Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Prepare a delivery
+      tags:
+      - orders
+  /api/orders/deliveries/{id}/ship:
+    post:
+      description: Process a delivery by updating inventory and changing status
+      parameters:
+      - description: Delivery Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Ship a delivery
+      tags:
+      - orders
+  /api/orders/invoices:
+    get:
+      description: List invoices with optional filtering
+      parameters:
+      - description: Invoice Number
+        in: query
+        name: invoice_number
+        type: string
+      - description: Sales Order ID
+        in: query
+        name: sales_order_id
+        type: string
+      - description: Invoice Status
+        in: query
+        name: status
+        type: string
+      - description: Start Date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End Date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Invoice'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List invoices
+      tags:
+      - orders
+  /api/orders/invoices/{id}:
+    get:
+      description: Get an invoice by ID
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Invoice'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get an invoice
+      tags:
+      - orders
+  /api/orders/invoices/{id}/issue:
+    post:
+      description: Change an invoice from draft to issued status
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Issue an invoice
+      tags:
+      - orders
+  /api/orders/invoices/{id}/pay:
+    post:
+      description: Mark an invoice as paid
+      parameters:
+      - description: Invoice ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Pay an invoice
+      tags:
+      - orders
+  /api/purchase/orders:
+    get:
+      consumes:
+      - application/json
+      description: List purchase orders with filters
+      parameters:
+      - description: Order number
+        in: query
+        name: order_number
+        type: string
+      - description: Supplier ID
+        in: query
+        name: supplier_id
+        type: integer
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Payment status
+        in: query
+        name: payment_status
+        type: string
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Item ID
+        in: query
+        name: item_id
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List purchase orders
+      tags:
+      - purchase-orders
+    post:
+      consumes:
+      - application/json
+      description: Create a new purchase order
+      parameters:
+      - description: Purchase order details
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchaseOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PurchaseOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete a purchase order
+      tags:
+      - purchase-orders
+    get:
+      consumes:
+      - application/json
+      description: Get a purchase order by ID
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchaseOrder'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a purchase order by ID
+      tags:
+      - purchase-orders
+    put:
+      consumes:
+      - application/json
+      description: Update a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated purchase order details
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchaseOrder'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchaseOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Approve a purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/cancel:
+    post:
+      consumes:
+      - application/json
+      description: Cancel a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Cancel a purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/close:
+    post:
+      consumes:
+      - application/json
+      description: Close a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Close a purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/confirm:
+    post:
+      consumes:
+      - application/json
+      description: Mark a purchase order as confirmed by supplier
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Confirm a purchase order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/payment-summary:
+    get:
+      consumes:
+      - application/json
+      description: Get payment summary for a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get purchase order payment summary
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/payments:
+    get:
+      consumes:
+      - application/json
+      description: List purchase payments for a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.PurchasePayment'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List purchase payments by order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/receipts:
+    get:
+      consumes:
+      - application/json
+      description: List purchase receipts for a purchase order
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.PurchaseReceipt'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: List purchase receipts by order
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/send:
+    post:
+      consumes:
+      - application/json
+      description: Mark a purchase order as sent to supplier
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Send a purchase order to supplier
+      tags:
+      - purchase-orders
+  /api/purchase/orders/{id}/submit:
+    post:
+      consumes:
+      - application/json
+      description: Submit a purchase order for approval
+      parameters:
+      - description: Purchase Order ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Submit a purchase order for approval
+      tags:
+      - purchase-orders
+  /api/purchase/payments:
+    post:
+      consumes:
+      - application/json
+      description: Create a new purchase payment
+      parameters:
+      - description: Purchase payment details
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchasePayment'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PurchasePayment'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new purchase payment
+      tags:
+      - purchase-payments
+  /api/purchase/payments/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a purchase payment by ID
+      parameters:
+      - description: Purchase Payment ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchasePayment'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a purchase payment by ID
+      tags:
+      - purchase-payments
+  /api/purchase/receipts:
+    post:
+      consumes:
+      - application/json
+      description: Create a new purchase receipt
+      parameters:
+      - description: Purchase receipt details
+        in: body
+        name: receipt
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchaseReceipt'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PurchaseReceipt'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new purchase receipt
+      tags:
+      - purchase-receipts
+  /api/purchase/receipts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a purchase receipt by ID
+      parameters:
+      - description: Purchase Receipt ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchaseReceipt'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a purchase receipt by ID
+      tags:
+      - purchase-receipts
+  /api/purchase/requests:
+    get:
+      consumes:
+      - application/json
+      description: List purchase requests with filters
+      parameters:
+      - description: Request number
+        in: query
+        name: request_number
+        type: string
+      - description: Requester ID
+        in: query
+        name: requester_id
+        type: integer
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Item ID
+        in: query
+        name: item_id
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: List purchase requests
+      tags:
+      - purchase-requests
+    post:
+      consumes:
+      - application/json
+      description: Create a new purchase request
+      parameters:
+      - description: Purchase request details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchaseRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PurchaseRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new purchase request
+      tags:
+      - purchase-requests
+  /api/purchase/requests/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a purchase request
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete a purchase request
+      tags:
+      - purchase-requests
+    get:
+      consumes:
+      - application/json
+      description: Get a purchase request by ID
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchaseRequest'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a purchase request by ID
+      tags:
+      - purchase-requests
+    put:
+      consumes:
+      - application/json
+      description: Update a purchase request
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated purchase request details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.PurchaseRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.PurchaseRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a purchase request
+      tags:
+      - purchase-requests
+  /api/purchase/requests/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve a purchase request
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Approval details
+        in: body
+        name: approval
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Approve a purchase request
+      tags:
+      - purchase-requests
+  /api/purchase/requests/{id}/order:
+    post:
+      consumes:
+      - application/json
+      description: Create a purchase order from a purchase request
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Order details
+        in: body
+        name: order
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.PurchaseOrder'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a purchase order from a request
+      tags:
+      - purchase-requests
+  /api/purchase/requests/{id}/reject:
+    post:
+      consumes:
+      - application/json
+      description: Reject a purchase request
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Rejection details
+        in: body
+        name: rejection
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Reject a purchase request
+      tags:
+      - purchase-requests
+  /api/purchase/requests/{id}/submit:
+    post:
+      consumes:
+      - application/json
+      description: Submit a purchase request for approval
+      parameters:
+      - description: Purchase Request ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Submit a purchase request for approval
+      tags:
+      - purchase-requests
+  /api/suppliers:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of suppliers with optional filters
+      parameters:
+      - description: Supplier type
+        in: query
+        name: type
+        type: string
+      - description: Country
+        in: query
+        name: country
+        type: string
+      - description: Name search
+        in: query
+        name: name
+        type: string
+      - description: Code search
+        in: query
+        name: code
+        type: string
+      - description: Minimum rating
+        in: query
+        name: min_rating
+        type: number
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Supplier'
+            type: array
+      summary: List suppliers
+      tags:
+      - suppliers
+    post:
+      consumes:
+      - application/json
+      description: Create a new supplier with the provided information
+      parameters:
+      - description: Supplier object
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Supplier'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Supplier'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new supplier
+      tags:
+      - suppliers
+  /api/suppliers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a supplier by ID
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete a supplier
+      tags:
+      - suppliers
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about a supplier
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Supplier'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get a supplier by ID
+      tags:
+      - suppliers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing supplier's information
+      parameters:
+      - description: Supplier ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated supplier object
+        in: body
+        name: supplier
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Supplier'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Supplier'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update a supplier
+      tags:
+      - suppliers
+  /api/v1/audit/logs:
+    get:
+      description: Get a paginated list of all audit logs
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.AuditLogResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all audit logs
+      tags:
+      - audit
+  /api/v1/audit/logs/user/{id}:
+    get:
+      description: Get audit logs for a specific user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.AuditLog'
+            type: array
+        "400":
+          description: Invalid user ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user audit logs
+      tags:
+      - audit
+  /api/v1/auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Send password reset token to user's email
+      parameters:
+      - description: User email
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Reset email sent
+          schema:
+            $ref: '#/definitions/server.MessageResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Request password reset
+      tags:
+      - auth
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return tokens
+      parameters:
+      - description: User login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Login successful
+          schema:
+            $ref: '#/definitions/server.LoginResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Invalid credentials
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: User login
+      tags:
+      - auth
+  /api/v1/auth/refresh-token:
+    post:
+      consumes:
+      - application/json
+      description: Get new access token using refresh token
+      parameters:
+      - description: Refresh token
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.RefreshTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: New access token
+          schema:
+            $ref: '#/definitions/server.TokenResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: Invalid refresh token
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Refresh access token
+      tags:
+      - auth
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user with the provided details
+      parameters:
+      - description: User registration details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - auth
+  /api/v1/auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Reset user password using reset token
+      parameters:
+      - description: Reset token and new password
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Password reset successful
+          schema:
+            $ref: '#/definitions/server.MessageResponse'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Reset password
+      tags:
+      - auth
+  /api/v1/item-categories:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of all item categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.ItemCategory'
+            type: array
+      summary: List item categories
+      tags:
+      - item-categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new item category with the provided information
+      parameters:
+      - description: Item category object
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ItemCategory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.ItemCategory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new item category
+      tags:
+      - item-categories
+  /api/v1/item-categories/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item category by ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete an item category
+      tags:
+      - item-categories
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about an item category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ItemCategory'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get an item category by ID
+      tags:
+      - item-categories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing item category's information
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated category object
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ItemCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ItemCategory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update an item category
+      tags:
+      - item-categories
+  /api/v1/item-categories/{id}/items:
+    get:
+      consumes:
+      - application/json
+      description: Get items belonging to a specific category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get items by category
+      tags:
+      - items
+  /api/v1/item-categories/tree:
+    get:
+      consumes:
+      - application/json
+      description: Get item categories in a hierarchical structure
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.ItemCategory'
+            type: array
+      summary: Get item categories tree
+      tags:
+      - item-categories
+  /api/v1/items:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of items with optional filters
+      parameters:
+      - description: SKU filter
+        in: query
+        name: sku
+        type: string
+      - description: Name filter
+        in: query
+        name: name
+        type: string
+      - description: Category filter
+        in: query
+        name: category
+        type: string
+      - description: Manufacturer ID filter
+        in: query
+        name: manufacturer_id
+        type: integer
+      - description: Supplier ID filter
+        in: query
+        name: supplier_id
+        type: integer
+      - description: Status filter (ACTIVE, INACTIVE, ARCHIVED)
+        in: query
+        name: status
+        type: string
+      - description: Minimum price filter
+        in: query
+        name: min_price
+        type: number
+      - description: Maximum price filter
+        in: query
+        name: max_price
+        type: number
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+      summary: List items
+      tags:
+      - items
+    post:
+      consumes:
+      - application/json
+      description: Create a new item with the provided information
+      parameters:
+      - description: Item object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Item'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Item'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create a new item
+      tags:
+      - items
+  /api/v1/items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item by ID
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete an item
+      tags:
+      - items
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about an item
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Item'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get an item by ID
+      tags:
+      - items
+    put:
+      consumes:
+      - application/json
+      description: Update an existing item's information
+      parameters:
+      - description: Item ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated item object
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Item'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Item'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update an item
+      tags:
+      - items
+  /api/v1/items/bulk:
+    post:
+      consumes:
+      - application/json
+      description: Create multiple items in a single request
+      parameters:
+      - description: Array of item objects
+        in: body
+        name: items
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.Item'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Items created successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Bulk create items
+      tags:
+      - items
+    put:
+      consumes:
+      - application/json
+      description: Update multiple items in a single request
+      parameters:
+      - description: Array of item objects with IDs
+        in: body
+        name: items
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.Item'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Items updated successfully
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Bulk update items
+      tags:
+      - items
+  /api/v1/items/search:
+    get:
+      consumes:
+      - application/json
+      description: Search for items based on a search term
+      parameters:
+      - description: Search term
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+      summary: Search items
+      tags:
+      - items
+  /api/v1/items/sku/{sku}:
+    get:
+      consumes:
+      - application/json
+      description: Get detailed information about an item using its SKU
+      parameters:
+      - description: Item SKU
+        in: path
+        name: sku
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Item'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get an item by SKU
+      tags:
+      - items
+  /api/v1/manufacturing/bom:
+    post:
+      consumes:
+      - application/json
+      description: Create bill of materials for a product
+      parameters:
+      - description: BOM details with items
+        in: body
+        name: bom
+        required: true
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.BillOfMaterial'
+      summary: Create BOM
+      tags:
+      - Manufacturing
+  /api/v1/manufacturing/facilities:
+    get:
+      description: Get list of all manufacturing facilities
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.ManufacturingFacility'
+            type: array
+      summary: List facilities
+      tags:
+      - Manufacturing
+    post:
+      consumes:
+      - application/json
+      description: Create new manufacturing facility
+      parameters:
+      - description: Facility details
+        in: body
+        name: facility
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ManufacturingFacility'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.ManufacturingFacility'
+      summary: Create manufacturing facility
+      tags:
+      - Manufacturing
+  /api/v1/manufacturing/facilities/{id}:
+    get:
+      description: Get manufacturing facility details by ID
+      parameters:
+      - description: Facility ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.ManufacturingFacility'
+      summary: Get facility by ID
+      tags:
+      - Manufacturing
+  /api/v1/manufacturing/orders:
+    post:
+      consumes:
+      - application/json
+      description: Create new production order
+      parameters:
+      - description: Production order details
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/entity.ProductionOrder'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.ProductionOrder'
+      summary: Create production order
+      tags:
+      - Manufacturing
+  /api/v1/manufacturing/orders/{id}/progress:
+    put:
+      consumes:
+      - application/json
+      description: Update production progress for an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Progress details
+        in: body
+        name: progress
+        required: true
+        schema:
+          additionalProperties:
+            type: integer
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Progress updated
+          schema:
+            type: string
+      summary: Update production progress
+      tags:
+      - Manufacturing
+  /api/v1/manufacturing/orders/{id}/start:
+    post:
+      description: Start production for an order
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Production started
+          schema:
+            type: string
+      summary: Start production
+      tags:
+      - Manufacturing
+  /api/v1/reports:
+    get:
+      description: List reports based on filter criteria
+      parameters:
+      - description: Report name
+        in: query
+        name: name
+        type: string
+      - description: Report type
+        in: query
+        name: type
+        type: string
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      - description: Report status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List reports
+      tags:
+      - Reports
+    post:
+      consumes:
+      - application/json
+      description: Create a new report
+      parameters:
+      - description: Report details
+        in: body
+        name: report
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateReportRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new report
+      tags:
+      - Reports
+  /api/v1/reports/{id}:
+    delete:
+      description: Delete a report by its ID
+      parameters:
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a report
+      tags:
+      - Reports
+    get:
+      description: Get a report by its ID
+      parameters:
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a report by ID
+      tags:
+      - Reports
+  /api/v1/reports/{id}/export:
+    post:
+      description: Export a report to a specific format (CSV, Excel, PDF)
+      parameters:
+      - description: Report ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Export format (CSV, EXCEL, PDF)
+        in: query
+        name: format
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Export a report
+      tags:
+      - Reports
+  /api/v1/reports/dashboard/metrics:
+    get:
+      description: Get dashboard metrics
+      parameters:
+      - description: Period (day, week, month, quarter, year)
+        in: query
+        name: period
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get dashboard metrics
+      tags:
+      - Reports
+  /api/v1/reports/financial/profit-loss:
+    get:
+      description: Get profit and loss report
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get profit and loss report
+      tags:
+      - Reports
+  /api/v1/reports/inventory/age:
+    get:
+      description: Get inventory age report
+      parameters:
+      - description: Warehouse ID
+        in: query
+        name: warehouse_id
+        type: string
+      - description: As of date (YYYY-MM-DD)
+        in: query
+        name: as_of_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get inventory age report
+      tags:
+      - Reports
+  /api/v1/reports/inventory/value:
+    get:
+      description: Get inventory value report
+      parameters:
+      - description: Warehouse ID
+        in: query
+        name: warehouse_id
+        type: string
+      - description: As of date (YYYY-MM-DD)
+        in: query
+        name: as_of_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get inventory value report
+      tags:
+      - Reports
+  /api/v1/reports/purchases/suppliers:
+    get:
+      description: Get supplier purchase report
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get supplier purchase report
+      tags:
+      - Reports
+  /api/v1/reports/sales/customers:
+    get:
+      description: Get customer sales report
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get customer sales report
+      tags:
+      - Reports
+  /api/v1/reports/sales/products:
+    get:
+      description: Get product sales report
+      parameters:
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get product sales report
+      tags:
+      - Reports
+  /api/v1/reports/schedules:
+    get:
+      description: List report schedules based on filter criteria
+      parameters:
+      - description: Schedule name
+        in: query
+        name: name
+        type: string
+      - description: Report type
+        in: query
+        name: type
+        type: string
+      - description: Schedule frequency
+        in: query
+        name: frequency
+        type: string
+      - description: Active status
+        in: query
+        name: active
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List report schedules
+      tags:
+      - Reports
+    post:
+      consumes:
+      - application/json
+      description: Create a new report schedule
+      parameters:
+      - description: Report schedule details
+        in: body
+        name: schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entity.CreateReportScheduleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new report schedule
+      tags:
+      - Reports
+  /api/v1/reports/schedules/{id}:
+    delete:
+      description: Delete a report schedule by its ID
+      parameters:
+      - description: Report Schedule ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a report schedule
+      tags:
+      - Reports
+    get:
+      description: Get a report schedule by its ID
+      parameters:
+      - description: Report Schedule ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get a report schedule by ID
+      tags:
+      - Reports
+    put:
+      consumes:
+      - application/json
+      description: Update a report schedule
+      parameters:
+      - description: Report Schedule ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Report schedule details
+        in: body
+        name: schedule
+        required: true
+        schema:
+          $ref: '#/definitions/entity.UpdateReportScheduleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update a report schedule
+      tags:
+      - Reports
+  /api/v1/roles:
+    get:
+      description: Get a list of all roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Role'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all roles
+      tags:
+      - roles
+    post:
+      consumes:
+      - application/json
+      description: Create a new role with specified permissions
+      parameters:
+      - description: Role details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.CreateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Role'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create new role
+      tags:
+      - roles
+  /api/v1/roles/{id}:
+    delete:
+      description: Delete role by ID
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Role deleted successfully
+          schema:
+            $ref: '#/definitions/server.MessageResponse'
+        "400":
+          description: Invalid role ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete role
+      tags:
+      - roles
+    get:
+      description: Get role details by role ID
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Role'
+        "400":
+          description: Invalid role ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Role not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get role by ID
+      tags:
+      - roles
+    put:
+      consumes:
+      - application/json
+      description: Update role details and permissions
+      parameters:
+      - description: Role ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Role details to update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateRoleRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Role'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update role
+      tags:
+      - roles
+  /api/v1/users:
+    get:
+      description: Get a list of all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.User'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all users
+      tags:
+      - users
+  /api/v1/users/{id}:
+    delete:
+      description: Delete user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User deleted successfully
+          schema:
+            $ref: '#/definitions/server.MessageResponse'
+        "400":
+          description: Invalid user ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - users
+    get:
+      description: Get user details by user ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Invalid user ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user by ID
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: Update user details
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User details to update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.User'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user
+      tags:
+      - users
+  /api/v1/users/logout:
+    post:
+      description: Invalidate user's refresh token
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Logged out successfully
+          schema:
+            $ref: '#/definitions/server.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: User logout
+      tags:
+      - auth
+  /inventory:
+    get:
+      description: List inventory with optional filters
+      parameters:
+      - description: Filter by warehouse ID
+        in: query
+        name: warehouse_id
+        type: string
+      - description: Filter by product ID
+        in: query
+        name: product_id
+        type: string
+      - description: Filter by batch number
+        in: query
+        name: batch_number
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Inventory'
+            type: array
+      summary: List inventory
+      tags:
+      - Inventory
+  /inventory/{id}/history:
+    get:
+      description: Get history of stock movements for an inventory item
+      parameters:
+      - description: Inventory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.InventoryHistory'
+            type: array
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get inventory history
+      tags:
+      - Inventory
+  /inventory/{id}/location:
+    put:
+      consumes:
+      - application/json
+      description: Update stock location details
+      parameters:
+      - description: Inventory ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Location details
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/entity.LocationUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update stock location
+      tags:
+      - Inventory
+  /inventory/batch-stock-entries:
+    post:
+      consumes:
+      - application/json
+      description: Process multiple stock entries in batch
+      parameters:
+      - description: Array of stock entries
+        in: body
+        name: entries
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.StockEntry'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Process batch stock entry
+      tags:
+      - Inventory
+  /inventory/check-stock:
+    get:
+      description: Check stock level for a product in a warehouse
+      parameters:
+      - description: Warehouse ID
+        in: query
+        name: warehouse_id
+        required: true
+        type: string
+      - description: Product ID
+        in: query
+        name: product_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Inventory'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Check stock
+      tags:
+      - Inventory
+  /inventory/stock-entries:
+    post:
+      consumes:
+      - application/json
+      description: Process a stock entry (in/out)
+      parameters:
+      - description: Stock entry details
+        in: body
+        name: entry
+        required: true
+        schema:
+          $ref: '#/definitions/entity.StockEntry'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StockEntry'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Process stock entry
+      tags:
+      - Inventory
+  /warehouses:
+    get:
+      description: List all warehouses with optional filters
+      parameters:
+      - description: Warehouse type
+        in: query
+        name: type
+        type: string
+      - description: Warehouse status
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Warehouse'
+            type: array
+      summary: List warehouses
+      tags:
+      - Warehouses
+    post:
+      consumes:
+      - application/json
+      description: Create a new warehouse
+      parameters:
+      - description: Warehouse info
+        in: body
+        name: warehouse
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Warehouse'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Warehouse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Create warehouse
+      tags:
+      - Warehouses
+  /warehouses/{id}:
+    delete:
+      description: Delete a warehouse by ID
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Delete warehouse
+      tags:
+      - Warehouses
+    get:
+      description: Get warehouse by ID
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Warehouse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Get warehouse
+      tags:
+      - Warehouses
+    put:
+      consumes:
+      - application/json
+      description: Update an existing warehouse
+      parameters:
+      - description: Warehouse ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Warehouse info
+        in: body
+        name: warehouse
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Warehouse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Warehouse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      summary: Update warehouse
+      tags:
+      - Warehouses
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

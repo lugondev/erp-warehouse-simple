@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ERP_DATABASE_HOST=postgres
+      - ERP_DATABASE_PORT=5432
+      - ERP_DATABASE_USER=postgres
+      - ERP_DATABASE_PASSWORD=postgres
+      - ERP_DATABASE_NAME=erp_db
+      - ERP_JWT_ACCESS_SECRET=your-access-secret-key
+      - ERP_JWT_REFRESH_SECRET=your-refresh-secret-key
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - erp-network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=erp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - erp-network
+
+volumes:
+  postgres_data:
+
+networks:
+  erp-network:
+    driver: bridge

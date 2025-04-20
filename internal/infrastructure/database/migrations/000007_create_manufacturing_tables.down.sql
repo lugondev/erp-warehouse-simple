@@ -1,0 +1,9 @@
+DROP INDEX IF EXISTS idx_mrp_calculations_production;
+DROP INDEX IF EXISTS idx_bom_items_material;
+DROP INDEX IF EXISTS idx_production_orders_product;
+DROP INDEX IF EXISTS idx_production_orders_facility;
+DROP TABLE IF EXISTS mrp_calculations;
+DROP TABLE IF EXISTS bom_items;
+DROP TABLE IF EXISTS bill_of_materials;
+DROP TABLE IF EXISTS production_orders;
+DROP TABLE IF EXISTS manufacturing_facilities;
