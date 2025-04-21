@@ -53,7 +53,7 @@ func (h *SupplierHandler) RegisterRoutes(router *gin.Engine) {
 // @Param supplier body entity.Supplier true "Supplier object"
 // @Success 201 {object} entity.Supplier
 // @Failure 400 {object} ErrorResponse
-// @Router /api/suppliers [post]
+// @Router /suppliers [post]
 func (h *SupplierHandler) CreateSupplier(c *gin.Context) {
 	var supplier entity.Supplier
 	if err := c.ShouldBindJSON(&supplier); err != nil {
@@ -82,7 +82,7 @@ func (h *SupplierHandler) CreateSupplier(c *gin.Context) {
 // @Param page query int false "Page number"
 // @Param page_size query int false "Page size"
 // @Success 200 {array} entity.Supplier
-// @Router /api/suppliers [get]
+// @Router /suppliers [get]
 func (h *SupplierHandler) ListSuppliers(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -128,7 +128,7 @@ func (h *SupplierHandler) ListSuppliers(c *gin.Context) {
 // @Param id path int true "Supplier ID"
 // @Success 200 {object} entity.Supplier
 // @Failure 404 {object} ErrorResponse
-// @Router /api/suppliers/{id} [get]
+// @Router /suppliers/{id} [get]
 func (h *SupplierHandler) GetSupplier(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -154,7 +154,7 @@ func (h *SupplierHandler) GetSupplier(c *gin.Context) {
 // @Param supplier body entity.Supplier true "Updated supplier object"
 // @Success 200 {object} entity.Supplier
 // @Failure 400 {object} ErrorResponse
-// @Router /api/suppliers/{id} [put]
+// @Router /suppliers/{id} [put]
 func (h *SupplierHandler) UpdateSupplier(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -185,7 +185,7 @@ func (h *SupplierHandler) UpdateSupplier(c *gin.Context) {
 // @Param id path int true "Supplier ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
-// @Router /api/suppliers/{id} [delete]
+// @Router /suppliers/{id} [delete]
 func (h *SupplierHandler) DeleteSupplier(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {

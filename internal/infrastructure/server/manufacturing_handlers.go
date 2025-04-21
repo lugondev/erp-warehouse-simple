@@ -26,7 +26,7 @@ func NewManufacturingHandler(manufacturingUseCase *usecase.ManufacturingUseCase)
 // @Produce json
 // @Param facility body entity.ManufacturingFacility true "Facility details"
 // @Success 201 {object} entity.ManufacturingFacility
-// @Router /api/v1/manufacturing/facilities [post]
+// @Router /manufacturing/facilities [post]
 func (h *ManufacturingHandler) CreateFacility(c *gin.Context) {
 	var facility entity.ManufacturingFacility
 	if err := c.ShouldBindJSON(&facility); err != nil {
@@ -48,7 +48,7 @@ func (h *ManufacturingHandler) CreateFacility(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Facility ID"
 // @Success 200 {object} entity.ManufacturingFacility
-// @Router /api/v1/manufacturing/facilities/{id} [get]
+// @Router /manufacturing/facilities/{id} [get]
 func (h *ManufacturingHandler) GetFacility(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -70,7 +70,7 @@ func (h *ManufacturingHandler) GetFacility(c *gin.Context) {
 // @Tags Manufacturing
 // @Produce json
 // @Success 200 {array} entity.ManufacturingFacility
-// @Router /api/v1/manufacturing/facilities [get]
+// @Router /manufacturing/facilities [get]
 func (h *ManufacturingHandler) ListFacilities(c *gin.Context) {
 	facilities, err := h.manufacturingUseCase.ListFacilities(c.Request.Context())
 	if err != nil {
@@ -88,7 +88,7 @@ func (h *ManufacturingHandler) ListFacilities(c *gin.Context) {
 // @Produce json
 // @Param order body entity.ProductionOrder true "Production order details"
 // @Success 201 {object} entity.ProductionOrder
-// @Router /api/v1/manufacturing/orders [post]
+// @Router /manufacturing/orders [post]
 func (h *ManufacturingHandler) CreateProductionOrder(c *gin.Context) {
 	var order entity.ProductionOrder
 	if err := c.ShouldBindJSON(&order); err != nil {
@@ -110,7 +110,7 @@ func (h *ManufacturingHandler) CreateProductionOrder(c *gin.Context) {
 // @Produce json
 // @Param id path int true "Order ID"
 // @Success 200 {string} string "Production started"
-// @Router /api/v1/manufacturing/orders/{id}/start [post]
+// @Router /manufacturing/orders/{id}/start [post]
 func (h *ManufacturingHandler) StartProduction(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -134,7 +134,7 @@ func (h *ManufacturingHandler) StartProduction(c *gin.Context) {
 // @Param id path int true "Order ID"
 // @Param progress body map[string]int true "Progress details"
 // @Success 200 {string} string "Progress updated"
-// @Router /api/v1/manufacturing/orders/{id}/progress [put]
+// @Router /manufacturing/orders/{id}/progress [put]
 func (h *ManufacturingHandler) UpdateProductionProgress(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -173,7 +173,7 @@ func (h *ManufacturingHandler) UpdateProductionProgress(c *gin.Context) {
 // @Produce json
 // @Param bom body map[string]interface{} true "BOM details with items"
 // @Success 201 {object} entity.BillOfMaterial
-// @Router /api/v1/manufacturing/bom [post]
+// @Router /manufacturing/bom [post]
 func (h *ManufacturingHandler) CreateBOM(c *gin.Context) {
 	var request struct {
 		BOM   entity.BillOfMaterial `json:"bom"`

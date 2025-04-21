@@ -75,7 +75,7 @@ type AuditLogResponse struct {
 // @Success 201 {object} entity.User
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/auth/register [post]
+// @Router /auth/register [post]
 func (s *Server) handleRegister(c *gin.Context) {
 	var req RegisterRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -107,7 +107,7 @@ func (s *Server) handleRegister(c *gin.Context) {
 // @Success 200 {object} LoginResponse "Login successful"
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 401 {object} ErrorResponse "Invalid credentials"
-// @Router /api/v1/auth/login [post]
+// @Router /auth/login [post]
 func (s *Server) handleLogin(c *gin.Context) {
 	var req LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -152,7 +152,7 @@ func (s *Server) handleLogin(c *gin.Context) {
 // @Produce json
 // @Success 200 {object} MessageResponse "Logged out successfully"
 // @Failure 401 {object} ErrorResponse "Unauthorized"
-// @Router /api/v1/users/logout [post]
+// @Router /users/logout [post]
 func (s *Server) handleLogout(c *gin.Context) {
 	userID, exists := c.Get("user_id")
 	if !exists {
@@ -177,7 +177,7 @@ func (s *Server) handleLogout(c *gin.Context) {
 // @Success 200 {object} TokenResponse "New access token"
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 401 {object} ErrorResponse "Invalid refresh token"
-// @Router /api/v1/auth/refresh-token [post]
+// @Router /auth/refresh-token [post]
 func (s *Server) handleRefreshToken(c *gin.Context) {
 	var req RefreshTokenRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -211,7 +211,7 @@ func (s *Server) handleRefreshToken(c *gin.Context) {
 // @Success 200 {object} MessageResponse "Reset email sent"
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/auth/forgot-password [post]
+// @Router /auth/forgot-password [post]
 func (s *Server) handleForgotPassword(c *gin.Context) {
 	var req ForgotPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -235,7 +235,7 @@ func (s *Server) handleForgotPassword(c *gin.Context) {
 // @Param request body ResetPasswordRequest true "Reset token and new password"
 // @Success 200 {object} MessageResponse "Password reset successful"
 // @Failure 400 {object} ErrorResponse "Invalid input"
-// @Router /api/v1/auth/reset-password [post]
+// @Router /auth/reset-password [post]
 func (s *Server) handleResetPassword(c *gin.Context) {
 	var req ResetPasswordRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

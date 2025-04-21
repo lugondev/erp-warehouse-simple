@@ -59,7 +59,7 @@ func (h *CustomerHandler) RegisterRoutes(router *gin.RouterGroup) {
 // @Success 201 {object} entity.Customer
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers [post]
+// @Router /customers [post]
 func (h *CustomerHandler) CreateCustomer(c *gin.Context) {
 	var customer entity.Customer
 	if err := c.ShouldBindJSON(&customer); err != nil {
@@ -84,7 +84,7 @@ func (h *CustomerHandler) CreateCustomer(c *gin.Context) {
 // @Success 200 {object} entity.Customer
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id} [get]
+// @Router /customers/{id} [get]
 func (h *CustomerHandler) GetCustomer(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -113,7 +113,7 @@ func (h *CustomerHandler) GetCustomer(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id} [put]
+// @Router /customers/{id} [put]
 func (h *CustomerHandler) UpdateCustomer(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -145,7 +145,7 @@ func (h *CustomerHandler) UpdateCustomer(c *gin.Context) {
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id} [delete]
+// @Router /customers/{id} [delete]
 func (h *CustomerHandler) DeleteCustomer(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -176,7 +176,7 @@ func (h *CustomerHandler) DeleteCustomer(c *gin.Context) {
 // @Param country query string false "Filter by country"
 // @Success 200 {array} entity.Customer
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers [get]
+// @Router /customers [get]
 func (h *CustomerHandler) ListCustomers(c *gin.Context) {
 	filter := entity.CustomerFilter{
 		Code:        c.Query("code"),
@@ -219,7 +219,7 @@ func (h *CustomerHandler) ListCustomers(c *gin.Context) {
 // @Success 201 {object} entity.CustomerAddress
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/addresses [post]
+// @Router /customers/{id}/addresses [post]
 func (h *CustomerHandler) CreateAddress(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -251,7 +251,7 @@ func (h *CustomerHandler) CreateAddress(c *gin.Context) {
 // @Success 200 {array} entity.CustomerAddress
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/addresses [get]
+// @Router /customers/{id}/addresses [get]
 func (h *CustomerHandler) GetAddresses(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -279,7 +279,7 @@ func (h *CustomerHandler) GetAddresses(c *gin.Context) {
 // @Success 200 {object} entity.CustomerAddress
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/addresses/{addressId} [put]
+// @Router /customers/addresses/{addressId} [put]
 func (h *CustomerHandler) UpdateAddress(c *gin.Context) {
 	addressID, err := strconv.ParseUint(c.Param("addressId"), 10, 32)
 	if err != nil {
@@ -311,7 +311,7 @@ func (h *CustomerHandler) UpdateAddress(c *gin.Context) {
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/addresses/{addressId} [delete]
+// @Router /customers/addresses/{addressId} [delete]
 func (h *CustomerHandler) DeleteAddress(c *gin.Context) {
 	addressID, err := strconv.ParseUint(c.Param("addressId"), 10, 32)
 	if err != nil {
@@ -336,7 +336,7 @@ func (h *CustomerHandler) DeleteAddress(c *gin.Context) {
 // @Success 200 {object} entity.CustomerOrderHistory
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/orders [get]
+// @Router /customers/{id}/orders [get]
 func (h *CustomerHandler) GetOrderHistory(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -362,7 +362,7 @@ func (h *CustomerHandler) GetOrderHistory(c *gin.Context) {
 // @Success 200 {object} entity.CustomerDebt
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/debt [get]
+// @Router /customers/{id}/debt [get]
 func (h *CustomerHandler) GetCustomerDebt(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -390,7 +390,7 @@ func (h *CustomerHandler) GetCustomerDebt(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/debt [put]
+// @Router /customers/{id}/debt [put]
 func (h *CustomerHandler) UpdateCustomerDebt(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -426,7 +426,7 @@ func (h *CustomerHandler) UpdateCustomerDebt(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/loyalty/points [put]
+// @Router /customers/{id}/loyalty/points [put]
 func (h *CustomerHandler) UpdateLoyaltyPoints(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -462,7 +462,7 @@ func (h *CustomerHandler) UpdateLoyaltyPoints(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/loyalty/tier [put]
+// @Router /customers/{id}/loyalty/tier [put]
 func (h *CustomerHandler) UpdateLoyaltyTier(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -497,7 +497,7 @@ func (h *CustomerHandler) UpdateLoyaltyTier(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/customers/{id}/loyalty/calculate-tier [get]
+// @Router /customers/{id}/loyalty/calculate-tier [get]
 func (h *CustomerHandler) CalculateLoyaltyTier(c *gin.Context) {
 	customerID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {

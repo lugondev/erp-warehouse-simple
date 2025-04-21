@@ -15,7 +15,7 @@ import (
 // @Produce json
 // @Success 200 {array} entity.User
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/users [get]
+// @Router /users [get]
 func (s *Server) handleListUsers(c *gin.Context) {
 	users, err := s.userUC.ListUsers()
 	if err != nil {
@@ -35,7 +35,7 @@ func (s *Server) handleListUsers(c *gin.Context) {
 // @Success 200 {object} entity.User
 // @Failure 400 {object} ErrorResponse "Invalid user ID"
 // @Failure 404 {object} ErrorResponse "User not found"
-// @Router /api/v1/users/{id} [get]
+// @Router /users/{id} [get]
 func (s *Server) handleGetUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -63,7 +63,7 @@ func (s *Server) handleGetUser(c *gin.Context) {
 // @Success 200 {object} entity.User
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/users/{id} [put]
+// @Router /users/{id} [put]
 func (s *Server) handleUpdateUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -102,7 +102,7 @@ func (s *Server) handleUpdateUser(c *gin.Context) {
 // @Success 200 {object} MessageResponse "User deleted successfully"
 // @Failure 400 {object} ErrorResponse "Invalid user ID"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/users/{id} [delete]
+// @Router /users/{id} [delete]
 func (s *Server) handleDeleteUser(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {

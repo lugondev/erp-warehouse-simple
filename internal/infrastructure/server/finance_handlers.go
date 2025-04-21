@@ -62,7 +62,7 @@ func (h *FinanceHandlers) RegisterRoutes(router *gin.RouterGroup) {
 // @Success 201 {object} entity.FinanceInvoiceResponse
 // @Failure 400 {object} entity.FinanceInvoiceResponse
 // @Failure 500 {object} entity.FinanceInvoiceResponse
-// @Router /api/finance/invoices [post]
+// @Router /finance/invoices [post]
 func (h *FinanceHandlers) CreateInvoice(c *gin.Context) {
 	var req entity.CreateFinanceInvoiceRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -90,7 +90,7 @@ func (h *FinanceHandlers) CreateInvoice(c *gin.Context) {
 // @Success 200 {object} entity.FinanceInvoiceResponse
 // @Failure 404 {object} entity.FinanceInvoiceResponse
 // @Failure 500 {object} entity.FinanceInvoiceResponse
-// @Router /api/finance/invoices/{id} [get]
+// @Router /finance/invoices/{id} [get]
 func (h *FinanceHandlers) GetInvoice(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -119,7 +119,7 @@ func (h *FinanceHandlers) GetInvoice(c *gin.Context) {
 // @Failure 400 {object} entity.FinanceInvoiceResponse
 // @Failure 404 {object} entity.FinanceInvoiceResponse
 // @Failure 500 {object} entity.FinanceInvoiceResponse
-// @Router /api/finance/invoices/{id} [put]
+// @Router /finance/invoices/{id} [put]
 func (h *FinanceHandlers) UpdateInvoice(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -154,7 +154,7 @@ func (h *FinanceHandlers) UpdateInvoice(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/invoices/{id}/status [patch]
+// @Router /finance/invoices/{id}/status [patch]
 func (h *FinanceHandlers) UpdateInvoiceStatus(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -189,7 +189,7 @@ func (h *FinanceHandlers) UpdateInvoiceStatus(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/invoices/{id}/cancel [post]
+// @Router /finance/invoices/{id}/cancel [post]
 func (h *FinanceHandlers) CancelInvoice(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -222,7 +222,7 @@ func (h *FinanceHandlers) CancelInvoice(c *gin.Context) {
 // @Success 200 {object} entity.FinanceInvoiceListResponse
 // @Failure 400 {object} entity.FinanceInvoiceListResponse
 // @Failure 500 {object} entity.FinanceInvoiceListResponse
-// @Router /api/finance/invoices [get]
+// @Router /finance/invoices [get]
 func (h *FinanceHandlers) ListInvoices(c *gin.Context) {
 	filter := &entity.FinanceInvoiceFilter{
 		InvoiceNumber: c.Query("invoice_number"),
@@ -279,7 +279,7 @@ func (h *FinanceHandlers) ListInvoices(c *gin.Context) {
 // @Success 201 {object} entity.FinancePaymentResponse
 // @Failure 400 {object} entity.FinancePaymentResponse
 // @Failure 500 {object} entity.FinancePaymentResponse
-// @Router /api/finance/payments [post]
+// @Router /finance/payments [post]
 func (h *FinanceHandlers) CreatePayment(c *gin.Context) {
 	var req entity.CreateFinancePaymentRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -307,7 +307,7 @@ func (h *FinanceHandlers) CreatePayment(c *gin.Context) {
 // @Success 200 {object} entity.FinancePaymentResponse
 // @Failure 404 {object} entity.FinancePaymentResponse
 // @Failure 500 {object} entity.FinancePaymentResponse
-// @Router /api/finance/payments/{id} [get]
+// @Router /finance/payments/{id} [get]
 func (h *FinanceHandlers) GetPayment(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -336,7 +336,7 @@ func (h *FinanceHandlers) GetPayment(c *gin.Context) {
 // @Failure 400 {object} entity.FinancePaymentResponse
 // @Failure 404 {object} entity.FinancePaymentResponse
 // @Failure 500 {object} entity.FinancePaymentResponse
-// @Router /api/finance/payments/{id} [put]
+// @Router /finance/payments/{id} [put]
 func (h *FinanceHandlers) UpdatePayment(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -369,7 +369,7 @@ func (h *FinanceHandlers) UpdatePayment(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/payments/{id}/confirm [post]
+// @Router /finance/payments/{id}/confirm [post]
 func (h *FinanceHandlers) ConfirmPayment(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -395,7 +395,7 @@ func (h *FinanceHandlers) ConfirmPayment(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/payments/{id}/cancel [post]
+// @Router /finance/payments/{id}/cancel [post]
 func (h *FinanceHandlers) CancelPayment(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -421,7 +421,7 @@ func (h *FinanceHandlers) CancelPayment(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/payments/{id}/refund [post]
+// @Router /finance/payments/{id}/refund [post]
 func (h *FinanceHandlers) RefundPayment(c *gin.Context) {
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
 	if err != nil {
@@ -456,7 +456,7 @@ func (h *FinanceHandlers) RefundPayment(c *gin.Context) {
 // @Success 200 {object} entity.FinancePaymentListResponse
 // @Failure 400 {object} entity.FinancePaymentListResponse
 // @Failure 500 {object} entity.FinancePaymentListResponse
-// @Router /api/finance/payments [get]
+// @Router /finance/payments [get]
 func (h *FinanceHandlers) ListPayments(c *gin.Context) {
 	filter := &entity.FinancePaymentFilter{
 		PaymentNumber: c.Query("payment_number"),
@@ -517,7 +517,7 @@ func (h *FinanceHandlers) ListPayments(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {array} entity.FinanceAccountsReceivable
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/reports/accounts-receivable [get]
+// @Router /finance/reports/accounts-receivable [get]
 func (h *FinanceHandlers) GetAccountsReceivable(c *gin.Context) {
 	var startDate, endDate *time.Time
 
@@ -551,7 +551,7 @@ func (h *FinanceHandlers) GetAccountsReceivable(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {array} entity.FinanceAccountsPayable
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/reports/accounts-payable [get]
+// @Router /finance/reports/accounts-payable [get]
 func (h *FinanceHandlers) GetAccountsPayable(c *gin.Context) {
 	var startDate, endDate *time.Time
 
@@ -586,7 +586,7 @@ func (h *FinanceHandlers) GetAccountsPayable(c *gin.Context) {
 // @Success 200 {object} entity.FinanceReport
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/finance/reports/finance [get]
+// @Router /finance/reports/finance [get]
 func (h *FinanceHandlers) GetFinanceReport(c *gin.Context) {
 	startDateStr := c.Query("start_date")
 	endDateStr := c.Query("end_date")

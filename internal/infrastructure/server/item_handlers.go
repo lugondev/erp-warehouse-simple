@@ -27,7 +27,7 @@ func NewItemHandler(itemUseCase *usecase.ItemUseCase) *ItemHandler {
 // @Param item body entity.Item true "Item object"
 // @Success 201 {object} entity.Item
 // @Failure 400 {object} ErrorResponse
-// @Router /api/v1/items [post]
+// @Router /items [post]
 func (h *ItemHandler) CreateItem(c *gin.Context) {
 	var item entity.Item
 	if err := c.ShouldBindJSON(&item); err != nil {
@@ -60,7 +60,7 @@ func (h *ItemHandler) CreateItem(c *gin.Context) {
 // @Success 200 {object} entity.Item
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/items/{id} [put]
+// @Router /items/{id} [put]
 func (h *ItemHandler) UpdateItem(c *gin.Context) {
 	id := c.Param("id")
 	var item entity.Item
@@ -95,7 +95,7 @@ func (h *ItemHandler) UpdateItem(c *gin.Context) {
 // @Param id path string true "Item ID"
 // @Success 200 {object} entity.Item
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/items/{id} [get]
+// @Router /items/{id} [get]
 func (h *ItemHandler) GetItem(c *gin.Context) {
 	id := c.Param("id")
 
@@ -120,7 +120,7 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Param sku path string true "Item SKU"
 // @Success 200 {object} entity.Item
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/items/sku/{sku} [get]
+// @Router /items/sku/{sku} [get]
 func (h *ItemHandler) GetItemBySKU(c *gin.Context) {
 	sku := c.Param("sku")
 
@@ -145,7 +145,7 @@ func (h *ItemHandler) GetItemBySKU(c *gin.Context) {
 // @Param id path string true "Item ID"
 // @Success 204 "No Content"
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/items/{id} [delete]
+// @Router /items/{id} [delete]
 func (h *ItemHandler) DeleteItem(c *gin.Context) {
 	id := c.Param("id")
 
@@ -177,7 +177,7 @@ func (h *ItemHandler) DeleteItem(c *gin.Context) {
 // @Param page query integer false "Page number"
 // @Param page_size query integer false "Page size"
 // @Success 200 {object} PaginatedResponse
-// @Router /api/v1/items [get]
+// @Router /items [get]
 func (h *ItemHandler) ListItems(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -247,7 +247,7 @@ func (h *ItemHandler) ListItems(c *gin.Context) {
 // @Param page query integer false "Page number"
 // @Param page_size query integer false "Page size"
 // @Success 200 {object} PaginatedResponse
-// @Router /api/v1/items/search [get]
+// @Router /items/search [get]
 func (h *ItemHandler) SearchItems(c *gin.Context) {
 	searchTerm := c.Query("q")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -276,7 +276,7 @@ func (h *ItemHandler) SearchItems(c *gin.Context) {
 // @Param category body entity.ItemCategory true "Item category object"
 // @Success 201 {object} entity.ItemCategory
 // @Failure 400 {object} ErrorResponse
-// @Router /api/v1/item-categories [post]
+// @Router /item-categories [post]
 func (h *ItemHandler) CreateItemCategory(c *gin.Context) {
 	var category entity.ItemCategory
 	if err := c.ShouldBindJSON(&category); err != nil {
@@ -306,7 +306,7 @@ func (h *ItemHandler) CreateItemCategory(c *gin.Context) {
 // @Success 200 {object} entity.ItemCategory
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/item-categories/{id} [put]
+// @Router /item-categories/{id} [put]
 func (h *ItemHandler) UpdateItemCategory(c *gin.Context) {
 	id := c.Param("id")
 	var category entity.ItemCategory
@@ -341,7 +341,7 @@ func (h *ItemHandler) UpdateItemCategory(c *gin.Context) {
 // @Param id path string true "Category ID"
 // @Success 200 {object} entity.ItemCategory
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/item-categories/{id} [get]
+// @Router /item-categories/{id} [get]
 func (h *ItemHandler) GetItemCategory(c *gin.Context) {
 	id := c.Param("id")
 
@@ -367,7 +367,7 @@ func (h *ItemHandler) GetItemCategory(c *gin.Context) {
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/item-categories/{id} [delete]
+// @Router /item-categories/{id} [delete]
 func (h *ItemHandler) DeleteItemCategory(c *gin.Context) {
 	id := c.Param("id")
 
@@ -394,7 +394,7 @@ func (h *ItemHandler) DeleteItemCategory(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} entity.ItemCategory
-// @Router /api/v1/item-categories [get]
+// @Router /item-categories [get]
 func (h *ItemHandler) ListItemCategories(c *gin.Context) {
 	categories, err := h.itemUseCase.ListItemCategories(c.Request.Context())
 	if err != nil {
@@ -411,7 +411,7 @@ func (h *ItemHandler) ListItemCategories(c *gin.Context) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} entity.ItemCategory
-// @Router /api/v1/item-categories/tree [get]
+// @Router /item-categories/tree [get]
 func (h *ItemHandler) GetItemCategoriesTree(c *gin.Context) {
 	categories, err := h.itemUseCase.GetItemCategoriesTree(c.Request.Context())
 	if err != nil {
@@ -432,7 +432,7 @@ func (h *ItemHandler) GetItemCategoriesTree(c *gin.Context) {
 // @Param page_size query integer false "Page size"
 // @Success 200 {object} PaginatedResponse
 // @Failure 404 {object} ErrorResponse
-// @Router /api/v1/item-categories/{id}/items [get]
+// @Router /item-categories/{id}/items [get]
 func (h *ItemHandler) GetItemsByCategory(c *gin.Context) {
 	categoryID := c.Param("id")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
@@ -465,7 +465,7 @@ func (h *ItemHandler) GetItemsByCategory(c *gin.Context) {
 // @Param items body []entity.Item true "Array of item objects"
 // @Success 201 {string} string "Items created successfully"
 // @Failure 400 {object} ErrorResponse
-// @Router /api/v1/items/bulk [post]
+// @Router /items/bulk [post]
 func (h *ItemHandler) BulkCreateItems(c *gin.Context) {
 	var items []*entity.Item
 	if err := c.ShouldBindJSON(&items); err != nil {
@@ -489,7 +489,7 @@ func (h *ItemHandler) BulkCreateItems(c *gin.Context) {
 // @Param items body []entity.Item true "Array of item objects with IDs"
 // @Success 200 {string} string "Items updated successfully"
 // @Failure 400 {object} ErrorResponse
-// @Router /api/v1/items/bulk [put]
+// @Router /items/bulk [put]
 func (h *ItemHandler) BulkUpdateItems(c *gin.Context) {
 	var items []*entity.Item
 	if err := c.ShouldBindJSON(&items); err != nil {

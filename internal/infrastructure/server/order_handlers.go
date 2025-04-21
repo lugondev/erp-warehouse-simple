@@ -47,7 +47,7 @@ type CreateSalesOrderRequest struct {
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders [post]
+// @Router /orders [post]
 func (h *OrderHandlers) CreateSalesOrder(c *gin.Context) {
 	var req CreateSalesOrderRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -94,7 +94,7 @@ func (h *OrderHandlers) CreateSalesOrder(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id} [get]
+// @Router /orders/{id} [get]
 func (h *OrderHandlers) GetSalesOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -137,7 +137,7 @@ type SalesOrderFilter struct {
 // @Success 200 {array} entity.SalesOrder
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders [get]
+// @Router /orders [get]
 func (h *OrderHandlers) ListSalesOrders(c *gin.Context) {
 	var filter SalesOrderFilter
 	if err := c.ShouldBindQuery(&filter); err != nil {
@@ -191,7 +191,7 @@ func (h *OrderHandlers) ListSalesOrders(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id}/confirm [post]
+// @Router /orders/{id}/confirm [post]
 func (h *OrderHandlers) ConfirmSalesOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -224,7 +224,7 @@ func (h *OrderHandlers) ConfirmSalesOrder(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id}/cancel [post]
+// @Router /orders/{id}/cancel [post]
 func (h *OrderHandlers) CancelSalesOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -250,7 +250,7 @@ func (h *OrderHandlers) CancelSalesOrder(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id}/complete [post]
+// @Router /orders/{id}/complete [post]
 func (h *OrderHandlers) CompleteSalesOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -289,7 +289,7 @@ type CreateDeliveryOrderRequest struct {
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id}/deliveries [post]
+// @Router /orders/{id}/deliveries [post]
 func (h *OrderHandlers) CreateDeliveryOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -342,7 +342,7 @@ func (h *OrderHandlers) CreateDeliveryOrder(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/deliveries/{id} [get]
+// @Router /orders/deliveries/{id} [get]
 func (h *OrderHandlers) GetDeliveryOrder(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -383,7 +383,7 @@ type DeliveryOrderFilter struct {
 // @Success 200 {array} entity.DeliveryOrder
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/deliveries [get]
+// @Router /orders/deliveries [get]
 func (h *OrderHandlers) ListDeliveryOrders(c *gin.Context) {
 	var filter DeliveryOrderFilter
 	if err := c.ShouldBindQuery(&filter); err != nil {
@@ -431,7 +431,7 @@ func (h *OrderHandlers) ListDeliveryOrders(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/deliveries/{id}/prepare [post]
+// @Router /orders/deliveries/{id}/prepare [post]
 func (h *OrderHandlers) PrepareDelivery(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -457,7 +457,7 @@ func (h *OrderHandlers) PrepareDelivery(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/deliveries/{id}/ship [post]
+// @Router /orders/deliveries/{id}/ship [post]
 func (h *OrderHandlers) ShipDelivery(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -490,7 +490,7 @@ func (h *OrderHandlers) ShipDelivery(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/deliveries/{id}/complete [post]
+// @Router /orders/deliveries/{id}/complete [post]
 func (h *OrderHandlers) CompleteDelivery(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -527,7 +527,7 @@ type CreateInvoiceRequest struct {
 // @Failure 400 {object} ErrorResponse
 // @Failure 401 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/{id}/invoices [post]
+// @Router /orders/{id}/invoices [post]
 func (h *OrderHandlers) CreateInvoice(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -579,7 +579,7 @@ func (h *OrderHandlers) CreateInvoice(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/invoices/{id} [get]
+// @Router /orders/invoices/{id} [get]
 func (h *OrderHandlers) GetInvoice(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -618,7 +618,7 @@ type InvoiceFilter struct {
 // @Success 200 {array} entity.Invoice
 // @Failure 400 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/invoices [get]
+// @Router /orders/invoices [get]
 func (h *OrderHandlers) ListInvoices(c *gin.Context) {
 	var filter InvoiceFilter
 	if err := c.ShouldBindQuery(&filter); err != nil {
@@ -665,7 +665,7 @@ func (h *OrderHandlers) ListInvoices(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/invoices/{id}/issue [post]
+// @Router /orders/invoices/{id}/issue [post]
 func (h *OrderHandlers) IssueInvoice(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
@@ -691,7 +691,7 @@ func (h *OrderHandlers) IssueInvoice(c *gin.Context) {
 // @Failure 400 {object} ErrorResponse
 // @Failure 404 {object} ErrorResponse
 // @Failure 500 {object} ErrorResponse
-// @Router /api/orders/invoices/{id}/pay [post]
+// @Router /orders/invoices/{id}/pay [post]
 func (h *OrderHandlers) PayInvoice(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {

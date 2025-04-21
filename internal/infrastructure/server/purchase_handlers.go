@@ -83,7 +83,7 @@ func (h *PurchaseHandler) RegisterRoutes(router *gin.Engine) {
 // @Param request body entity.PurchaseRequest true "Purchase request details"
 // @Success 201 {object} entity.PurchaseRequest
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests [post]
+// @Router /purchase/requests [post]
 func (h *PurchaseHandler) CreatePurchaseRequest(c *gin.Context) {
 	var request entity.PurchaseRequest
 	if err := c.ShouldBindJSON(&request); err != nil {
@@ -115,7 +115,7 @@ func (h *PurchaseHandler) CreatePurchaseRequest(c *gin.Context) {
 // @Param id path string true "Purchase Request ID"
 // @Success 200 {object} entity.PurchaseRequest
 // @Failure 404 {object} ErrorResponse
-// @Router /api/purchase/requests/{id} [get]
+// @Router /purchase/requests/{id} [get]
 func (h *PurchaseHandler) GetPurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -137,7 +137,7 @@ func (h *PurchaseHandler) GetPurchaseRequest(c *gin.Context) {
 // @Param request body entity.PurchaseRequest true "Updated purchase request details"
 // @Success 200 {object} entity.PurchaseRequest
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id} [put]
+// @Router /purchase/requests/{id} [put]
 func (h *PurchaseHandler) UpdatePurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -165,7 +165,7 @@ func (h *PurchaseHandler) UpdatePurchaseRequest(c *gin.Context) {
 // @Param id path string true "Purchase Request ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id} [delete]
+// @Router /purchase/requests/{id} [delete]
 func (h *PurchaseHandler) DeletePurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -191,7 +191,7 @@ func (h *PurchaseHandler) DeletePurchaseRequest(c *gin.Context) {
 // @Param page query integer false "Page number"
 // @Param page_size query integer false "Page size"
 // @Success 200 {object} map[string]interface{}
-// @Router /api/purchase/requests [get]
+// @Router /purchase/requests [get]
 func (h *PurchaseHandler) ListPurchaseRequests(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -245,7 +245,7 @@ func (h *PurchaseHandler) ListPurchaseRequests(c *gin.Context) {
 // @Param id path string true "Purchase Request ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id}/submit [post]
+// @Router /purchase/requests/{id}/submit [post]
 func (h *PurchaseHandler) SubmitPurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -266,7 +266,7 @@ func (h *PurchaseHandler) SubmitPurchaseRequest(c *gin.Context) {
 // @Param approval body map[string]interface{} true "Approval details"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id}/approve [post]
+// @Router /purchase/requests/{id}/approve [post]
 func (h *PurchaseHandler) ApprovePurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -303,7 +303,7 @@ func (h *PurchaseHandler) ApprovePurchaseRequest(c *gin.Context) {
 // @Param rejection body map[string]interface{} true "Rejection details"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id}/reject [post]
+// @Router /purchase/requests/{id}/reject [post]
 func (h *PurchaseHandler) RejectPurchaseRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -340,7 +340,7 @@ func (h *PurchaseHandler) RejectPurchaseRequest(c *gin.Context) {
 // @Param order body map[string]interface{} true "Order details"
 // @Success 201 {object} entity.PurchaseOrder
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/requests/{id}/order [post]
+// @Router /purchase/requests/{id}/order [post]
 func (h *PurchaseHandler) CreateOrderFromRequest(c *gin.Context) {
 	id := c.Param("id")
 
@@ -379,7 +379,7 @@ func (h *PurchaseHandler) CreateOrderFromRequest(c *gin.Context) {
 // @Param order body entity.PurchaseOrder true "Purchase order details"
 // @Success 201 {object} entity.PurchaseOrder
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders [post]
+// @Router /purchase/orders [post]
 func (h *PurchaseHandler) CreatePurchaseOrder(c *gin.Context) {
 	var order entity.PurchaseOrder
 	if err := c.ShouldBindJSON(&order); err != nil {
@@ -411,7 +411,7 @@ func (h *PurchaseHandler) CreatePurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} entity.PurchaseOrder
 // @Failure 404 {object} ErrorResponse
-// @Router /api/purchase/orders/{id} [get]
+// @Router /purchase/orders/{id} [get]
 func (h *PurchaseHandler) GetPurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -433,7 +433,7 @@ func (h *PurchaseHandler) GetPurchaseOrder(c *gin.Context) {
 // @Param order body entity.PurchaseOrder true "Updated purchase order details"
 // @Success 200 {object} entity.PurchaseOrder
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id} [put]
+// @Router /purchase/orders/{id} [put]
 func (h *PurchaseHandler) UpdatePurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -461,7 +461,7 @@ func (h *PurchaseHandler) UpdatePurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 204 "No Content"
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id} [delete]
+// @Router /purchase/orders/{id} [delete]
 func (h *PurchaseHandler) DeletePurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -488,7 +488,7 @@ func (h *PurchaseHandler) DeletePurchaseOrder(c *gin.Context) {
 // @Param page query integer false "Page number"
 // @Param page_size query integer false "Page size"
 // @Success 200 {object} map[string]interface{}
-// @Router /api/purchase/orders [get]
+// @Router /purchase/orders [get]
 func (h *PurchaseHandler) ListPurchaseOrders(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))
@@ -547,7 +547,7 @@ func (h *PurchaseHandler) ListPurchaseOrders(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/submit [post]
+// @Router /purchase/orders/{id}/submit [post]
 func (h *PurchaseHandler) SubmitPurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -567,7 +567,7 @@ func (h *PurchaseHandler) SubmitPurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/approve [post]
+// @Router /purchase/orders/{id}/approve [post]
 func (h *PurchaseHandler) ApprovePurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -594,7 +594,7 @@ func (h *PurchaseHandler) ApprovePurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/send [post]
+// @Router /purchase/orders/{id}/send [post]
 func (h *PurchaseHandler) SendPurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -614,7 +614,7 @@ func (h *PurchaseHandler) SendPurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/confirm [post]
+// @Router /purchase/orders/{id}/confirm [post]
 func (h *PurchaseHandler) ConfirmPurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -634,7 +634,7 @@ func (h *PurchaseHandler) ConfirmPurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/cancel [post]
+// @Router /purchase/orders/{id}/cancel [post]
 func (h *PurchaseHandler) CancelPurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -654,7 +654,7 @@ func (h *PurchaseHandler) CancelPurchaseOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/close [post]
+// @Router /purchase/orders/{id}/close [post]
 func (h *PurchaseHandler) ClosePurchaseOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -676,7 +676,7 @@ func (h *PurchaseHandler) ClosePurchaseOrder(c *gin.Context) {
 // @Param receipt body entity.PurchaseReceipt true "Purchase receipt details"
 // @Success 201 {object} entity.PurchaseReceipt
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/receipts [post]
+// @Router /purchase/receipts [post]
 func (h *PurchaseHandler) CreatePurchaseReceipt(c *gin.Context) {
 	var receipt entity.PurchaseReceipt
 	if err := c.ShouldBindJSON(&receipt); err != nil {
@@ -708,7 +708,7 @@ func (h *PurchaseHandler) CreatePurchaseReceipt(c *gin.Context) {
 // @Param id path string true "Purchase Receipt ID"
 // @Success 200 {object} entity.PurchaseReceipt
 // @Failure 404 {object} ErrorResponse
-// @Router /api/purchase/receipts/{id} [get]
+// @Router /purchase/receipts/{id} [get]
 func (h *PurchaseHandler) GetPurchaseReceipt(c *gin.Context) {
 	id := c.Param("id")
 
@@ -729,7 +729,7 @@ func (h *PurchaseHandler) GetPurchaseReceipt(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {array} entity.PurchaseReceipt
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/receipts [get]
+// @Router /purchase/orders/{id}/receipts [get]
 func (h *PurchaseHandler) ListPurchaseReceiptsByOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -752,7 +752,7 @@ func (h *PurchaseHandler) ListPurchaseReceiptsByOrder(c *gin.Context) {
 // @Param payment body entity.PurchasePayment true "Purchase payment details"
 // @Success 201 {object} entity.PurchasePayment
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/payments [post]
+// @Router /purchase/payments [post]
 func (h *PurchaseHandler) CreatePurchasePayment(c *gin.Context) {
 	var payment entity.PurchasePayment
 	if err := c.ShouldBindJSON(&payment); err != nil {
@@ -784,7 +784,7 @@ func (h *PurchaseHandler) CreatePurchasePayment(c *gin.Context) {
 // @Param id path string true "Purchase Payment ID"
 // @Success 200 {object} entity.PurchasePayment
 // @Failure 404 {object} ErrorResponse
-// @Router /api/purchase/payments/{id} [get]
+// @Router /purchase/payments/{id} [get]
 func (h *PurchaseHandler) GetPurchasePayment(c *gin.Context) {
 	id := c.Param("id")
 
@@ -805,7 +805,7 @@ func (h *PurchaseHandler) GetPurchasePayment(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {array} entity.PurchasePayment
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/payments [get]
+// @Router /purchase/orders/{id}/payments [get]
 func (h *PurchaseHandler) ListPurchasePaymentsByOrder(c *gin.Context) {
 	id := c.Param("id")
 
@@ -826,7 +826,7 @@ func (h *PurchaseHandler) ListPurchasePaymentsByOrder(c *gin.Context) {
 // @Param id path string true "Purchase Order ID"
 // @Success 200 {object} map[string]interface{}
 // @Failure 400 {object} ErrorResponse
-// @Router /api/purchase/orders/{id}/payment-summary [get]
+// @Router /purchase/orders/{id}/payment-summary [get]
 func (h *PurchaseHandler) GetPurchaseOrderPaymentSummary(c *gin.Context) {
 	id := c.Param("id")
 

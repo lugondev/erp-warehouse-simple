@@ -18,7 +18,7 @@ import (
 // @Success 200 {array} entity.AuditLog
 // @Failure 400 {object} ErrorResponse "Invalid user ID"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/audit/logs/user/{id} [get]
+// @Router /audit/logs/user/{id} [get]
 func (s *Server) handleUserAuditLogs(c *gin.Context) {
 	userID, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -47,7 +47,7 @@ func (s *Server) handleUserAuditLogs(c *gin.Context) {
 // @Param page_size query int false "Page size"
 // @Success 200 {object} AuditLogResponse
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/audit/logs [get]
+// @Router /audit/logs [get]
 func (s *Server) handleListAuditLogs(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "10"))

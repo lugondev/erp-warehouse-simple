@@ -71,7 +71,7 @@ func (h *ReportHandlers) RegisterRoutes(router *gin.RouterGroup) {
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports [post]
+// @Router /reports [post]
 func (h *ReportHandlers) CreateReport(c *gin.Context) {
 	var req entity.CreateReportRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -100,7 +100,7 @@ func (h *ReportHandlers) CreateReport(c *gin.Context) {
 // @Success 200 {object} map[string]interface{}
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/{id} [get]
+// @Router /reports/{id} [get]
 func (h *ReportHandlers) GetReport(c *gin.Context) {
 	id := c.Param("id")
 
@@ -125,7 +125,7 @@ func (h *ReportHandlers) GetReport(c *gin.Context) {
 // @Param status query string false "Report status"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports [get]
+// @Router /reports [get]
 func (h *ReportHandlers) ListReports(c *gin.Context) {
 	filter := &entity.ReportFilter{
 		Name: c.Query("name"),
@@ -177,7 +177,7 @@ func (h *ReportHandlers) ListReports(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/{id} [delete]
+// @Router /reports/{id} [delete]
 func (h *ReportHandlers) DeleteReport(c *gin.Context) {
 	id := c.Param("id")
 
@@ -200,7 +200,7 @@ func (h *ReportHandlers) DeleteReport(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/{id}/export [post]
+// @Router /reports/{id}/export [post]
 func (h *ReportHandlers) ExportReport(c *gin.Context) {
 	id := c.Param("id")
 	formatStr := c.Query("format")
@@ -238,7 +238,7 @@ func (h *ReportHandlers) ExportReport(c *gin.Context) {
 // @Success 201 {object} map[string]interface{}
 // @Failure 400 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/schedules [post]
+// @Router /reports/schedules [post]
 func (h *ReportHandlers) CreateReportSchedule(c *gin.Context) {
 	var req entity.CreateReportScheduleRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -267,7 +267,7 @@ func (h *ReportHandlers) CreateReportSchedule(c *gin.Context) {
 // @Success 200 {object} map[string]interface{}
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/schedules/{id} [get]
+// @Router /reports/schedules/{id} [get]
 func (h *ReportHandlers) GetReportSchedule(c *gin.Context) {
 	id := c.Param("id")
 
@@ -292,7 +292,7 @@ func (h *ReportHandlers) GetReportSchedule(c *gin.Context) {
 // @Failure 400 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/schedules/{id} [put]
+// @Router /reports/schedules/{id} [put]
 func (h *ReportHandlers) UpdateReportSchedule(c *gin.Context) {
 	id := c.Param("id")
 
@@ -322,7 +322,7 @@ func (h *ReportHandlers) UpdateReportSchedule(c *gin.Context) {
 // @Param active query bool false "Active status"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/schedules [get]
+// @Router /reports/schedules [get]
 func (h *ReportHandlers) ListReportSchedules(c *gin.Context) {
 	filter := &entity.ReportScheduleFilter{
 		Name: c.Query("name"),
@@ -369,7 +369,7 @@ func (h *ReportHandlers) ListReportSchedules(c *gin.Context) {
 // @Success 200 {object} map[string]string
 // @Failure 404 {object} map[string]string
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/schedules/{id} [delete]
+// @Router /reports/schedules/{id} [delete]
 func (h *ReportHandlers) DeleteReportSchedule(c *gin.Context) {
 	id := c.Param("id")
 
@@ -390,7 +390,7 @@ func (h *ReportHandlers) DeleteReportSchedule(c *gin.Context) {
 // @Param as_of_date query string false "As of date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/inventory/value [get]
+// @Router /reports/inventory/value [get]
 func (h *ReportHandlers) GetInventoryValueReport(c *gin.Context) {
 	warehouseID := c.Query("warehouse_id")
 
@@ -419,7 +419,7 @@ func (h *ReportHandlers) GetInventoryValueReport(c *gin.Context) {
 // @Param as_of_date query string false "As of date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/inventory/age [get]
+// @Router /reports/inventory/age [get]
 func (h *ReportHandlers) GetInventoryAgeReport(c *gin.Context) {
 	warehouseID := c.Query("warehouse_id")
 
@@ -448,7 +448,7 @@ func (h *ReportHandlers) GetInventoryAgeReport(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/sales/products [get]
+// @Router /reports/sales/products [get]
 func (h *ReportHandlers) GetProductSalesReport(c *gin.Context) {
 	var startDate, endDate time.Time
 
@@ -482,7 +482,7 @@ func (h *ReportHandlers) GetProductSalesReport(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/sales/customers [get]
+// @Router /reports/sales/customers [get]
 func (h *ReportHandlers) GetCustomerSalesReport(c *gin.Context) {
 	var startDate, endDate time.Time
 
@@ -516,7 +516,7 @@ func (h *ReportHandlers) GetCustomerSalesReport(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/purchases/suppliers [get]
+// @Router /reports/purchases/suppliers [get]
 func (h *ReportHandlers) GetSupplierPurchaseReport(c *gin.Context) {
 	var startDate, endDate time.Time
 
@@ -550,7 +550,7 @@ func (h *ReportHandlers) GetSupplierPurchaseReport(c *gin.Context) {
 // @Param end_date query string false "End date (YYYY-MM-DD)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/financial/profit-loss [get]
+// @Router /reports/financial/profit-loss [get]
 func (h *ReportHandlers) GetProfitAndLossReport(c *gin.Context) {
 	var startDate, endDate time.Time
 
@@ -583,7 +583,7 @@ func (h *ReportHandlers) GetProfitAndLossReport(c *gin.Context) {
 // @Param period query string false "Period (day, week, month, quarter, year)"
 // @Success 200 {object} map[string]interface{}
 // @Failure 500 {object} map[string]string
-// @Router /api/v1/reports/dashboard/metrics [get]
+// @Router /reports/dashboard/metrics [get]
 func (h *ReportHandlers) GetDashboardMetrics(c *gin.Context) {
 	period := c.DefaultQuery("period", "month")
 

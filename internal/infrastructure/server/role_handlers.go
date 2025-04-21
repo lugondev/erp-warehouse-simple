@@ -29,7 +29,7 @@ type UpdateRoleRequest struct {
 // @Success 201 {object} entity.Role
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/roles [post]
+// @Router /roles [post]
 func (s *Server) handleCreateRole(c *gin.Context) {
 	var req CreateRoleRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -62,7 +62,7 @@ func (s *Server) handleCreateRole(c *gin.Context) {
 // @Produce json
 // @Success 200 {array} entity.Role
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/roles [get]
+// @Router /roles [get]
 func (s *Server) handleListRoles(c *gin.Context) {
 	roles, err := s.roleUC.ListRoles()
 	if err != nil {
@@ -82,7 +82,7 @@ func (s *Server) handleListRoles(c *gin.Context) {
 // @Success 200 {object} entity.Role
 // @Failure 400 {object} ErrorResponse "Invalid role ID"
 // @Failure 404 {object} ErrorResponse "Role not found"
-// @Router /api/v1/roles/{id} [get]
+// @Router /roles/{id} [get]
 func (s *Server) handleGetRole(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -110,7 +110,7 @@ func (s *Server) handleGetRole(c *gin.Context) {
 // @Success 200 {object} entity.Role
 // @Failure 400 {object} ErrorResponse "Invalid input"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/roles/{id} [put]
+// @Router /roles/{id} [put]
 func (s *Server) handleUpdateRole(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
@@ -152,7 +152,7 @@ func (s *Server) handleUpdateRole(c *gin.Context) {
 // @Success 200 {object} MessageResponse "Role deleted successfully"
 // @Failure 400 {object} ErrorResponse "Invalid role ID"
 // @Failure 500 {object} ErrorResponse "Server error"
-// @Router /api/v1/roles/{id} [delete]
+// @Router /roles/{id} [delete]
 func (s *Server) handleDeleteRole(c *gin.Context) {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
