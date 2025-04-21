@@ -22,6 +22,7 @@ func NewManufacturingHandler(manufacturingUseCase *usecase.ManufacturingUseCase)
 // @Summary Create manufacturing facility
 // @Description Create new manufacturing facility
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param facility body entity.ManufacturingFacility true "Facility details"
@@ -45,6 +46,7 @@ func (h *ManufacturingHandler) CreateFacility(c *gin.Context) {
 // @Summary Get facility by ID
 // @Description Get manufacturing facility details by ID
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Facility ID"
 // @Success 200 {object} entity.ManufacturingFacility
@@ -68,6 +70,7 @@ func (h *ManufacturingHandler) GetFacility(c *gin.Context) {
 // @Summary List facilities
 // @Description Get list of all manufacturing facilities
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Produce json
 // @Success 200 {array} entity.ManufacturingFacility
 // @Router /manufacturing/facilities [get]
@@ -84,6 +87,7 @@ func (h *ManufacturingHandler) ListFacilities(c *gin.Context) {
 // @Summary Create production order
 // @Description Create new production order
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param order body entity.ProductionOrder true "Production order details"
@@ -107,6 +111,7 @@ func (h *ManufacturingHandler) CreateProductionOrder(c *gin.Context) {
 // @Summary Start production
 // @Description Start production for an order
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Order ID"
 // @Success 200 {string} string "Production started"
@@ -129,6 +134,7 @@ func (h *ManufacturingHandler) StartProduction(c *gin.Context) {
 // @Summary Update production progress
 // @Description Update production progress for an order
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Order ID"
@@ -169,6 +175,7 @@ func (h *ManufacturingHandler) UpdateProductionProgress(c *gin.Context) {
 // @Summary Create BOM
 // @Description Create bill of materials for a product
 // @Tags Manufacturing
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param bom body map[string]interface{} true "BOM details with items"

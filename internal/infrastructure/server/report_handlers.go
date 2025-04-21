@@ -65,6 +65,7 @@ func (h *ReportHandlers) RegisterRoutes(router *gin.RouterGroup) {
 // @Summary Create a new report
 // @Description Create a new report
 // @Tags Reports
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param report body entity.CreateReportRequest true "Report details"
@@ -95,6 +96,7 @@ func (h *ReportHandlers) CreateReport(c *gin.Context) {
 // @Summary Get a report by ID
 // @Description Get a report by its ID
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Report ID"
 // @Success 200 {object} map[string]interface{}
@@ -117,6 +119,7 @@ func (h *ReportHandlers) GetReport(c *gin.Context) {
 // @Summary List reports
 // @Description List reports based on filter criteria
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param name query string false "Report name"
 // @Param type query string false "Report type"
@@ -172,6 +175,7 @@ func (h *ReportHandlers) ListReports(c *gin.Context) {
 // @Summary Delete a report
 // @Description Delete a report by its ID
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Report ID"
 // @Success 200 {object} map[string]string
@@ -193,6 +197,7 @@ func (h *ReportHandlers) DeleteReport(c *gin.Context) {
 // @Summary Export a report
 // @Description Export a report to a specific format (CSV, Excel, PDF)
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Report ID"
 // @Param format query string true "Export format (CSV, EXCEL, PDF)"
@@ -232,6 +237,7 @@ func (h *ReportHandlers) ExportReport(c *gin.Context) {
 // @Summary Create a new report schedule
 // @Description Create a new report schedule
 // @Tags Reports
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param schedule body entity.CreateReportScheduleRequest true "Report schedule details"
@@ -262,6 +268,7 @@ func (h *ReportHandlers) CreateReportSchedule(c *gin.Context) {
 // @Summary Get a report schedule by ID
 // @Description Get a report schedule by its ID
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Report Schedule ID"
 // @Success 200 {object} map[string]interface{}
@@ -284,6 +291,7 @@ func (h *ReportHandlers) GetReportSchedule(c *gin.Context) {
 // @Summary Update a report schedule
 // @Description Update a report schedule
 // @Tags Reports
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Report Schedule ID"
@@ -315,6 +323,7 @@ func (h *ReportHandlers) UpdateReportSchedule(c *gin.Context) {
 // @Summary List report schedules
 // @Description List report schedules based on filter criteria
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param name query string false "Schedule name"
 // @Param type query string false "Report type"
@@ -364,6 +373,7 @@ func (h *ReportHandlers) ListReportSchedules(c *gin.Context) {
 // @Summary Delete a report schedule
 // @Description Delete a report schedule by its ID
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Report Schedule ID"
 // @Success 200 {object} map[string]string
@@ -385,6 +395,7 @@ func (h *ReportHandlers) DeleteReportSchedule(c *gin.Context) {
 // @Summary Get inventory value report
 // @Description Get inventory value report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param warehouse_id query string false "Warehouse ID"
 // @Param as_of_date query string false "As of date (YYYY-MM-DD)"
@@ -414,6 +425,7 @@ func (h *ReportHandlers) GetInventoryValueReport(c *gin.Context) {
 // @Summary Get inventory age report
 // @Description Get inventory age report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param warehouse_id query string false "Warehouse ID"
 // @Param as_of_date query string false "As of date (YYYY-MM-DD)"
@@ -443,6 +455,7 @@ func (h *ReportHandlers) GetInventoryAgeReport(c *gin.Context) {
 // @Summary Get product sales report
 // @Description Get product sales report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -477,6 +490,7 @@ func (h *ReportHandlers) GetProductSalesReport(c *gin.Context) {
 // @Summary Get customer sales report
 // @Description Get customer sales report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -511,6 +525,7 @@ func (h *ReportHandlers) GetCustomerSalesReport(c *gin.Context) {
 // @Summary Get supplier purchase report
 // @Description Get supplier purchase report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -545,6 +560,7 @@ func (h *ReportHandlers) GetSupplierPurchaseReport(c *gin.Context) {
 // @Summary Get profit and loss report
 // @Description Get profit and loss report
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -579,6 +595,7 @@ func (h *ReportHandlers) GetProfitAndLossReport(c *gin.Context) {
 // @Summary Get dashboard metrics
 // @Description Get dashboard metrics
 // @Tags Reports
+// @Security BearerAuth
 // @Produce json
 // @Param period query string false "Period (day, week, month, quarter, year)"
 // @Success 200 {object} map[string]interface{}

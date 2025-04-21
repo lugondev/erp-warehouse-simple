@@ -48,6 +48,7 @@ func (h *SupplierHandler) RegisterRoutes(router *gin.Engine) {
 // @Summary Create a new supplier
 // @Description Create a new supplier with the provided information
 // @Tags suppliers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param supplier body entity.Supplier true "Supplier object"
@@ -72,6 +73,7 @@ func (h *SupplierHandler) CreateSupplier(c *gin.Context) {
 // @Summary List suppliers
 // @Description Get a list of suppliers with optional filters
 // @Tags suppliers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param type query string false "Supplier type"
@@ -123,6 +125,7 @@ func (h *SupplierHandler) ListSuppliers(c *gin.Context) {
 // @Summary Get a supplier by ID
 // @Description Get detailed information about a supplier
 // @Tags suppliers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Supplier ID"
@@ -148,6 +151,7 @@ func (h *SupplierHandler) GetSupplier(c *gin.Context) {
 // @Summary Update a supplier
 // @Description Update an existing supplier's information
 // @Tags suppliers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Supplier ID"
@@ -180,6 +184,7 @@ func (h *SupplierHandler) UpdateSupplier(c *gin.Context) {
 // @Summary Delete a supplier
 // @Description Delete a supplier by ID
 // @Tags suppliers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Supplier ID"

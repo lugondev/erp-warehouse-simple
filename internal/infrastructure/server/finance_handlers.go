@@ -56,6 +56,7 @@ func (h *FinanceHandlers) RegisterRoutes(router *gin.RouterGroup) {
 // @Summary Create a new invoice
 // @Description Create a new finance invoice
 // @Tags Finance
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param invoice body entity.CreateFinanceInvoiceRequest true "Invoice details"
@@ -85,6 +86,7 @@ func (h *FinanceHandlers) CreateInvoice(c *gin.Context) {
 // @Summary Get an invoice by ID
 // @Description Get a finance invoice by its ID
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Invoice ID"
 // @Success 200 {object} entity.FinanceInvoiceResponse
@@ -111,6 +113,7 @@ func (h *FinanceHandlers) GetInvoice(c *gin.Context) {
 // @Summary Update an invoice
 // @Description Update a finance invoice
 // @Tags Finance
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Invoice ID"
@@ -146,6 +149,7 @@ func (h *FinanceHandlers) UpdateInvoice(c *gin.Context) {
 // @Summary Update an invoice status
 // @Description Update a finance invoice status
 // @Tags Finance
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Invoice ID"
@@ -183,6 +187,7 @@ func (h *FinanceHandlers) UpdateInvoiceStatus(c *gin.Context) {
 // @Summary Cancel an invoice
 // @Description Cancel a finance invoice
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Invoice ID"
 // @Success 200 {object} map[string]string
@@ -209,6 +214,7 @@ func (h *FinanceHandlers) CancelInvoice(c *gin.Context) {
 // @Summary List invoices
 // @Description List finance invoices based on filter criteria
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param invoice_number query string false "Invoice number"
 // @Param type query string false "Invoice type (SALES/PURCHASE)"
@@ -273,6 +279,7 @@ func (h *FinanceHandlers) ListInvoices(c *gin.Context) {
 // @Summary Create a new payment
 // @Description Create a new finance payment
 // @Tags Finance
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param payment body entity.CreateFinancePaymentRequest true "Payment details"
@@ -302,6 +309,7 @@ func (h *FinanceHandlers) CreatePayment(c *gin.Context) {
 // @Summary Get a payment by ID
 // @Description Get a finance payment by its ID
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} entity.FinancePaymentResponse
@@ -328,6 +336,7 @@ func (h *FinanceHandlers) GetPayment(c *gin.Context) {
 // @Summary Update a payment
 // @Description Update a finance payment
 // @Tags Finance
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Payment ID"
@@ -363,6 +372,7 @@ func (h *FinanceHandlers) UpdatePayment(c *gin.Context) {
 // @Summary Confirm a payment
 // @Description Confirm a finance payment
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} map[string]string
@@ -389,6 +399,7 @@ func (h *FinanceHandlers) ConfirmPayment(c *gin.Context) {
 // @Summary Cancel a payment
 // @Description Cancel a finance payment
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} map[string]string
@@ -415,6 +426,7 @@ func (h *FinanceHandlers) CancelPayment(c *gin.Context) {
 // @Summary Refund a payment
 // @Description Refund a finance payment
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Payment ID"
 // @Success 200 {object} map[string]string
@@ -441,6 +453,7 @@ func (h *FinanceHandlers) RefundPayment(c *gin.Context) {
 // @Summary List payments
 // @Description List finance payments based on filter criteria
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param payment_number query string false "Payment number"
 // @Param invoice_id query int false "Invoice ID"
@@ -512,6 +525,7 @@ func (h *FinanceHandlers) ListPayments(c *gin.Context) {
 // @Summary Get accounts receivable
 // @Description Get accounts receivable data
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -546,6 +560,7 @@ func (h *FinanceHandlers) GetAccountsReceivable(c *gin.Context) {
 // @Summary Get accounts payable
 // @Description Get accounts payable data
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string false "Start date (YYYY-MM-DD)"
 // @Param end_date query string false "End date (YYYY-MM-DD)"
@@ -580,6 +595,7 @@ func (h *FinanceHandlers) GetAccountsPayable(c *gin.Context) {
 // @Summary Get finance report
 // @Description Get a finance report for the specified period
 // @Tags Finance
+// @Security BearerAuth
 // @Produce json
 // @Param start_date query string true "Start date (YYYY-MM-DD)"
 // @Param end_date query string true "End date (YYYY-MM-DD)"

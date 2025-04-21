@@ -21,6 +21,7 @@ func NewInventoryHandler(inventoryUseCase *usecase.InventoryUseCase) *InventoryH
 // @Summary Process stock entry
 // @Description Process a stock entry (in/out)
 // @Tags Inventory
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param entry body entity.StockEntry true "Stock entry details"
@@ -46,6 +47,7 @@ func (h *InventoryHandler) ProcessStockEntry(c *gin.Context) {
 // @Summary Check stock
 // @Description Check stock level for a product in a warehouse
 // @Tags Inventory
+// @Security BearerAuth
 // @Produce json
 // @Param warehouse_id query string true "Warehouse ID"
 // @Param product_id query string true "Product ID"
@@ -73,6 +75,7 @@ func (h *InventoryHandler) CheckStock(c *gin.Context) {
 // @Summary List inventory
 // @Description List inventory with optional filters
 // @Tags Inventory
+// @Security BearerAuth
 // @Produce json
 // @Param warehouse_id query string false "Filter by warehouse ID"
 // @Param product_id query string false "Filter by product ID"
@@ -99,6 +102,7 @@ func (h *InventoryHandler) ListInventory(c *gin.Context) {
 // @Summary Update stock location
 // @Description Update stock location details
 // @Tags Inventory
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Inventory ID"
@@ -132,6 +136,7 @@ func (h *InventoryHandler) UpdateStockLocation(c *gin.Context) {
 // @Summary Process batch stock entry
 // @Description Process multiple stock entries in batch
 // @Tags Inventory
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param entries body []entity.StockEntry true "Array of stock entries"
@@ -157,6 +162,7 @@ func (h *InventoryHandler) BatchStockEntry(c *gin.Context) {
 // @Summary Get inventory history
 // @Description Get history of stock movements for an inventory item
 // @Tags Inventory
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Inventory ID"
 // @Success 200 {array} entity.InventoryHistory

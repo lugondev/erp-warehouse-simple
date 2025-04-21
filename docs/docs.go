@@ -356,6 +356,11 @@ const docTemplate = `{
         },
         "/customers": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List customers with optional filtering",
                 "produces": [
                     "application/json"
@@ -433,6 +438,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new customer with the provided details",
                 "consumes": [
                     "application/json"
@@ -479,6 +489,11 @@ const docTemplate = `{
         },
         "/customers/addresses/{addressId}": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a customer address",
                 "consumes": [
                     "application/json"
@@ -530,6 +545,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a customer address",
                 "produces": [
                     "application/json"
@@ -568,6 +588,11 @@ const docTemplate = `{
         },
         "/customers/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a customer's details by their ID",
                 "produces": [
                     "application/json"
@@ -607,6 +632,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a customer's details",
                 "consumes": [
                     "application/json"
@@ -664,6 +694,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a customer by their ID",
                 "produces": [
                     "application/json"
@@ -702,6 +737,11 @@ const docTemplate = `{
         },
         "/customers/{id}/addresses": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get all addresses for a customer",
                 "produces": [
                     "application/json"
@@ -744,6 +784,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new address for a customer",
                 "consumes": [
                     "application/json"
@@ -797,6 +842,11 @@ const docTemplate = `{
         },
         "/customers/{id}/debt": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a customer's debt information",
                 "produces": [
                     "application/json"
@@ -836,6 +886,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a customer's debt amount",
                 "consumes": [
                     "application/json"
@@ -895,6 +950,11 @@ const docTemplate = `{
         },
         "/customers/{id}/loyalty/calculate-tier": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Calculate a customer's loyalty tier based on points and purchase history",
                 "produces": [
                     "application/json"
@@ -939,6 +999,11 @@ const docTemplate = `{
         },
         "/customers/{id}/loyalty/points": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a customer's loyalty points",
                 "consumes": [
                     "application/json"
@@ -998,6 +1063,11 @@ const docTemplate = `{
         },
         "/customers/{id}/loyalty/tier": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a customer's loyalty tier",
                 "consumes": [
                     "application/json"
@@ -1057,6 +1127,11 @@ const docTemplate = `{
         },
         "/customers/{id}/orders": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a summary of a customer's order history",
                 "produces": [
                     "application/json"
@@ -1098,6 +1173,11 @@ const docTemplate = `{
         },
         "/finance/invoices": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List finance invoices based on filter criteria",
                 "produces": [
                     "application/json"
@@ -1184,6 +1264,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new finance invoice",
                 "consumes": [
                     "application/json"
@@ -1230,6 +1315,11 @@ const docTemplate = `{
         },
         "/finance/invoices/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a finance invoice by its ID",
                 "produces": [
                     "application/json"
@@ -1269,6 +1359,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a finance invoice",
                 "consumes": [
                     "application/json"
@@ -1328,6 +1423,11 @@ const docTemplate = `{
         },
         "/finance/invoices/{id}/cancel": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Cancel a finance invoice",
                 "produces": [
                     "application/json"
@@ -1387,6 +1487,11 @@ const docTemplate = `{
         },
         "/finance/invoices/{id}/status": {
             "patch": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a finance invoice status",
                 "consumes": [
                     "application/json"
@@ -1461,6 +1566,11 @@ const docTemplate = `{
         },
         "/finance/payments": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List finance payments based on filter criteria",
                 "produces": [
                     "application/json"
@@ -1559,6 +1669,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new finance payment",
                 "consumes": [
                     "application/json"
@@ -1605,6 +1720,11 @@ const docTemplate = `{
         },
         "/finance/payments/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a finance payment by its ID",
                 "produces": [
                     "application/json"
@@ -1644,6 +1764,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a finance payment",
                 "consumes": [
                     "application/json"
@@ -1703,6 +1828,11 @@ const docTemplate = `{
         },
         "/finance/payments/{id}/cancel": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Cancel a finance payment",
                 "produces": [
                     "application/json"
@@ -1762,6 +1892,11 @@ const docTemplate = `{
         },
         "/finance/payments/{id}/confirm": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Confirm a finance payment",
                 "produces": [
                     "application/json"
@@ -1821,6 +1956,11 @@ const docTemplate = `{
         },
         "/finance/payments/{id}/refund": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Refund a finance payment",
                 "produces": [
                     "application/json"
@@ -1880,6 +2020,11 @@ const docTemplate = `{
         },
         "/finance/reports/accounts-payable": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get accounts payable data",
                 "produces": [
                     "application/json"
@@ -1926,6 +2071,11 @@ const docTemplate = `{
         },
         "/finance/reports/accounts-receivable": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get accounts receivable data",
                 "produces": [
                     "application/json"
@@ -1972,6 +2122,11 @@ const docTemplate = `{
         },
         "/finance/reports/finance": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a finance report for the specified period",
                 "produces": [
                     "application/json"
@@ -2026,6 +2181,11 @@ const docTemplate = `{
         },
         "/inventory": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List inventory with optional filters",
                 "produces": [
                     "application/json"
@@ -2069,6 +2229,11 @@ const docTemplate = `{
         },
         "/inventory/batch-stock-entries": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Process multiple stock entries in batch",
                 "consumes": [
                     "application/json"
@@ -2109,6 +2274,11 @@ const docTemplate = `{
         },
         "/inventory/check-stock": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Check stock level for a product in a warehouse",
                 "produces": [
                     "application/json"
@@ -2157,6 +2327,11 @@ const docTemplate = `{
         },
         "/inventory/stock-entries": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Process a stock entry (in/out)",
                 "consumes": [
                     "application/json"
@@ -2203,6 +2378,11 @@ const docTemplate = `{
         },
         "/inventory/{id}/history": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get history of stock movements for an inventory item",
                 "produces": [
                     "application/json"
@@ -2241,6 +2421,11 @@ const docTemplate = `{
         },
         "/inventory/{id}/location": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update stock location details",
                 "consumes": [
                     "application/json"
@@ -2291,6 +2476,11 @@ const docTemplate = `{
         },
         "/item-categories": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a list of all item categories",
                 "consumes": [
                     "application/json"
@@ -2315,6 +2505,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new item category with the provided information",
                 "consumes": [
                     "application/json"
@@ -2355,6 +2550,11 @@ const docTemplate = `{
         },
         "/item-categories/tree": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get item categories in a hierarchical structure",
                 "consumes": [
                     "application/json"
@@ -2381,6 +2581,11 @@ const docTemplate = `{
         },
         "/item-categories/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get detailed information about an item category",
                 "consumes": [
                     "application/json"
@@ -2417,6 +2622,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing item category's information",
                 "consumes": [
                     "application/json"
@@ -2468,6 +2678,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an item category by ID",
                 "consumes": [
                     "application/json"
@@ -2509,6 +2724,11 @@ const docTemplate = `{
         },
         "/item-categories/{id}/items": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get items belonging to a specific category",
                 "consumes": [
                     "application/json"
@@ -2559,6 +2779,11 @@ const docTemplate = `{
         },
         "/items": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a list of items with optional filters",
                 "consumes": [
                     "application/json"
@@ -2642,6 +2867,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new item with the provided information",
                 "consumes": [
                     "application/json"
@@ -2682,6 +2912,11 @@ const docTemplate = `{
         },
         "/items/bulk": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update multiple items in a single request",
                 "consumes": [
                     "application/json"
@@ -2723,6 +2958,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create multiple items in a single request",
                 "consumes": [
                     "application/json"
@@ -2766,6 +3006,11 @@ const docTemplate = `{
         },
         "/items/search": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Search for items based on a search term",
                 "consumes": [
                     "application/json"
@@ -2810,6 +3055,11 @@ const docTemplate = `{
         },
         "/items/sku/{sku}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get detailed information about an item using its SKU",
                 "consumes": [
                     "application/json"
@@ -2848,6 +3098,11 @@ const docTemplate = `{
         },
         "/items/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get detailed information about an item",
                 "consumes": [
                     "application/json"
@@ -2884,6 +3139,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing item's information",
                 "consumes": [
                     "application/json"
@@ -2935,6 +3195,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete an item by ID",
                 "consumes": [
                     "application/json"
@@ -2970,6 +3235,11 @@ const docTemplate = `{
         },
         "/manufacturing/bom": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create bill of materials for a product",
                 "consumes": [
                     "application/json"
@@ -3005,6 +3275,11 @@ const docTemplate = `{
         },
         "/manufacturing/facilities": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get list of all manufacturing facilities",
                 "produces": [
                     "application/json"
@@ -3026,6 +3301,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new manufacturing facility",
                 "consumes": [
                     "application/json"
@@ -3060,6 +3340,11 @@ const docTemplate = `{
         },
         "/manufacturing/facilities/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get manufacturing facility details by ID",
                 "produces": [
                     "application/json"
@@ -3089,6 +3374,11 @@ const docTemplate = `{
         },
         "/manufacturing/orders": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create new production order",
                 "consumes": [
                     "application/json"
@@ -3123,6 +3413,11 @@ const docTemplate = `{
         },
         "/manufacturing/orders/{id}/progress": {
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update production progress for an order",
                 "consumes": [
                     "application/json"
@@ -3167,6 +3462,11 @@ const docTemplate = `{
         },
         "/manufacturing/orders/{id}/start": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Start production for an order",
                 "produces": [
                     "application/json"
@@ -3196,6 +3496,11 @@ const docTemplate = `{
         },
         "/orders": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List sales orders with optional filtering",
                 "produces": [
                     "application/json"
@@ -3273,6 +3578,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new sales order with items",
                 "consumes": [
                     "application/json"
@@ -3325,6 +3635,11 @@ const docTemplate = `{
         },
         "/orders/deliveries": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List delivery orders with optional filtering",
                 "produces": [
                     "application/json"
@@ -3398,6 +3713,11 @@ const docTemplate = `{
         },
         "/orders/deliveries/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a delivery order by ID",
                 "produces": [
                     "application/json"
@@ -3445,6 +3765,11 @@ const docTemplate = `{
         },
         "/orders/deliveries/{id}/complete": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Mark a delivery as delivered",
                 "produces": [
                     "application/json"
@@ -3492,6 +3817,11 @@ const docTemplate = `{
         },
         "/orders/deliveries/{id}/prepare": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a delivery order status to preparing",
                 "produces": [
                     "application/json"
@@ -3539,6 +3869,11 @@ const docTemplate = `{
         },
         "/orders/deliveries/{id}/ship": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Process a delivery by updating inventory and changing status",
                 "produces": [
                     "application/json"
@@ -3586,6 +3921,11 @@ const docTemplate = `{
         },
         "/orders/invoices": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List invoices with optional filtering",
                 "produces": [
                     "application/json"
@@ -3653,6 +3993,11 @@ const docTemplate = `{
         },
         "/orders/invoices/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get an invoice by ID",
                 "produces": [
                     "application/json"
@@ -3700,6 +4045,11 @@ const docTemplate = `{
         },
         "/orders/invoices/{id}/issue": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Change an invoice from draft to issued status",
                 "produces": [
                     "application/json"
@@ -3747,6 +4097,11 @@ const docTemplate = `{
         },
         "/orders/invoices/{id}/pay": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Mark an invoice as paid",
                 "produces": [
                     "application/json"
@@ -3794,6 +4149,11 @@ const docTemplate = `{
         },
         "/orders/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a sales order by ID",
                 "produces": [
                     "application/json"
@@ -3841,6 +4201,11 @@ const docTemplate = `{
         },
         "/orders/{id}/cancel": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Cancel a sales order",
                 "produces": [
                     "application/json"
@@ -3888,6 +4253,11 @@ const docTemplate = `{
         },
         "/orders/{id}/complete": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Mark a sales order as completed",
                 "produces": [
                     "application/json"
@@ -3935,6 +4305,11 @@ const docTemplate = `{
         },
         "/orders/{id}/confirm": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Change a sales order status from draft to confirmed",
                 "produces": [
                     "application/json"
@@ -3982,6 +4357,11 @@ const docTemplate = `{
         },
         "/orders/{id}/deliveries": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a delivery order for a sales order",
                 "consumes": [
                     "application/json"
@@ -4041,6 +4421,11 @@ const docTemplate = `{
         },
         "/orders/{id}/invoices": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create an invoice for a sales order",
                 "consumes": [
                     "application/json"
@@ -4100,6 +4485,11 @@ const docTemplate = `{
         },
         "/purchase/orders": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List purchase orders with filters",
                 "consumes": [
                     "application/json"
@@ -4178,6 +4568,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new purchase order",
                 "consumes": [
                     "application/json"
@@ -4218,6 +4613,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a purchase order by ID",
                 "consumes": [
                     "application/json"
@@ -4254,6 +4654,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a purchase order",
                 "consumes": [
                     "application/json"
@@ -4299,6 +4704,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a purchase order",
                 "consumes": [
                     "application/json"
@@ -4334,6 +4744,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/approve": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Approve a purchase order",
                 "consumes": [
                     "application/json"
@@ -4373,6 +4788,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/cancel": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Cancel a purchase order",
                 "consumes": [
                     "application/json"
@@ -4412,6 +4832,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/close": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Close a purchase order",
                 "consumes": [
                     "application/json"
@@ -4451,6 +4876,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/confirm": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Mark a purchase order as confirmed by supplier",
                 "consumes": [
                     "application/json"
@@ -4490,6 +4920,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/payment-summary": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get payment summary for a purchase order",
                 "consumes": [
                     "application/json"
@@ -4529,6 +4964,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/payments": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List purchase payments for a purchase order",
                 "consumes": [
                     "application/json"
@@ -4570,6 +5010,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/receipts": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List purchase receipts for a purchase order",
                 "consumes": [
                     "application/json"
@@ -4611,6 +5056,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/send": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Mark a purchase order as sent to supplier",
                 "consumes": [
                     "application/json"
@@ -4650,6 +5100,11 @@ const docTemplate = `{
         },
         "/purchase/orders/{id}/submit": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Submit a purchase order for approval",
                 "consumes": [
                     "application/json"
@@ -4689,6 +5144,11 @@ const docTemplate = `{
         },
         "/purchase/payments": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new purchase payment",
                 "consumes": [
                     "application/json"
@@ -4729,6 +5189,11 @@ const docTemplate = `{
         },
         "/purchase/payments/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a purchase payment by ID",
                 "consumes": [
                     "application/json"
@@ -4767,6 +5232,11 @@ const docTemplate = `{
         },
         "/purchase/receipts": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new purchase receipt",
                 "consumes": [
                     "application/json"
@@ -4807,6 +5277,11 @@ const docTemplate = `{
         },
         "/purchase/receipts/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a purchase receipt by ID",
                 "consumes": [
                     "application/json"
@@ -4845,6 +5320,11 @@ const docTemplate = `{
         },
         "/purchase/requests": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List purchase requests with filters",
                 "consumes": [
                     "application/json"
@@ -4917,6 +5397,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new purchase request",
                 "consumes": [
                     "application/json"
@@ -4957,6 +5442,11 @@ const docTemplate = `{
         },
         "/purchase/requests/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a purchase request by ID",
                 "consumes": [
                     "application/json"
@@ -4993,6 +5483,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a purchase request",
                 "consumes": [
                     "application/json"
@@ -5038,6 +5533,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a purchase request",
                 "consumes": [
                     "application/json"
@@ -5073,6 +5573,11 @@ const docTemplate = `{
         },
         "/purchase/requests/{id}/approve": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Approve a purchase request",
                 "consumes": [
                     "application/json"
@@ -5122,6 +5627,11 @@ const docTemplate = `{
         },
         "/purchase/requests/{id}/order": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a purchase order from a purchase request",
                 "consumes": [
                     "application/json"
@@ -5170,6 +5680,11 @@ const docTemplate = `{
         },
         "/purchase/requests/{id}/reject": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Reject a purchase request",
                 "consumes": [
                     "application/json"
@@ -5219,6 +5734,11 @@ const docTemplate = `{
         },
         "/purchase/requests/{id}/submit": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Submit a purchase request for approval",
                 "consumes": [
                     "application/json"
@@ -5258,6 +5778,11 @@ const docTemplate = `{
         },
         "/reports": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List reports based on filter criteria",
                 "produces": [
                     "application/json"
@@ -5318,6 +5843,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new report",
                 "consumes": [
                     "application/json"
@@ -5371,6 +5901,11 @@ const docTemplate = `{
         },
         "/reports/dashboard/metrics": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get dashboard metrics",
                 "produces": [
                     "application/json"
@@ -5409,6 +5944,11 @@ const docTemplate = `{
         },
         "/reports/financial/profit-loss": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get profit and loss report",
                 "produces": [
                     "application/json"
@@ -5453,6 +5993,11 @@ const docTemplate = `{
         },
         "/reports/inventory/age": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get inventory age report",
                 "produces": [
                     "application/json"
@@ -5497,6 +6042,11 @@ const docTemplate = `{
         },
         "/reports/inventory/value": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get inventory value report",
                 "produces": [
                     "application/json"
@@ -5541,6 +6091,11 @@ const docTemplate = `{
         },
         "/reports/purchases/suppliers": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get supplier purchase report",
                 "produces": [
                     "application/json"
@@ -5585,6 +6140,11 @@ const docTemplate = `{
         },
         "/reports/sales/customers": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get customer sales report",
                 "produces": [
                     "application/json"
@@ -5629,6 +6189,11 @@ const docTemplate = `{
         },
         "/reports/sales/products": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get product sales report",
                 "produces": [
                     "application/json"
@@ -5673,6 +6238,11 @@ const docTemplate = `{
         },
         "/reports/schedules": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List report schedules based on filter criteria",
                 "produces": [
                     "application/json"
@@ -5727,6 +6297,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new report schedule",
                 "consumes": [
                     "application/json"
@@ -5780,6 +6355,11 @@ const docTemplate = `{
         },
         "/reports/schedules/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a report schedule by its ID",
                 "produces": [
                     "application/json"
@@ -5826,6 +6406,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update a report schedule",
                 "consumes": [
                     "application/json"
@@ -5893,6 +6478,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a report schedule by its ID",
                 "produces": [
                     "application/json"
@@ -5943,6 +6533,11 @@ const docTemplate = `{
         },
         "/reports/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a report by its ID",
                 "produces": [
                     "application/json"
@@ -5989,6 +6584,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a report by its ID",
                 "produces": [
                     "application/json"
@@ -6039,6 +6639,11 @@ const docTemplate = `{
         },
         "/reports/{id}/export": {
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Export a report to a specific format (CSV, Excel, PDF)",
                 "produces": [
                     "application/json"
@@ -6334,6 +6939,11 @@ const docTemplate = `{
         },
         "/suppliers": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get a list of suppliers with optional filters",
                 "consumes": [
                     "application/json"
@@ -6402,6 +7012,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new supplier with the provided information",
                 "consumes": [
                     "application/json"
@@ -6442,6 +7057,11 @@ const docTemplate = `{
         },
         "/suppliers/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get detailed information about a supplier",
                 "consumes": [
                     "application/json"
@@ -6478,6 +7098,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing supplier's information",
                 "consumes": [
                     "application/json"
@@ -6523,6 +7148,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a supplier by ID",
                 "consumes": [
                     "application/json"
@@ -6769,6 +7399,11 @@ const docTemplate = `{
         },
         "/warehouses": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "List all warehouses with optional filters",
                 "produces": [
                     "application/json"
@@ -6804,6 +7439,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Create a new warehouse",
                 "consumes": [
                     "application/json"
@@ -6844,6 +7484,11 @@ const docTemplate = `{
         },
         "/warehouses/{id}": {
             "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Get warehouse by ID",
                 "produces": [
                     "application/json"
@@ -6877,6 +7522,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Update an existing warehouse",
                 "consumes": [
                     "application/json"
@@ -6928,6 +7578,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
                 "description": "Delete a warehouse by ID",
                 "produces": [
                     "application/json"

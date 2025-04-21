@@ -2303,6 +2303,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List customers
       tags:
       - customers
@@ -2332,6 +2334,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new customer
       tags:
       - customers
@@ -2357,6 +2361,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete a customer
       tags:
       - customers
@@ -2383,6 +2389,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a customer by ID
       tags:
       - customers
@@ -2421,6 +2429,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a customer
       tags:
       - customers
@@ -2450,6 +2460,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get all addresses for a customer
       tags:
       - customers
@@ -2484,6 +2496,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new address for a customer
       tags:
       - customers
@@ -2511,6 +2525,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a customer's debt information
       tags:
       - customers
@@ -2549,6 +2565,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a customer's debt amount
       tags:
       - customers
@@ -2579,6 +2597,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Calculate a customer's loyalty tier
       tags:
       - customers
@@ -2618,6 +2638,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a customer's loyalty points
       tags:
       - customers
@@ -2657,6 +2679,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a customer's loyalty tier
       tags:
       - customers
@@ -2684,6 +2708,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a customer's order history
       tags:
       - customers
@@ -2709,6 +2735,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete a customer address
       tags:
       - customers
@@ -2743,6 +2771,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a customer address
       tags:
       - customers
@@ -2801,6 +2831,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinanceInvoiceListResponse'
+      security:
+      - BearerAuth: []
       summary: List invoices
       tags:
       - Finance
@@ -2830,6 +2862,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new invoice
       tags:
       - Finance
@@ -2857,6 +2891,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      security:
+      - BearerAuth: []
       summary: Get an invoice by ID
       tags:
       - Finance
@@ -2895,6 +2931,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinanceInvoiceResponse'
+      security:
+      - BearerAuth: []
       summary: Update an invoice
       tags:
       - Finance
@@ -2934,6 +2972,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Cancel an invoice
       tags:
       - Finance
@@ -2983,6 +3023,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update an invoice status
       tags:
       - Finance
@@ -3049,6 +3091,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinancePaymentListResponse'
+      security:
+      - BearerAuth: []
       summary: List payments
       tags:
       - Finance
@@ -3078,6 +3122,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinancePaymentResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new payment
       tags:
       - Finance
@@ -3105,6 +3151,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinancePaymentResponse'
+      security:
+      - BearerAuth: []
       summary: Get a payment by ID
       tags:
       - Finance
@@ -3143,6 +3191,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/entity.FinancePaymentResponse'
+      security:
+      - BearerAuth: []
       summary: Update a payment
       tags:
       - Finance
@@ -3182,6 +3232,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Cancel a payment
       tags:
       - Finance
@@ -3221,6 +3273,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Confirm a payment
       tags:
       - Finance
@@ -3260,6 +3314,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Refund a payment
       tags:
       - Finance
@@ -3290,6 +3346,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get accounts payable
       tags:
       - Finance
@@ -3320,6 +3378,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get accounts receivable
       tags:
       - Finance
@@ -3356,6 +3416,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get finance report
       tags:
       - Finance
@@ -3384,6 +3446,8 @@ paths:
             items:
               $ref: '#/definitions/entity.Inventory'
             type: array
+      security:
+      - BearerAuth: []
       summary: List inventory
       tags:
       - Inventory
@@ -3409,6 +3473,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get inventory history
       tags:
       - Inventory
@@ -3442,6 +3508,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update stock location
       tags:
       - Inventory
@@ -3468,6 +3536,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Process batch stock entry
       tags:
       - Inventory
@@ -3500,6 +3570,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Check stock
       tags:
       - Inventory
@@ -3530,6 +3602,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Process stock entry
       tags:
       - Inventory
@@ -3547,6 +3621,8 @@ paths:
             items:
               $ref: '#/definitions/entity.ItemCategory'
             type: array
+      security:
+      - BearerAuth: []
       summary: List item categories
       tags:
       - item-categories
@@ -3572,6 +3648,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new item category
       tags:
       - item-categories
@@ -3599,6 +3677,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete an item category
       tags:
       - item-categories
@@ -3623,6 +3703,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get an item category by ID
       tags:
       - item-categories
@@ -3657,6 +3739,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update an item category
       tags:
       - item-categories
@@ -3690,6 +3774,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get items by category
       tags:
       - items
@@ -3707,6 +3793,8 @@ paths:
             items:
               $ref: '#/definitions/entity.ItemCategory'
             type: array
+      security:
+      - BearerAuth: []
       summary: Get item categories tree
       tags:
       - item-categories
@@ -3763,6 +3851,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/server.PaginatedResponse'
+      security:
+      - BearerAuth: []
       summary: List items
       tags:
       - items
@@ -3788,6 +3878,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new item
       tags:
       - items
@@ -3811,6 +3903,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete an item
       tags:
       - items
@@ -3835,6 +3929,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get an item by ID
       tags:
       - items
@@ -3869,6 +3965,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update an item
       tags:
       - items
@@ -3897,6 +3995,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Bulk create items
       tags:
       - items
@@ -3924,6 +4024,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Bulk update items
       tags:
       - items
@@ -3953,6 +4055,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/server.PaginatedResponse'
+      security:
+      - BearerAuth: []
       summary: Search items
       tags:
       - items
@@ -3978,6 +4082,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get an item by SKU
       tags:
       - items
@@ -4001,6 +4107,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/entity.BillOfMaterial'
+      security:
+      - BearerAuth: []
       summary: Create BOM
       tags:
       - Manufacturing
@@ -4016,6 +4124,8 @@ paths:
             items:
               $ref: '#/definitions/entity.ManufacturingFacility'
             type: array
+      security:
+      - BearerAuth: []
       summary: List facilities
       tags:
       - Manufacturing
@@ -4037,6 +4147,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/entity.ManufacturingFacility'
+      security:
+      - BearerAuth: []
       summary: Create manufacturing facility
       tags:
       - Manufacturing
@@ -4056,6 +4168,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entity.ManufacturingFacility'
+      security:
+      - BearerAuth: []
       summary: Get facility by ID
       tags:
       - Manufacturing
@@ -4078,6 +4192,8 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/entity.ProductionOrder'
+      security:
+      - BearerAuth: []
       summary: Create production order
       tags:
       - Manufacturing
@@ -4107,6 +4223,8 @@ paths:
           description: Progress updated
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Update production progress
       tags:
       - Manufacturing
@@ -4126,6 +4244,8 @@ paths:
           description: Production started
           schema:
             type: string
+      security:
+      - BearerAuth: []
       summary: Start production
       tags:
       - Manufacturing
@@ -4178,6 +4298,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List sales orders
       tags:
       - orders
@@ -4211,6 +4333,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new sales order
       tags:
       - orders
@@ -4242,6 +4366,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a sales order
       tags:
       - orders
@@ -4273,6 +4399,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Cancel a sales order
       tags:
       - orders
@@ -4304,6 +4432,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Complete a sales order
       tags:
       - orders
@@ -4335,6 +4465,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Confirm a sales order
       tags:
       - orders
@@ -4374,6 +4506,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a delivery order
       tags:
       - orders
@@ -4413,6 +4547,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create an invoice
       tags:
       - orders
@@ -4461,6 +4597,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List delivery orders
       tags:
       - orders
@@ -4492,6 +4630,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a delivery order
       tags:
       - orders
@@ -4523,6 +4663,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Complete a delivery
       tags:
       - orders
@@ -4554,6 +4696,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Prepare a delivery
       tags:
       - orders
@@ -4585,6 +4729,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Ship a delivery
       tags:
       - orders
@@ -4629,6 +4775,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List invoices
       tags:
       - orders
@@ -4660,6 +4808,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get an invoice
       tags:
       - orders
@@ -4691,6 +4841,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Issue an invoice
       tags:
       - orders
@@ -4722,6 +4874,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Pay an invoice
       tags:
       - orders
@@ -4775,6 +4929,8 @@ paths:
           schema:
             additionalProperties: true
             type: object
+      security:
+      - BearerAuth: []
       summary: List purchase orders
       tags:
       - purchase-orders
@@ -4800,6 +4956,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new purchase order
       tags:
       - purchase-orders
@@ -4823,6 +4981,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete a purchase order
       tags:
       - purchase-orders
@@ -4847,6 +5007,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a purchase order by ID
       tags:
       - purchase-orders
@@ -4877,6 +5039,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a purchase order
       tags:
       - purchase-orders
@@ -4903,6 +5067,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Approve a purchase order
       tags:
       - purchase-orders
@@ -4929,6 +5095,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Cancel a purchase order
       tags:
       - purchase-orders
@@ -4955,6 +5123,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Close a purchase order
       tags:
       - purchase-orders
@@ -4981,6 +5151,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Confirm a purchase order
       tags:
       - purchase-orders
@@ -5007,6 +5179,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get purchase order payment summary
       tags:
       - purchase-orders
@@ -5034,6 +5208,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List purchase payments by order
       tags:
       - purchase-orders
@@ -5061,6 +5237,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: List purchase receipts by order
       tags:
       - purchase-orders
@@ -5087,6 +5265,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Send a purchase order to supplier
       tags:
       - purchase-orders
@@ -5113,6 +5293,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Submit a purchase order for approval
       tags:
       - purchase-orders
@@ -5139,6 +5321,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new purchase payment
       tags:
       - purchase-payments
@@ -5164,6 +5348,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a purchase payment by ID
       tags:
       - purchase-payments
@@ -5190,6 +5376,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new purchase receipt
       tags:
       - purchase-receipts
@@ -5215,6 +5403,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a purchase receipt by ID
       tags:
       - purchase-receipts
@@ -5264,6 +5454,8 @@ paths:
           schema:
             additionalProperties: true
             type: object
+      security:
+      - BearerAuth: []
       summary: List purchase requests
       tags:
       - purchase-requests
@@ -5289,6 +5481,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new purchase request
       tags:
       - purchase-requests
@@ -5312,6 +5506,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete a purchase request
       tags:
       - purchase-requests
@@ -5336,6 +5532,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a purchase request by ID
       tags:
       - purchase-requests
@@ -5366,6 +5564,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a purchase request
       tags:
       - purchase-requests
@@ -5399,6 +5599,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Approve a purchase request
       tags:
       - purchase-requests
@@ -5431,6 +5633,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a purchase order from a request
       tags:
       - purchase-requests
@@ -5464,6 +5668,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Reject a purchase request
       tags:
       - purchase-requests
@@ -5490,6 +5696,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Submit a purchase request for approval
       tags:
       - purchase-requests
@@ -5531,6 +5739,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: List reports
       tags:
       - Reports
@@ -5565,6 +5775,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create a new report
       tags:
       - Reports
@@ -5598,6 +5810,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Delete a report
       tags:
       - Reports
@@ -5629,6 +5843,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get a report by ID
       tags:
       - Reports
@@ -5673,6 +5889,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Export a report
       tags:
       - Reports
@@ -5698,6 +5916,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get dashboard metrics
       tags:
       - Reports
@@ -5727,6 +5947,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get profit and loss report
       tags:
       - Reports
@@ -5756,6 +5978,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get inventory age report
       tags:
       - Reports
@@ -5785,6 +6009,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get inventory value report
       tags:
       - Reports
@@ -5814,6 +6040,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get supplier purchase report
       tags:
       - Reports
@@ -5843,6 +6071,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get customer sales report
       tags:
       - Reports
@@ -5872,6 +6102,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get product sales report
       tags:
       - Reports
@@ -5909,6 +6141,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: List report schedules
       tags:
       - Reports
@@ -5943,6 +6177,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Create a new report schedule
       tags:
       - Reports
@@ -5976,6 +6212,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Delete a report schedule
       tags:
       - Reports
@@ -6007,6 +6245,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Get a report schedule by ID
       tags:
       - Reports
@@ -6052,6 +6292,8 @@ paths:
             additionalProperties:
               type: string
             type: object
+      security:
+      - BearerAuth: []
       summary: Update a report schedule
       tags:
       - Reports
@@ -6243,6 +6485,8 @@ paths:
             items:
               $ref: '#/definitions/entity.Supplier'
             type: array
+      security:
+      - BearerAuth: []
       summary: List suppliers
       tags:
       - suppliers
@@ -6268,6 +6512,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create a new supplier
       tags:
       - suppliers
@@ -6291,6 +6537,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete a supplier
       tags:
       - suppliers
@@ -6315,6 +6563,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get a supplier by ID
       tags:
       - suppliers
@@ -6345,6 +6595,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update a supplier
       tags:
       - suppliers
@@ -6502,6 +6754,8 @@ paths:
             items:
               $ref: '#/definitions/entity.Warehouse'
             type: array
+      security:
+      - BearerAuth: []
       summary: List warehouses
       tags:
       - Warehouses
@@ -6527,6 +6781,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Create warehouse
       tags:
       - Warehouses
@@ -6552,6 +6808,8 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Delete warehouse
       tags:
       - Warehouses
@@ -6574,6 +6832,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Get warehouse
       tags:
       - Warehouses
@@ -6608,6 +6868,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
       summary: Update warehouse
       tags:
       - Warehouses

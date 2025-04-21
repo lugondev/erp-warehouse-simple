@@ -53,6 +53,7 @@ func (h *CustomerHandler) RegisterRoutes(router *gin.RouterGroup) {
 // @Summary Create a new customer
 // @Description Create a new customer with the provided details
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param customer body entity.Customer true "Customer details"
@@ -79,6 +80,7 @@ func (h *CustomerHandler) CreateCustomer(c *gin.Context) {
 // @Summary Get a customer by ID
 // @Description Get a customer's details by their ID
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {object} entity.Customer
@@ -105,6 +107,7 @@ func (h *CustomerHandler) GetCustomer(c *gin.Context) {
 // @Summary Update a customer
 // @Description Update a customer's details
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -140,6 +143,7 @@ func (h *CustomerHandler) UpdateCustomer(c *gin.Context) {
 // @Summary Delete a customer
 // @Description Delete a customer by their ID
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 204 "No Content"
@@ -165,6 +169,7 @@ func (h *CustomerHandler) DeleteCustomer(c *gin.Context) {
 // @Summary List customers
 // @Description List customers with optional filtering
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param code query string false "Filter by code"
 // @Param name query string false "Filter by name"
@@ -212,6 +217,7 @@ func (h *CustomerHandler) ListCustomers(c *gin.Context) {
 // @Summary Create a new address for a customer
 // @Description Create a new address for a customer
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -246,6 +252,7 @@ func (h *CustomerHandler) CreateAddress(c *gin.Context) {
 // @Summary Get all addresses for a customer
 // @Description Get all addresses for a customer
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {array} entity.CustomerAddress
@@ -272,6 +279,7 @@ func (h *CustomerHandler) GetAddresses(c *gin.Context) {
 // @Summary Update a customer address
 // @Description Update a customer address
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param addressId path int true "Address ID"
@@ -306,6 +314,7 @@ func (h *CustomerHandler) UpdateAddress(c *gin.Context) {
 // @Summary Delete a customer address
 // @Description Delete a customer address
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param addressId path int true "Address ID"
 // @Success 204 "No Content"
@@ -331,6 +340,7 @@ func (h *CustomerHandler) DeleteAddress(c *gin.Context) {
 // @Summary Get a customer's order history
 // @Description Get a summary of a customer's order history
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {object} entity.CustomerOrderHistory
@@ -357,6 +367,7 @@ func (h *CustomerHandler) GetOrderHistory(c *gin.Context) {
 // @Summary Get a customer's debt information
 // @Description Get a customer's debt information
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {object} entity.CustomerDebt
@@ -383,6 +394,7 @@ func (h *CustomerHandler) GetCustomerDebt(c *gin.Context) {
 // @Summary Update a customer's debt amount
 // @Description Update a customer's debt amount
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -419,6 +431,7 @@ func (h *CustomerHandler) UpdateCustomerDebt(c *gin.Context) {
 // @Summary Update a customer's loyalty points
 // @Description Update a customer's loyalty points
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -455,6 +468,7 @@ func (h *CustomerHandler) UpdateLoyaltyPoints(c *gin.Context) {
 // @Summary Update a customer's loyalty tier
 // @Description Update a customer's loyalty tier
 // @Tags customers
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path int true "Customer ID"
@@ -492,6 +506,7 @@ func (h *CustomerHandler) UpdateLoyaltyTier(c *gin.Context) {
 // @Summary Calculate a customer's loyalty tier
 // @Description Calculate a customer's loyalty tier based on points and purchase history
 // @Tags customers
+// @Security BearerAuth
 // @Produce json
 // @Param id path int true "Customer ID"
 // @Success 200 {object} map[string]string

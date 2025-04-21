@@ -78,6 +78,7 @@ func (h *PurchaseHandler) RegisterRoutes(router *gin.Engine) {
 // @Summary Create a new purchase request
 // @Description Create a new purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param request body entity.PurchaseRequest true "Purchase request details"
@@ -110,6 +111,7 @@ func (h *PurchaseHandler) CreatePurchaseRequest(c *gin.Context) {
 // @Summary Get a purchase request by ID
 // @Description Get a purchase request by ID
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -131,6 +133,7 @@ func (h *PurchaseHandler) GetPurchaseRequest(c *gin.Context) {
 // @Summary Update a purchase request
 // @Description Update a purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -160,6 +163,7 @@ func (h *PurchaseHandler) UpdatePurchaseRequest(c *gin.Context) {
 // @Summary Delete a purchase request
 // @Description Delete a purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -180,6 +184,7 @@ func (h *PurchaseHandler) DeletePurchaseRequest(c *gin.Context) {
 // @Summary List purchase requests
 // @Description List purchase requests with filters
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param request_number query string false "Request number"
@@ -240,6 +245,7 @@ func (h *PurchaseHandler) ListPurchaseRequests(c *gin.Context) {
 // @Summary Submit a purchase request for approval
 // @Description Submit a purchase request for approval
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -260,6 +266,7 @@ func (h *PurchaseHandler) SubmitPurchaseRequest(c *gin.Context) {
 // @Summary Approve a purchase request
 // @Description Approve a purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -297,6 +304,7 @@ func (h *PurchaseHandler) ApprovePurchaseRequest(c *gin.Context) {
 // @Summary Reject a purchase request
 // @Description Reject a purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -334,6 +342,7 @@ func (h *PurchaseHandler) RejectPurchaseRequest(c *gin.Context) {
 // @Summary Create a purchase order from a request
 // @Description Create a purchase order from a purchase request
 // @Tags purchase-requests
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Request ID"
@@ -374,6 +383,7 @@ func (h *PurchaseHandler) CreateOrderFromRequest(c *gin.Context) {
 // @Summary Create a new purchase order
 // @Description Create a new purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param order body entity.PurchaseOrder true "Purchase order details"
@@ -406,6 +416,7 @@ func (h *PurchaseHandler) CreatePurchaseOrder(c *gin.Context) {
 // @Summary Get a purchase order by ID
 // @Description Get a purchase order by ID
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -427,6 +438,7 @@ func (h *PurchaseHandler) GetPurchaseOrder(c *gin.Context) {
 // @Summary Update a purchase order
 // @Description Update a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -456,6 +468,7 @@ func (h *PurchaseHandler) UpdatePurchaseOrder(c *gin.Context) {
 // @Summary Delete a purchase order
 // @Description Delete a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -476,6 +489,7 @@ func (h *PurchaseHandler) DeletePurchaseOrder(c *gin.Context) {
 // @Summary List purchase orders
 // @Description List purchase orders with filters
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param order_number query string false "Order number"
@@ -542,6 +556,7 @@ func (h *PurchaseHandler) ListPurchaseOrders(c *gin.Context) {
 // @Summary Submit a purchase order for approval
 // @Description Submit a purchase order for approval
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -562,6 +577,7 @@ func (h *PurchaseHandler) SubmitPurchaseOrder(c *gin.Context) {
 // @Summary Approve a purchase order
 // @Description Approve a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -589,6 +605,7 @@ func (h *PurchaseHandler) ApprovePurchaseOrder(c *gin.Context) {
 // @Summary Send a purchase order to supplier
 // @Description Mark a purchase order as sent to supplier
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -609,6 +626,7 @@ func (h *PurchaseHandler) SendPurchaseOrder(c *gin.Context) {
 // @Summary Confirm a purchase order
 // @Description Mark a purchase order as confirmed by supplier
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -629,6 +647,7 @@ func (h *PurchaseHandler) ConfirmPurchaseOrder(c *gin.Context) {
 // @Summary Cancel a purchase order
 // @Description Cancel a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -649,6 +668,7 @@ func (h *PurchaseHandler) CancelPurchaseOrder(c *gin.Context) {
 // @Summary Close a purchase order
 // @Description Close a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -671,6 +691,7 @@ func (h *PurchaseHandler) ClosePurchaseOrder(c *gin.Context) {
 // @Summary Create a new purchase receipt
 // @Description Create a new purchase receipt
 // @Tags purchase-receipts
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param receipt body entity.PurchaseReceipt true "Purchase receipt details"
@@ -703,6 +724,7 @@ func (h *PurchaseHandler) CreatePurchaseReceipt(c *gin.Context) {
 // @Summary Get a purchase receipt by ID
 // @Description Get a purchase receipt by ID
 // @Tags purchase-receipts
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Receipt ID"
@@ -724,6 +746,7 @@ func (h *PurchaseHandler) GetPurchaseReceipt(c *gin.Context) {
 // @Summary List purchase receipts by order
 // @Description List purchase receipts for a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -747,6 +770,7 @@ func (h *PurchaseHandler) ListPurchaseReceiptsByOrder(c *gin.Context) {
 // @Summary Create a new purchase payment
 // @Description Create a new purchase payment
 // @Tags purchase-payments
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param payment body entity.PurchasePayment true "Purchase payment details"
@@ -779,6 +803,7 @@ func (h *PurchaseHandler) CreatePurchasePayment(c *gin.Context) {
 // @Summary Get a purchase payment by ID
 // @Description Get a purchase payment by ID
 // @Tags purchase-payments
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Payment ID"
@@ -800,6 +825,7 @@ func (h *PurchaseHandler) GetPurchasePayment(c *gin.Context) {
 // @Summary List purchase payments by order
 // @Description List purchase payments for a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"
@@ -821,6 +847,7 @@ func (h *PurchaseHandler) ListPurchasePaymentsByOrder(c *gin.Context) {
 // @Summary Get purchase order payment summary
 // @Description Get payment summary for a purchase order
 // @Tags purchase-orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Purchase Order ID"

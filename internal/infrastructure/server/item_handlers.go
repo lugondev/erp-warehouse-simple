@@ -22,6 +22,7 @@ func NewItemHandler(itemUseCase *usecase.ItemUseCase) *ItemHandler {
 // @Summary Create a new item
 // @Description Create a new item with the provided information
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param item body entity.Item true "Item object"
@@ -53,6 +54,7 @@ func (h *ItemHandler) CreateItem(c *gin.Context) {
 // @Summary Update an item
 // @Description Update an existing item's information
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Item ID"
@@ -90,6 +92,7 @@ func (h *ItemHandler) UpdateItem(c *gin.Context) {
 // @Summary Get an item by ID
 // @Description Get detailed information about an item
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Item ID"
@@ -115,6 +118,7 @@ func (h *ItemHandler) GetItem(c *gin.Context) {
 // @Summary Get an item by SKU
 // @Description Get detailed information about an item using its SKU
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param sku path string true "Item SKU"
@@ -140,6 +144,7 @@ func (h *ItemHandler) GetItemBySKU(c *gin.Context) {
 // @Summary Delete an item
 // @Description Delete an item by ID
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Item ID"
@@ -164,6 +169,7 @@ func (h *ItemHandler) DeleteItem(c *gin.Context) {
 // @Summary List items
 // @Description Get a list of items with optional filters
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param sku query string false "SKU filter"
@@ -241,6 +247,7 @@ func (h *ItemHandler) ListItems(c *gin.Context) {
 // @Summary Search items
 // @Description Search for items based on a search term
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param q query string true "Search term"
@@ -271,6 +278,7 @@ func (h *ItemHandler) SearchItems(c *gin.Context) {
 // @Summary Create a new item category
 // @Description Create a new item category with the provided information
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param category body entity.ItemCategory true "Item category object"
@@ -299,6 +307,7 @@ func (h *ItemHandler) CreateItemCategory(c *gin.Context) {
 // @Summary Update an item category
 // @Description Update an existing item category's information
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Category ID"
@@ -336,6 +345,7 @@ func (h *ItemHandler) UpdateItemCategory(c *gin.Context) {
 // @Summary Get an item category by ID
 // @Description Get detailed information about an item category
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Category ID"
@@ -361,6 +371,7 @@ func (h *ItemHandler) GetItemCategory(c *gin.Context) {
 // @Summary Delete an item category
 // @Description Delete an item category by ID
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Category ID"
@@ -391,6 +402,7 @@ func (h *ItemHandler) DeleteItemCategory(c *gin.Context) {
 // @Summary List item categories
 // @Description Get a list of all item categories
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Success 200 {array} entity.ItemCategory
@@ -408,6 +420,7 @@ func (h *ItemHandler) ListItemCategories(c *gin.Context) {
 // @Summary Get item categories tree
 // @Description Get item categories in a hierarchical structure
 // @Tags item-categories
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Success 200 {array} entity.ItemCategory
@@ -425,6 +438,7 @@ func (h *ItemHandler) GetItemCategoriesTree(c *gin.Context) {
 // @Summary Get items by category
 // @Description Get items belonging to a specific category
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Category ID"
@@ -460,6 +474,7 @@ func (h *ItemHandler) GetItemsByCategory(c *gin.Context) {
 // @Summary Bulk create items
 // @Description Create multiple items in a single request
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param items body []entity.Item true "Array of item objects"
@@ -484,6 +499,7 @@ func (h *ItemHandler) BulkCreateItems(c *gin.Context) {
 // @Summary Bulk update items
 // @Description Update multiple items in a single request
 // @Tags items
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param items body []entity.Item true "Array of item objects with IDs"

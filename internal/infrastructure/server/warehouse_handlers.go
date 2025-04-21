@@ -23,6 +23,7 @@ func NewWarehouseHandler(warehouseUseCase *usecase.WarehouseUseCase, inventoryUs
 // @Summary Create warehouse
 // @Description Create a new warehouse
 // @Tags Warehouses
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param warehouse body entity.Warehouse true "Warehouse info"
@@ -47,6 +48,7 @@ func (h *WarehouseHandler) CreateWarehouse(c *gin.Context) {
 // @Summary Update warehouse
 // @Description Update an existing warehouse
 // @Tags Warehouses
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Warehouse ID"
@@ -74,6 +76,7 @@ func (h *WarehouseHandler) UpdateWarehouse(c *gin.Context) {
 // @Summary Get warehouse
 // @Description Get warehouse by ID
 // @Tags Warehouses
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Warehouse ID"
 // @Success 200 {object} entity.Warehouse
@@ -93,6 +96,7 @@ func (h *WarehouseHandler) GetWarehouse(c *gin.Context) {
 // @Summary List warehouses
 // @Description List all warehouses with optional filters
 // @Tags Warehouses
+// @Security BearerAuth
 // @Produce json
 // @Param type query string false "Warehouse type"
 // @Param status query string false "Warehouse status"
@@ -123,6 +127,7 @@ func (h *WarehouseHandler) ListWarehouses(c *gin.Context) {
 // @Summary Delete warehouse
 // @Description Delete a warehouse by ID
 // @Tags Warehouses
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Warehouse ID"
 // @Success 204 "No Content"

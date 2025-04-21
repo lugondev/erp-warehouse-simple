@@ -40,6 +40,7 @@ type CreateSalesOrderRequest struct {
 // @Summary Create a new sales order
 // @Description Create a new sales order with items
 // @Tags orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param order body CreateSalesOrderRequest true "Sales Order"
@@ -88,6 +89,7 @@ func (h *OrderHandlers) CreateSalesOrder(c *gin.Context) {
 // @Summary Get a sales order
 // @Description Get a sales order by ID
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Sales Order ID"
 // @Success 200 {object} entity.SalesOrder
@@ -126,6 +128,7 @@ type SalesOrderFilter struct {
 // @Summary List sales orders
 // @Description List sales orders with optional filtering
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param order_number query string false "Order Number"
 // @Param customer_id query integer false "Customer ID"
@@ -185,6 +188,7 @@ func (h *OrderHandlers) ListSalesOrders(c *gin.Context) {
 // @Summary Confirm a sales order
 // @Description Change a sales order status from draft to confirmed
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Sales Order ID"
 // @Success 200 {object} SuccessResponse
@@ -218,6 +222,7 @@ func (h *OrderHandlers) ConfirmSalesOrder(c *gin.Context) {
 // @Summary Cancel a sales order
 // @Description Cancel a sales order
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Sales Order ID"
 // @Success 200 {object} SuccessResponse
@@ -244,6 +249,7 @@ func (h *OrderHandlers) CancelSalesOrder(c *gin.Context) {
 // @Summary Complete a sales order
 // @Description Mark a sales order as completed
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Sales Order ID"
 // @Success 200 {object} SuccessResponse
@@ -281,6 +287,7 @@ type CreateDeliveryOrderRequest struct {
 // @Summary Create a delivery order
 // @Description Create a delivery order for a sales order
 // @Tags orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Sales Order ID"
@@ -336,6 +343,7 @@ func (h *OrderHandlers) CreateDeliveryOrder(c *gin.Context) {
 // @Summary Get a delivery order
 // @Description Get a delivery order by ID
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Delivery Order ID"
 // @Success 200 {object} entity.DeliveryOrder
@@ -373,6 +381,7 @@ type DeliveryOrderFilter struct {
 // @Summary List delivery orders
 // @Description List delivery orders with optional filtering
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param delivery_number query string false "Delivery Number"
 // @Param sales_order_id query string false "Sales Order ID"
@@ -425,6 +434,7 @@ func (h *OrderHandlers) ListDeliveryOrders(c *gin.Context) {
 // @Summary Prepare a delivery
 // @Description Update a delivery order status to preparing
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Delivery Order ID"
 // @Success 200 {object} SuccessResponse
@@ -451,6 +461,7 @@ func (h *OrderHandlers) PrepareDelivery(c *gin.Context) {
 // @Summary Ship a delivery
 // @Description Process a delivery by updating inventory and changing status
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Delivery Order ID"
 // @Success 200 {object} SuccessResponse
@@ -484,6 +495,7 @@ func (h *OrderHandlers) ShipDelivery(c *gin.Context) {
 // @Summary Complete a delivery
 // @Description Mark a delivery as delivered
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Delivery Order ID"
 // @Success 200 {object} SuccessResponse
@@ -519,6 +531,7 @@ type CreateInvoiceRequest struct {
 // @Summary Create an invoice
 // @Description Create an invoice for a sales order
 // @Tags orders
+// @Security BearerAuth
 // @Accept json
 // @Produce json
 // @Param id path string true "Sales Order ID"
@@ -573,6 +586,7 @@ func (h *OrderHandlers) CreateInvoice(c *gin.Context) {
 // @Summary Get an invoice
 // @Description Get an invoice by ID
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Invoice ID"
 // @Success 200 {object} entity.Invoice
@@ -609,6 +623,7 @@ type InvoiceFilter struct {
 // @Summary List invoices
 // @Description List invoices with optional filtering
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param invoice_number query string false "Invoice Number"
 // @Param sales_order_id query string false "Sales Order ID"
@@ -659,6 +674,7 @@ func (h *OrderHandlers) ListInvoices(c *gin.Context) {
 // @Summary Issue an invoice
 // @Description Change an invoice from draft to issued status
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Invoice ID"
 // @Success 200 {object} SuccessResponse
@@ -685,6 +701,7 @@ func (h *OrderHandlers) IssueInvoice(c *gin.Context) {
 // @Summary Pay an invoice
 // @Description Mark an invoice as paid
 // @Tags orders
+// @Security BearerAuth
 // @Produce json
 // @Param id path string true "Invoice ID"
 // @Success 200 {object} SuccessResponse
