@@ -6,9 +6,7 @@ import * as bcrypt from 'bcryptjs';
  * Helper function to generate random decimal numbers with specified precision
  */
 function randomDecimal(min: number, max: number, precision: number = 2): number {
-	const value = Math.random() * (max - min) + min;
-	const multiplier = Math.pow(10, precision);
-	return Math.round(value * multiplier) / multiplier;
+	return faker.number.float({ min, max, multipleOf: precision });
 }
 
 const prisma = new PrismaClient();
@@ -159,7 +157,7 @@ async function createUsers(roles: any[]) {
 	for (let i = 0; i < 15; i++) {
 		const firstName = faker.person.firstName();
 		const lastName = faker.person.lastName();
-		const username = faker.internet.userName({ firstName, lastName }).toLowerCase();
+		const username = faker.internet.username({ firstName, lastName }).toLowerCase();
 		const email = faker.internet.email({ firstName, lastName }).toLowerCase();
 		const password = await bcrypt.hash('password123', saltRounds);
 
