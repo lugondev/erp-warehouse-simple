@@ -1,16 +1,18 @@
-# ERP Warehouse System
+# ERP Warehouse Simple
 
-A Go-based ERP Warehouse System built with Clean Architecture principles and Domain-Driven Design, featuring comprehensive authentication, authorization, and audit logging.
+A Go-based ERP Warehouse System built with Clean Architecture principles and Domain-Driven Design. It includes an API Gateway, comprehensive authentication, authorization, audit logging, and uses PostgreSQL with GORM and Prisma for database interactions.
 
 ## Technology Stack
 
-- Go 1.21+
-- Gin Web Framework
-- GORM with PostgreSQL
-- JWT Authentication with refresh tokens
-- Role-based Access Control (RBAC)
-- Audit Logging
-- Docker & Docker Compose
+- **Backend:** Go 1.21+ with Gin Web Framework
+- **API Gateway:** Custom Go Gateway
+- **Database:** PostgreSQL
+- **ORM:** GORM
+- **Database Tooling:** Prisma (for seeding)
+- **Authentication:** JWT (Access & Refresh Tokens)
+- **Authorization:** Role-based Access Control (RBAC)
+- **Containerization:** Docker & Docker Compose
+- **Package Manager:** Bun (for TypeScript scripts like seeding)
 
 ## Features
 
@@ -34,19 +36,30 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 ```
 .
 ├── cmd
-│   └── server              # Application entry point
+│   ├── gateway             # API Gateway entry point
+│   └── server              # Main application entry point
 ├── internal
 │   ├── domain
-│   │   └── entity         # Domain entities (User, Role, AuditLog)
+│   │   └── entity          # Core domain models
 │   ├── application
-│   │   └── usecase        # Application business rules
+│   │   └── usecase         # Application-specific business logic
 │   └── infrastructure
-│       ├── auth           # Authentication services
-│       ├── config         # Configuration management
-│       ├── database       # Database connection
-│       ├── repository     # Data persistence
-│       ├── service        # Application services
-│       └── server         # HTTP server and handlers
+│       ├── auth            # JWT handling, context
+│       ├── config          # Configuration loading
+│       ├── database        # Database connection (GORM), migrations
+│       ├── gateway         # API Gateway logic (proxy, middleware)
+│       ├── repository      # Data access layer implementations
+│       ├── server          # Main application HTTP server (Gin), handlers
+│       └── service         # Infrastructure-level services (e.g., Audit)
+├── prisma                  # Prisma schema and seeding script
+├── client                  # (Placeholder or future client-side code)
+├── docs                    # API documentation (Swagger)
+├── Dockerfile              # Dockerfile for the main application
+├── Dockerfile.gateway      # Dockerfile for the API Gateway
+├── docker-compose.yml      # Docker Compose configuration
+├── go.mod / go.sum         # Go module dependencies
+├── package.json / bun.lock # Node.js dependencies (for Prisma/TS scripts)
+└── README.md               # This file
 ```
 
 ## Getting Started
@@ -54,26 +67,90 @@ A Go-based ERP Warehouse System built with Clean Architecture principles and Dom
 ### Prerequisites
 
 - Docker and Docker Compose
-- Go 1.21 or higher
+- Go 1.21 or higher (for local development)
+- Bun (for local development, includes Node.js)
 
-### Running the Application
+### Running with Docker (Recommended)
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/erp-warehouse-simple.git
-cd erp-warehouse-simple
-```
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/yourusername/erp-warehouse-simple.git # Replace with actual repo URL if known
+    cd erp-warehouse-simple
+    ```
+2.  **Copy environment variables:**
+    ```bash
+    cp .env.example .env
+    # Review and adjust .env variables if necessary (secrets, ports, etc.)
+    ```
+3.  **Build and start services:**
+    ```bash
+    docker-compose up --build -d
+    ```
+    This command builds the images for the main application (`app`) and the API Gateway (`api-gateway`), starts them along with the PostgreSQL database (`postgres`), and runs them in detached mode.
 
-2. Start the application using Docker Compose:
-```bash
-docker-compose up --build
-```
+4.  **Access the application:**
+    The API Gateway is exposed on `http://localhost:8000`. All API requests should go through the gateway. The main application runs internally on port 8080.
 
-The application will be available at `http://localhost:8080`
+5.  **(Optional) Seed the database:**
+    If you need initial data (like the admin user), run the Prisma seed script using Docker:
+    ```bash
+    # First, install dependencies inside a temporary container if you haven't built the main 'app' service yet
+    # docker-compose run --rm app bun install
+
+    # Then run the seed script using the 'app' service definition
+    docker-compose run --rm app bun run seed
+    ```
+    Alternatively, if you have Bun installed locally:
+    ```bash
+    bun install # Install dependencies for the script locally
+    bun run seed  # Run seed script locally (ensure .env points to Docker DB)
+    ```
+
+### Running Locally (Advanced)
+
+Running locally requires manual setup of Go, PostgreSQL, Bun/Node.js, and environment variables.
+
+1.  **Install Prerequisites:**
+    *   Go 1.21+
+    *   PostgreSQL Server
+    *   Bun (includes Node.js)
+2.  **Setup Database:**
+    *   Create a PostgreSQL database (e.g., `erp_db`).
+    *   Configure connection details.
+3.  **Environment Variables:**
+    *   Copy `.env.example` to `.env`.
+    *   Update `.env` with your local database credentials, JWT secrets, and desired ports. Ensure `ERP_DATABASE_HOST` points to your local Postgres instance (e.g., `localhost`).
+4.  **Run Migrations (if applicable):**
+    *   This project uses GORM and has SQL migration files in `internal/infrastructure/database/migrations/`. You'll need a tool like `golang-migrate` or execute them manually against your local database.
+    ```bash
+    # Example using golang-migrate (install it first: go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest)
+    # migrate -database "postgres://user:password@host:port/dbname?sslmode=disable" -path internal/infrastructure/database/migrations up
+    ```
+5.  **Install Node Dependencies:**
+    ```bash
+    bun install
+    ```
+6.  **Run Database Seeding:**
+    ```bash
+    bun run seed
+    ```
+7.  **Run the Main Application:**
+    ```bash
+    # Ensure environment variables from .env are loaded (e.g., using direnv or source .env)
+    go run cmd/server/main.go
+    ```
+8.  **Run the API Gateway (Optional):**
+    ```bash
+    # Ensure environment variables from .env are loaded
+    go run cmd/gateway/main.go
+    ```
+    *Note: Adjust `ERP_APIGATEWAY_SERVICES_WAREHOUSE_URL` in `.env` to point to your locally running main application (e.g., `http://localhost:8080` if using default port).*
+
+The API Gateway will be available at `http://localhost:8000` (or the port configured in `.env`).
 
 ## Default Admin Account
 
-The system creates a default admin account on first run:
+The system creates a default admin account when seeded:
 - Username: admin
 - Email: admin@example.com
 - Password: admin123
@@ -81,6 +158,8 @@ The system creates a default admin account on first run:
 Please change these credentials after first login.
 
 ## API Endpoints
+
+All endpoints are accessed via the API Gateway (e.g., `http://localhost:8000/api/v1/...`).
 
 ### Authentication Endpoints
 
