@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model audit_logs {
+  id         BigInt    @id @default(autoincrement())
+  user_id    BigInt?
+  action     String?   @db.VarChar(20)
+  resource   String?   @db.VarChar(50)
+  detail     String?
+  ip         String?   @db.VarChar(45)
+  user_agent String?
+  created_at DateTime? @db.Timestamptz(6)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_audit_logs_user")
+}
+
+model customer_addresses {
+  id          BigInt    @id @default(autoincrement())
+  customer_id BigInt
+  type        String    @default("BOTH")
+  street      String
+  city        String
+  state       String?
+  postal_code String?
+  country     String
+  is_default  Boolean?  @default(false)
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  customers   customers @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customers_addresses")
+}
+
+model customers {
+  id                 BigInt               @id @default(autoincrement())
+  code               String               @unique(map: "idx_customers_code")
+  name               String
+  type               String               @default("INDIVIDUAL")
+  email              String?              @unique(map: "idx_customers_email")
+  phone_number       String?
+  tax_id             String?
+  contacts           Json?
+  credit_limit       Decimal?             @default(0) @db.Decimal(15, 2)
+  current_debt       Decimal?             @default(0) @db.Decimal(15, 2)
+  loyalty_tier       String               @default("STANDARD")
+  loyalty_points     BigInt?              @default(0)
+  notes              String?
+  created_at         DateTime?            @db.Timestamptz(6)
+  updated_at         DateTime?            @db.Timestamptz(6)
+  customer_addresses customer_addresses[]
+}
+
+model inventories {
+  id               String    @id
+  product_id       String
+  warehouse_id     String
+  quantity         Decimal   @db.Decimal
+  bin_location     String?
+  shelf_number     String?
+  zone_code        String?
+  batch_number     String?
+  lot_number       String?
+  manufacture_date DateTime? @db.Timestamptz(6)
+  expiry_date      DateTime? @db.Timestamptz(6)
+  created_at       DateTime? @db.Timestamptz(6)
+  updated_at       DateTime? @db.Timestamptz(6)
+}
+
+model inventory_histories {
+  id           String    @id
+  inventory_id String
+  type         String
+  quantity     Decimal   @db.Decimal
+  previous_qty Decimal?  @db.Decimal
+  new_qty      Decimal?  @db.Decimal
+  reference    String?
+  note         String?
+  created_at   DateTime? @db.Timestamptz(6)
+  created_by   String
+}
+
+model item_categories {
+  id                    String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                  String            @unique @db.VarChar(255)
+  description           String?
+  parent_id             String?           @db.Uuid
+  created_at            DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?         @default(now()) @db.Timestamptz(6)
+  item_categories       item_categories?  @relation("item_categoriesToitem_categories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_item_categories item_categories[] @relation("item_categoriesToitem_categories")
+}
+
+model roles {
+  id          BigInt    @id @default(autoincrement())
+  name        String    @unique
+  permissions String[]  @default([])
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  users       users[]
+}
+
+model sequences {
+  id    String @id @db.VarChar(50)
+  value Int    @default(1)
+}
+
+model stock_entries {
+  id           String    @id
+  warehouse_id String
+  product_id   String
+  type         String
+  quantity     Decimal   @db.Decimal
+  batch_number String?
+  lot_number   String?
+  reference    String?
+  note         String?
+  created_at   DateTime? @db.Timestamptz(6)
+  created_by   String
+}
+
+model users {
+  id                   BigInt       @id @default(autoincrement())
+  username             String       @unique
+  email                String       @unique
+  password             String
+  role_id              BigInt
+  status               String?      @default("active") @db.VarChar(20)
+  last_login           DateTime?    @db.Timestamptz(6)
+  refresh_token        String?
+  refresh_token_expiry DateTime?    @db.Timestamptz(6)
+  password_reset_token String?      @db.VarChar(100)
+  reset_token_expiry   DateTime?    @db.Timestamptz(6)
+  created_at           DateTime?    @db.Timestamptz(6)
+  updated_at           DateTime?    @db.Timestamptz(6)
+  audit_logs           audit_logs[]
+  roles                roles        @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_role")
+}
+
+model warehouses {
+  id         String    @id
+  name       String
+  address    String?
+  type       String
+  manager_id String
+  contact    String?
+  status     String
+  created_at DateTime? @db.Timestamptz(6)
+  updated_at DateTime? @db.Timestamptz(6)
+}
+
+enum item_status {
+  ACTIVE
+  INACTIVE
+  ARCHIVED
+}
+
+enum warehouse_status {
+  ACTIVE
+  INACTIVE
+}
+
+enum warehouse_type {
+  RAW
+  FINISHED
+  GENERAL
+}

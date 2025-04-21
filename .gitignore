@@ -52,3 +52,6 @@ dist/
 client/build/
 client/dist/
 client/*
+
+# Node modules
+node_modules/
