@@ -90,6 +90,16 @@ func LoadConfig() (*Config, error) {
 	viper.SetDefault("apigateway.circuitbreak.consecutive_error", 5)
 
 	// Default services
+	viper.SetDefault("apigateway.services.auth.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.auth.timeout", 30)
+	viper.SetDefault("apigateway.services.auth.retry_count", 3)
+	viper.SetDefault("apigateway.services.auth.health_check", "/health")
+
+	viper.SetDefault("apigateway.services.user.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.user.timeout", 30)
+	viper.SetDefault("apigateway.services.user.retry_count", 3)
+	viper.SetDefault("apigateway.services.user.health_check", "/health")
+
 	viper.SetDefault("apigateway.services.warehouse.url", "http://localhost:8081")
 	viper.SetDefault("apigateway.services.warehouse.timeout", 30)
 	viper.SetDefault("apigateway.services.warehouse.retry_count", 3)
@@ -105,7 +115,7 @@ func LoadConfig() (*Config, error) {
 
 	// Load services from environment
 	services := make(map[string]ServiceConfig)
-	for _, svc := range []string{"warehouse", "inventory", "supplier", "manufacturing", "item", "purchase", "order", "customer", "finance", "report"} {
+	for _, svc := range []string{"user", "auth", "warehouse", "inventory", "supplier", "manufacturing", "item", "purchase", "order", "customer", "finance", "report"} {
 		services[svc] = ServiceConfig{
 			URL:         viper.GetString(fmt.Sprintf("apigateway.services.%s.url", svc)),
 			Timeout:     viper.GetInt(fmt.Sprintf("apigateway.services.%s.timeout", svc)),
