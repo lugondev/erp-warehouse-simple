@@ -100,12 +100,17 @@ func LoadConfig() (*Config, error) {
 	viper.SetDefault("apigateway.services.user.retry_count", 3)
 	viper.SetDefault("apigateway.services.user.health_check", "/health")
 
-	viper.SetDefault("apigateway.services.warehouse.url", "http://localhost:8081")
+	viper.SetDefault("apigateway.services.audit.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.audit.timeout", 30)
+	viper.SetDefault("apigateway.services.audit.retry_count", 3)
+	viper.SetDefault("apigateway.services.audit.health_check", "/health")
+
+	viper.SetDefault("apigateway.services.warehouse.url", "http://localhost:8080")
 	viper.SetDefault("apigateway.services.warehouse.timeout", 30)
 	viper.SetDefault("apigateway.services.warehouse.retry_count", 3)
 	viper.SetDefault("apigateway.services.warehouse.health_check", "/health")
 
-	viper.SetDefault("apigateway.services.inventory.url", "http://localhost:8082")
+	viper.SetDefault("apigateway.services.inventory.url", "http://localhost:8080")
 	viper.SetDefault("apigateway.services.inventory.timeout", 30)
 	viper.SetDefault("apigateway.services.inventory.retry_count", 3)
 	viper.SetDefault("apigateway.services.inventory.health_check", "/health")
@@ -115,7 +120,7 @@ func LoadConfig() (*Config, error) {
 
 	// Load services from environment
 	services := make(map[string]ServiceConfig)
-	for _, svc := range []string{"user", "auth", "warehouse", "inventory", "supplier", "manufacturing", "item", "purchase", "order", "customer", "finance", "report"} {
+	for _, svc := range []string{"audit", "user", "auth", "warehouse", "inventory", "supplier", "manufacturing", "item", "purchase", "order", "customer", "finance", "report"} {
 		services[svc] = ServiceConfig{
 			URL:         viper.GetString(fmt.Sprintf("apigateway.services.%s.url", svc)),
 			Timeout:     viper.GetInt(fmt.Sprintf("apigateway.services.%s.timeout", svc)),

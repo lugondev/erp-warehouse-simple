@@ -1,11 +1,47 @@
 package entity
 
-// Supplier permissions
+// Permission represents a permission string
+type Permission string
+
+// User permissions
 const (
-	SupplierCreate Permission = "supplier:create"
-	SupplierRead   Permission = "supplier:read"
-	SupplierUpdate Permission = "supplier:update"
-	SupplierDelete Permission = "supplier:delete"
+	UserCreate Permission = "user:create"
+	UserRead   Permission = "user:read"
+	UserUpdate Permission = "user:update"
+	UserDelete Permission = "user:delete"
+)
+
+// Role permissions
+const (
+	RoleCreate Permission = "role:create"
+	RoleRead   Permission = "role:read"
+	RoleUpdate Permission = "role:update"
+	RoleDelete Permission = "role:delete"
+)
+
+// Store permissions
+const (
+	StoreCreate Permission = "store:create"
+	StoreRead   Permission = "store:read"
+	StoreUpdate Permission = "store:update"
+	StoreDelete Permission = "store:delete"
+)
+
+// Stock permissions
+const (
+	StockRead   Permission = "stock:read"
+	StockUpdate Permission = "stock:update"
+
+	StockEntryCreate Permission = "stock:entry:create"
+	StockEntryRead   Permission = "stock:entry:read"
+)
+
+// Vendor permissions
+const (
+	VendorCreate Permission = "vendor:create"
+	VendorRead   Permission = "vendor:read"
+	VendorUpdate Permission = "vendor:update"
+	VendorDelete Permission = "vendor:delete"
 
 	ProductCreate Permission = "product:create"
 	ProductRead   Permission = "product:read"
@@ -62,23 +98,23 @@ const (
 	PurchasePaymentUpdate Permission = "purchase:payment:update"
 )
 
-// Customer permissions
+// Client permissions
 const (
-	CustomerCreate Permission = "customer:create"
-	CustomerRead   Permission = "customer:read"
-	CustomerUpdate Permission = "customer:update"
-	CustomerDelete Permission = "customer:delete"
+	ClientCreate Permission = "client:create"
+	ClientRead   Permission = "client:read"
+	ClientUpdate Permission = "client:update"
+	ClientDelete Permission = "client:delete"
 
-	CustomerAddressCreate Permission = "customer:address:create"
-	CustomerAddressRead   Permission = "customer:address:read"
-	CustomerAddressUpdate Permission = "customer:address:update"
-	CustomerAddressDelete Permission = "customer:address:delete"
+	ClientAddressCreate Permission = "client:address:create"
+	ClientAddressRead   Permission = "client:address:read"
+	ClientAddressUpdate Permission = "client:address:update"
+	ClientAddressDelete Permission = "client:address:delete"
 
-	CustomerDebtRead   Permission = "customer:debt:read"
-	CustomerDebtUpdate Permission = "customer:debt:update"
+	ClientDebtRead   Permission = "client:debt:read"
+	ClientDebtUpdate Permission = "client:debt:update"
 
-	CustomerLoyaltyRead   Permission = "customer:loyalty:read"
-	CustomerLoyaltyUpdate Permission = "customer:loyalty:update"
+	ClientLoyaltyRead   Permission = "client:loyalty:read"
+	ClientLoyaltyUpdate Permission = "client:loyalty:update"
 )
 
 // Sales Order permissions
@@ -129,4 +165,9 @@ const (
 	ReportScheduleRead   Permission = "report:schedule:read"
 	ReportScheduleUpdate Permission = "report:schedule:update"
 	ReportScheduleDelete Permission = "report:schedule:delete"
+)
+
+// Audit permissions
+const (
+	AuditLogRead Permission = "audit:log:read"
 )

@@ -80,8 +80,8 @@ func (r *PurchaseRepository) ListPurchaseRequests(ctx context.Context, filter *e
 		if filter.EndDate != nil {
 			query = query.Where("request_date <= ?", *filter.EndDate)
 		}
-		if filter.ItemID != "" {
-			query = query.Where("items @> ?", fmt.Sprintf(`[{"item_id": "%s"}]`, filter.ItemID))
+		if filter.SKUID != "" {
+			query = query.Where("items @> ?", fmt.Sprintf(`[{"sku_id": "%s"}]`, filter.SKUID))
 		}
 	}
 
@@ -117,7 +117,7 @@ func (r *PurchaseRepository) CreatePurchaseOrder(ctx context.Context, order *ent
 func (r *PurchaseRepository) GetPurchaseOrderByID(ctx context.Context, id string) (*entity.PurchaseOrder, error) {
 	var order entity.PurchaseOrder
 	if err := r.db.WithContext(ctx).
-		Preload("Supplier").
+		Preload("Vendor").
 		Preload("CreatedBy").
 		Preload("ApprovedBy").
 		Preload("PurchaseRequests").
@@ -151,8 +151,8 @@ func (r *PurchaseRepository) ListPurchaseOrders(ctx context.Context, filter *ent
 		if filter.OrderNumber != "" {
 			query = query.Where("order_number LIKE ?", "%"+filter.OrderNumber+"%")
 		}
-		if filter.SupplierID != nil {
-			query = query.Where("supplier_id = ?", *filter.SupplierID)
+		if filter.VendorID != nil {
+			query = query.Where("vendor_id = ?", *filter.VendorID)
 		}
 		if filter.Status != nil {
 			query = query.Where("status = ?", *filter.Status)
@@ -166,8 +166,8 @@ func (r *PurchaseRepository) ListPurchaseOrders(ctx context.Context, filter *ent
 		if filter.EndDate != nil {
 			query = query.Where("order_date <= ?", *filter.EndDate)
 		}
-		if filter.ItemID != "" {
-			query = query.Where("items @> ?", fmt.Sprintf(`[{"item_id": "%s"}]`, filter.ItemID))
+		if filter.SKUID != "" {
+			query = query.Where("items @> ?", fmt.Sprintf(`[{"sku_id": "%s"}]`, filter.SKUID))
 		}
 	}
 
@@ -176,7 +176,7 @@ func (r *PurchaseRepository) ListPurchaseOrders(ctx context.Context, filter *ent
 	}
 
 	if err := query.Offset((page - 1) * pageSize).Limit(pageSize).
-		Preload("Supplier").
+		Preload("Vendor").
 		Preload("CreatedBy").
 		Order("created_at DESC").
 		Find(&orders).Error; err != nil {
@@ -225,7 +225,7 @@ func (r *PurchaseRepository) CreatePurchaseReceipt(ctx context.Context, receipt 
 	for _, orderItem := range order.Items {
 		totalReceived := 0.0
 		for _, receiptItem := range receipt.Items {
-			if receiptItem.ItemID == orderItem.ItemID {
+			if receiptItem.SKUID == orderItem.SKUID {
 				totalReceived += receiptItem.ReceivedQuantity
 			}
 		}

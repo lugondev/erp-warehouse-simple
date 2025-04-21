@@ -17,15 +17,15 @@ var (
 
 // OrderUseCase handles business logic for sales orders and delivery orders
 type OrderUseCase struct {
-	orderRepo     *repository.OrderRepository
-	inventoryRepo *repository.InventoryRepository
+	orderRepo  *repository.OrderRepository
+	stocksRepo *repository.StocksRepository
 }
 
 // NewOrderUseCase creates a new OrderUseCase
-func NewOrderUseCase(orderRepo *repository.OrderRepository, inventoryRepo *repository.InventoryRepository) *OrderUseCase {
+func NewOrderUseCase(orderRepo *repository.OrderRepository, stocksRepo *repository.StocksRepository) *OrderUseCase {
 	return &OrderUseCase{
-		orderRepo:     orderRepo,
-		inventoryRepo: inventoryRepo,
+		orderRepo:  orderRepo,
+		stocksRepo: stocksRepo,
 	}
 }
 
@@ -66,6 +66,9 @@ func (u *OrderUseCase) CreateSalesOrder(ctx context.Context, order *entity.Sales
 	// Create the order
 	return u.orderRepo.CreateSalesOrder(ctx, order)
 }
+
+// Rest of the methods remain unchanged as they don't directly use stocksRepo
+// Omitted for brevity...
 
 // ConfirmSalesOrder changes a sales order from draft to confirmed status
 func (u *OrderUseCase) ConfirmSalesOrder(ctx context.Context, orderID string, userID string) error {

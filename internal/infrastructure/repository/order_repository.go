@@ -19,15 +19,15 @@ var (
 // OrderRepository handles database operations for sales orders and delivery orders
 type OrderRepository struct {
 	db                *gorm.DB
-	inventoryRepo     *InventoryRepository
+	stocksRepo        *StocksRepository
 	sequenceGenerator *SequenceGenerator
 }
 
 // NewOrderRepository creates a new OrderRepository
-func NewOrderRepository(db *gorm.DB, inventoryRepo *InventoryRepository) *OrderRepository {
+func NewOrderRepository(db *gorm.DB, stocksRepo *StocksRepository) *OrderRepository {
 	return &OrderRepository{
 		db:                db,
-		inventoryRepo:     inventoryRepo,
+		stocksRepo:        stocksRepo,
 		sequenceGenerator: NewSequenceGenerator(db),
 	}
 }
@@ -89,8 +89,8 @@ func (r *OrderRepository) ListSalesOrders(ctx context.Context, filter *entity.Sa
 		if filter.OrderNumber != "" {
 			query = query.Where("order_number LIKE ?", "%"+filter.OrderNumber+"%")
 		}
-		if filter.CustomerID != nil {
-			query = query.Where("customer_id = ?", *filter.CustomerID)
+		if filter.ClientID != nil {
+			query = query.Where("client_id = ?", *filter.ClientID)
 		}
 		if filter.Status != nil {
 			query = query.Where("status = ?", *filter.Status)
@@ -104,9 +104,9 @@ func (r *OrderRepository) ListSalesOrders(ctx context.Context, filter *entity.Sa
 		if filter.EndDate != nil {
 			query = query.Where("order_date <= ?", *filter.EndDate)
 		}
-		if filter.ItemID != "" {
+		if filter.SKUID != "" {
 			// This requires a more complex query to search in the JSONB items array
-			query = query.Where("items @> ?", fmt.Sprintf(`[{"item_id": "%s"}]`, filter.ItemID))
+			query = query.Where("items @> ?", fmt.Sprintf(`[{"sku_id": "%s"}]`, filter.SKUID))
 		}
 	}
 
@@ -183,8 +183,8 @@ func (r *OrderRepository) ListDeliveryOrders(ctx context.Context, filter *entity
 		if filter.EndDate != nil {
 			query = query.Where("delivery_date <= ?", *filter.EndDate)
 		}
-		if filter.WarehouseID != "" {
-			query = query.Where("warehouse_id = ?", filter.WarehouseID)
+		if filter.StoreID != "" {
+			query = query.Where("store_id = ?", filter.StoreID)
 		}
 	}
 
@@ -232,17 +232,17 @@ func (r *OrderRepository) ProcessDelivery(ctx context.Context, deliveryID string
 	for _, item := range delivery.Items {
 		// Create stock entry for inventory reduction
 		stockEntry := &entity.StockEntry{
-			WarehouseID: delivery.WarehouseID,
-			ProductID:   item.ItemID,
-			Type:        "OUT",
-			Quantity:    item.ShippedQuantity,
-			Reference:   delivery.DeliveryNumber,
-			Note:        fmt.Sprintf("Delivery for Sales Order %s", delivery.SalesOrderID),
-			CreatedBy:   userID,
+			StoreID:   delivery.StoreID,
+			SKUID:     item.SKUID,
+			Type:      "OUT",
+			Quantity:  item.ShippedQuantity,
+			Reference: delivery.DeliveryNumber,
+			Note:      fmt.Sprintf("Delivery for Sales Order %s", delivery.SalesOrderID),
+			CreatedBy: userID,
 		}
 
 		// Process the stock entry using the inventory repository
-		if err := r.inventoryRepo.ProcessStockEntry(ctx, stockEntry, userID); err != nil {
+		if err := r.stocksRepo.ProcessStockEntry(ctx, stockEntry, userID); err != nil {
 			tx.Rollback()
 			return err
 		}
@@ -331,24 +331,24 @@ func (r *OrderRepository) UpdateInvoiceStatus(ctx context.Context, id string, st
 }
 
 // CheckStockAvailability checks if there is enough stock for all items in an order
-func (r *OrderRepository) CheckStockAvailability(ctx context.Context, warehouseID string, items []entity.SalesOrderItem) (bool, map[string]float64, error) {
+func (r *OrderRepository) CheckStockAvailability(ctx context.Context, storeID string, items []entity.SalesOrderItem) (bool, map[string]float64, error) {
 	insufficientItems := make(map[string]float64)
 
 	for _, item := range items {
 		// Get current inventory for this product in the warehouse
-		inventory, err := r.inventoryRepo.GetByProductAndWarehouse(ctx, item.ItemID, warehouseID)
+		stock, err := r.stocksRepo.GetBySKUAndStore(ctx, item.SKUID, storeID)
 		if err != nil {
 			if err == ErrRecordNotFound {
 				// No inventory record means zero quantity
-				insufficientItems[item.ItemID] = 0
+				insufficientItems[item.SKUID] = 0
 				continue
 			}
 			return false, nil, err
 		}
 
 		// Check if there's enough stock
-		if inventory.Quantity < item.Quantity {
-			insufficientItems[item.ItemID] = inventory.Quantity
+		if stock.Quantity < item.Quantity {
+			insufficientItems[item.SKUID] = stock.Quantity
 		}
 	}
 

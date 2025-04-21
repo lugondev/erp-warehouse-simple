@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS suppliers (
+CREATE TABLE IF NOT EXISTS vendors (
 	id SERIAL PRIMARY KEY,
 	code VARCHAR(50) UNIQUE NOT NULL,
 	name VARCHAR(255) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS suppliers (
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE IF NOT EXISTS vendor_skus (
 	id SERIAL PRIMARY KEY,
 	code VARCHAR(50) UNIQUE NOT NULL,
 	name VARCHAR(255) NOT NULL,
@@ -26,14 +26,14 @@ CREATE TABLE IF NOT EXISTS products (
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE IF NOT EXISTS supplier_products (
-	supplier_id INTEGER REFERENCES suppliers(id) ON DELETE CASCADE,
-	product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
-	PRIMARY KEY (supplier_id, product_id)
+CREATE TABLE IF NOT EXISTS vendor_sku_mappings (
+	vendor_id INTEGER REFERENCES vendors(id) ON DELETE CASCADE,
+	sku_id INTEGER REFERENCES vendor_skus(id) ON DELETE CASCADE,
+	PRIMARY KEY (vendor_id, sku_id)
 );
 CREATE TABLE IF NOT EXISTS contracts (
 	id SERIAL PRIMARY KEY,
-	supplier_id INTEGER REFERENCES suppliers(id) ON DELETE CASCADE,
+	vendor_id INTEGER REFERENCES vendors(id) ON DELETE CASCADE,
 	contract_no VARCHAR(100) UNIQUE NOT NULL,
 	start_date TIMESTAMP WITH TIME ZONE,
 	end_date TIMESTAMP WITH TIME ZONE,
@@ -42,18 +42,21 @@ CREATE TABLE IF NOT EXISTS contracts (
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE TABLE IF NOT EXISTS supplier_ratings (
+CREATE TABLE IF NOT EXISTS vendor_ratings (
 	id SERIAL PRIMARY KEY,
-	supplier_id INTEGER REFERENCES suppliers(id) ON DELETE CASCADE,
+	vendor_id INTEGER REFERENCES vendors(id) ON DELETE CASCADE,
 	score DECIMAL(3, 2) NOT NULL,
 	category VARCHAR(100),
 	comment TEXT,
 	rated_by INTEGER REFERENCES users(id),
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-CREATE INDEX idx_suppliers_code ON suppliers(code);
-CREATE INDEX idx_suppliers_name ON suppliers(name);
-CREATE INDEX idx_products_code ON products(code);
-CREATE INDEX idx_contracts_supplier ON contracts(supplier_id);
+-- Create indexes for better query performance
+CREATE INDEX idx_vendors_code ON vendors(code);
+CREATE INDEX idx_vendors_name ON vendors(name);
+CREATE INDEX idx_vendor_skus_code ON vendor_skus(code);
+CREATE INDEX idx_contracts_vendor ON contracts(vendor_id);
 CREATE INDEX idx_contracts_dates ON contracts(start_date, end_date);
-CREATE INDEX idx_supplier_ratings ON supplier_ratings(supplier_id);
+CREATE INDEX idx_vendor_ratings ON vendor_ratings(vendor_id);
+CREATE INDEX idx_vendor_sku_mappings_vendor ON vendor_sku_mappings(vendor_id);
+CREATE INDEX idx_vendor_sku_mappings_sku ON vendor_sku_mappings(sku_id);

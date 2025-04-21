@@ -27,13 +27,13 @@ func NewOrderHandlers(orderUseCase *usecase.OrderUseCase) *OrderHandlers {
 
 // CreateSalesOrderRequest represents the request to create a sales order
 type CreateSalesOrderRequest struct {
-	CustomerID      uint                    `json:"customer_id" binding:"required"`
+	ClientID        uint                    `json:"client_id" binding:"required"`
 	Items           []entity.SalesOrderItem `json:"items" binding:"required,dive"`
 	ShippingAddress string                  `json:"shipping_address"`
 	BillingAddress  string                  `json:"billing_address"`
 	PaymentMethod   entity.PaymentMethod    `json:"payment_method"`
 	Notes           string                  `json:"notes"`
-	WarehouseID     string                  `json:"warehouse_id" binding:"required"`
+	StoreID         string                  `json:"store_id" binding:"required"`
 }
 
 // CreateSalesOrder creates a new sales order
@@ -65,7 +65,7 @@ func (h *OrderHandlers) CreateSalesOrder(c *gin.Context) {
 
 	// Create sales order entity
 	order := &entity.SalesOrder{
-		CustomerID:      req.CustomerID,
+		ClientID:        req.ClientID,
 		OrderDate:       time.Now(),
 		Items:           req.Items,
 		ShippingAddress: req.ShippingAddress,
@@ -77,7 +77,7 @@ func (h *OrderHandlers) CreateSalesOrder(c *gin.Context) {
 	}
 
 	// Create the order
-	if err := h.orderUseCase.CreateSalesOrder(c.Request.Context(), order, req.WarehouseID, userID); err != nil {
+	if err := h.orderUseCase.CreateSalesOrder(c.Request.Context(), order, req.StoreID, userID); err != nil {
 		c.JSON(http.StatusInternalServerError, ErrorResponse{Error: err.Error()})
 		return
 	}
@@ -116,12 +116,12 @@ func (h *OrderHandlers) GetSalesOrder(c *gin.Context) {
 // SalesOrderFilter represents the filter for listing sales orders
 type SalesOrderFilter struct {
 	OrderNumber   string    `form:"order_number"`
-	CustomerID    *uint     `form:"customer_id"`
+	ClientID      *uint     `form:"client_id"`
 	Status        string    `form:"status"`
 	PaymentStatus string    `form:"payment_status"`
 	StartDate     time.Time `form:"start_date" time_format:"2006-01-02"`
 	EndDate       time.Time `form:"end_date" time_format:"2006-01-02"`
-	ItemID        string    `form:"item_id"`
+	SKUID         string    `form:"sku_id"`
 }
 
 // ListSalesOrders lists sales orders with optional filtering
@@ -151,8 +151,8 @@ func (h *OrderHandlers) ListSalesOrders(c *gin.Context) {
 	// Convert filter to entity filter
 	entityFilter := &entity.SalesOrderFilter{
 		OrderNumber: filter.OrderNumber,
-		CustomerID:  filter.CustomerID,
-		ItemID:      filter.ItemID,
+		ClientID:    filter.ClientID,
+		SKUID:       filter.SKUID,
 	}
 
 	// Convert string status to entity status if provided
@@ -279,7 +279,7 @@ type CreateDeliveryOrderRequest struct {
 	ShippingAddress string                     `json:"shipping_address"`
 	TrackingNumber  string                     `json:"tracking_number"`
 	ShippingMethod  string                     `json:"shipping_method"`
-	WarehouseID     string                     `json:"warehouse_id" binding:"required"`
+	StoreID         string                     `json:"store_id" binding:"required"`
 	Notes           string                     `json:"notes"`
 }
 
@@ -325,7 +325,7 @@ func (h *OrderHandlers) CreateDeliveryOrder(c *gin.Context) {
 		ShippingAddress: req.ShippingAddress,
 		TrackingNumber:  req.TrackingNumber,
 		ShippingMethod:  req.ShippingMethod,
-		WarehouseID:     req.WarehouseID,
+		StoreID:         req.StoreID,
 		Notes:           req.Notes,
 		Status:          entity.DeliveryOrderStatusPending,
 	}
@@ -374,7 +374,7 @@ type DeliveryOrderFilter struct {
 	Status         string    `form:"status"`
 	StartDate      time.Time `form:"start_date" time_format:"2006-01-02"`
 	EndDate        time.Time `form:"end_date" time_format:"2006-01-02"`
-	WarehouseID    string    `form:"warehouse_id"`
+	StoreID        string    `form:"store_id"`
 }
 
 // ListDeliveryOrders lists delivery orders with optional filtering
@@ -404,7 +404,7 @@ func (h *OrderHandlers) ListDeliveryOrders(c *gin.Context) {
 	entityFilter := &entity.DeliveryOrderFilter{
 		DeliveryNumber: filter.DeliveryNumber,
 		SalesOrderID:   filter.SalesOrderID,
-		WarehouseID:    filter.WarehouseID,
+		StoreID:        filter.StoreID,
 	}
 
 	// Convert string status to entity status if provided

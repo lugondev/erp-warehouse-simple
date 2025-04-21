@@ -16,16 +16,6 @@ definitions:
     - ActionDelete
     - ActionLogin
     - ActionLogout
-  entity.AddressType:
-    enum:
-    - BILLING
-    - SHIPPING
-    - BOTH
-    type: string
-    x-enum-varnames:
-    - AddressTypeBilling
-    - AddressTypeShipping
-    - AddressTypeBoth
   entity.AuditLog:
     properties:
       action:
@@ -62,19 +52,32 @@ definitions:
       version:
         type: string
     type: object
-  entity.ContactInfo:
+  entity.Client:
+    type: object
+  entity.ClientAddress:
     properties:
-      address:
+      city:
         type: string
+      client_id:
+        type: integer
       country:
         type: string
-      email:
+      created_at:
         type: string
-      phone:
+      id:
+        type: integer
+      is_default:
+        type: boolean
+      postal_code:
         type: string
-      tax_id:
+      state:
         type: string
-      website:
+      street:
+        type: string
+      type:
+        description: SHIPPING, BILLING, BOTH
+        type: string
+      updated_at:
         type: string
     type: object
   entity.Contract:
@@ -91,12 +94,14 @@ definitions:
         type: string
       status:
         type: string
-      supplier_id:
-        type: integer
       terms:
         type: string
       updated_at:
         type: string
+      vendor:
+        $ref: '#/definitions/entity.Vendor'
+      vendor_id:
+        type: integer
     type: object
   entity.CreateFinanceInvoiceRequest:
     properties:
@@ -203,139 +208,6 @@ definitions:
     - recipients
     - report_type
     type: object
-  entity.Customer:
-    properties:
-      addresses:
-        items:
-          $ref: '#/definitions/entity.CustomerAddress'
-        type: array
-      code:
-        type: string
-      contacts:
-        items:
-          $ref: '#/definitions/entity.CustomerContact'
-        type: array
-      created_at:
-        type: string
-      credit_limit:
-        type: number
-      current_debt:
-        type: number
-      email:
-        type: string
-      id:
-        type: integer
-      loyalty_points:
-        type: integer
-      loyalty_tier:
-        $ref: '#/definitions/entity.CustomerLoyaltyTier'
-      name:
-        type: string
-      notes:
-        type: string
-      phone_number:
-        type: string
-      sales_orders:
-        items:
-          $ref: '#/definitions/entity.SalesOrder'
-        type: array
-      tax_id:
-        type: string
-      type:
-        $ref: '#/definitions/entity.CustomerType'
-      updated_at:
-        type: string
-    type: object
-  entity.CustomerAddress:
-    properties:
-      city:
-        type: string
-      country:
-        type: string
-      created_at:
-        type: string
-      customer_id:
-        type: integer
-      id:
-        type: integer
-      is_default:
-        type: boolean
-      postal_code:
-        type: string
-      state:
-        type: string
-      street:
-        type: string
-      type:
-        $ref: '#/definitions/entity.AddressType'
-      updated_at:
-        type: string
-    type: object
-  entity.CustomerContact:
-    properties:
-      email:
-        type: string
-      name:
-        type: string
-      phone_number:
-        type: string
-      position:
-        type: string
-    type: object
-  entity.CustomerDebt:
-    properties:
-      last_payment_amount:
-        type: number
-      last_payment_date:
-        type: string
-      overdue_debt:
-        type: number
-      total_debt:
-        type: number
-      upcoming_payments:
-        type: number
-    type: object
-  entity.CustomerLoyaltyTier:
-    enum:
-    - STANDARD
-    - SILVER
-    - GOLD
-    - PLATINUM
-    type: string
-    x-enum-varnames:
-    - CustomerLoyaltyTierStandard
-    - CustomerLoyaltyTierSilver
-    - CustomerLoyaltyTierGold
-    - CustomerLoyaltyTierPlatinum
-  entity.CustomerOrderHistory:
-    properties:
-      average_order_value:
-        type: number
-      first_order_date:
-        type: string
-      frequent_items:
-        items:
-          type: string
-        type: array
-      last_order_date:
-        type: string
-      total_orders:
-        type: integer
-      total_spent:
-        type: number
-    type: object
-  entity.CustomerType:
-    enum:
-    - INDIVIDUAL
-    - CORPORATE
-    - RESELLER
-    - WHOLESALER
-    type: string
-    x-enum-varnames:
-    - CustomerTypeIndividual
-    - CustomerTypeCorporate
-    - CustomerTypeReseller
-    - CustomerTypeWholesaler
   entity.DeliveryOrder:
     properties:
       created_at:
@@ -366,19 +238,15 @@ definitions:
         type: string
       status:
         $ref: '#/definitions/entity.DeliveryOrderStatus'
+      store_id:
+        type: string
       tracking_number:
         type: string
       updated_at:
         type: string
-      warehouse_id:
-        type: string
     type: object
   entity.DeliveryOrderItem:
     properties:
-      item:
-        $ref: '#/definitions/entity.Item'
-      item_id:
-        type: string
       notes:
         type: string
       ordered_quantity:
@@ -387,6 +255,10 @@ definitions:
         type: number
       shipped_quantity:
         type: number
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
     type: object
   entity.DeliveryOrderStatus:
     enum:
@@ -686,60 +558,6 @@ definitions:
       total_tax:
         type: number
     type: object
-  entity.Inventory:
-    properties:
-      batch_number:
-        type: string
-      bin_location:
-        type: string
-      created_at:
-        type: string
-      expiry_date:
-        type: string
-      id:
-        type: string
-      lot_number:
-        type: string
-      manufacture_date:
-        type: string
-      product_id:
-        type: string
-      quantity:
-        type: number
-      shelf_number:
-        type: string
-      updated_at:
-        type: string
-      warehouse_id:
-        type: string
-      zone_code:
-        type: string
-    type: object
-  entity.InventoryHistory:
-    properties:
-      created_at:
-        type: string
-      created_by:
-        type: string
-      id:
-        type: string
-      inventory_id:
-        type: string
-      new_qty:
-        type: number
-      note:
-        type: string
-      previous_qty:
-        type: number
-      quantity:
-        type: number
-      reference:
-        description: Stock Entry ID
-        type: string
-      type:
-        description: IN/OUT/ADJUST
-        type: string
-    type: object
   entity.Invoice:
     properties:
       amount:
@@ -789,80 +607,8 @@ definitions:
     - InvoiceStatusPartial
     - InvoiceStatusOverdue
     - InvoiceStatusCancelled
-  entity.Item:
-    properties:
-      category:
-        type: string
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      image_url:
-        type: string
-      manufacturer:
-        $ref: '#/definitions/entity.Supplier'
-      manufacturer_id:
-        type: integer
-      name:
-        type: string
-      price:
-        type: number
-      sku:
-        type: string
-      status:
-        $ref: '#/definitions/entity.ItemStatus'
-      supplier:
-        $ref: '#/definitions/entity.Supplier'
-      supplier_id:
-        type: integer
-      technical_specs:
-        $ref: '#/definitions/entity.TechnicalSpecs'
-      unit_of_measure:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  entity.ItemCategory:
-    properties:
-      children:
-        items:
-          $ref: '#/definitions/entity.ItemCategory'
-        type: array
-      created_at:
-        type: string
-      description:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      parent:
-        $ref: '#/definitions/entity.ItemCategory'
-      parent_id:
-        type: string
-      updated_at:
-        type: string
-    type: object
-  entity.ItemStatus:
-    enum:
-    - ACTIVE
-    - INACTIVE
-    - ARCHIVED
-    type: string
-    x-enum-varnames:
-    - ItemStatusActive
-    - ItemStatusInactive
-    - ItemStatusArchived
-  entity.LocationUpdate:
-    properties:
-      bin_location:
-        type: string
-      shelf_number:
-        type: string
-      zone_code:
-        type: string
+  entity.JSONMap:
+    additionalProperties: true
     type: object
   entity.ManufacturingFacility:
     properties:
@@ -910,15 +656,6 @@ definitions:
     - PaymentStatusPaid
     - PaymentStatusOverdue
     - PaymentStatusCancelled
-  entity.PaymentTerms:
-    properties:
-      currency:
-        type: string
-      payment_days:
-        type: integer
-      payment_method:
-        type: string
-    type: object
   entity.Permission:
     enum:
     - user:create
@@ -929,20 +666,18 @@ definitions:
     - role:read
     - role:update
     - role:delete
-    - audit:read
-    - module:integrate
-    - warehouse:create
-    - warehouse:read
-    - warehouse:update
-    - warehouse:delete
-    - inventory:read
-    - inventory:update
-    - stock:create
+    - store:create
+    - store:read
+    - store:update
+    - store:delete
     - stock:read
-    - supplier:create
-    - supplier:read
-    - supplier:update
-    - supplier:delete
+    - stock:update
+    - stock:entry:create
+    - stock:entry:read
+    - vendor:create
+    - vendor:read
+    - vendor:update
+    - vendor:delete
     - product:create
     - product:read
     - product:update
@@ -981,18 +716,18 @@ definitions:
     - purchase:payment:create
     - purchase:payment:read
     - purchase:payment:update
-    - customer:create
-    - customer:read
-    - customer:update
-    - customer:delete
-    - customer:address:create
-    - customer:address:read
-    - customer:address:update
-    - customer:address:delete
-    - customer:debt:read
-    - customer:debt:update
-    - customer:loyalty:read
-    - customer:loyalty:update
+    - client:create
+    - client:read
+    - client:update
+    - client:delete
+    - client:address:create
+    - client:address:read
+    - client:address:update
+    - client:address:delete
+    - client:debt:read
+    - client:debt:update
+    - client:loyalty:read
+    - client:loyalty:update
     - sales:order:create
     - sales:order:read
     - sales:order:update
@@ -1026,6 +761,8 @@ definitions:
     - report:schedule:read
     - report:schedule:update
     - report:schedule:delete
+    - audit:log:read
+    - module:integrate
     type: string
     x-enum-varnames:
     - UserCreate
@@ -1036,20 +773,18 @@ definitions:
     - RoleRead
     - RoleUpdate
     - RoleDelete
-    - AuditLogRead
-    - ModuleIntegrate
-    - WarehouseCreate
-    - WarehouseRead
-    - WarehouseUpdate
-    - WarehouseDelete
-    - InventoryRead
-    - InventoryUpdate
+    - StoreCreate
+    - StoreRead
+    - StoreUpdate
+    - StoreDelete
+    - StockRead
+    - StockUpdate
     - StockEntryCreate
     - StockEntryRead
-    - SupplierCreate
-    - SupplierRead
-    - SupplierUpdate
-    - SupplierDelete
+    - VendorCreate
+    - VendorRead
+    - VendorUpdate
+    - VendorDelete
     - ProductCreate
     - ProductRead
     - ProductUpdate
@@ -1088,18 +823,18 @@ definitions:
     - PurchasePaymentCreate
     - PurchasePaymentRead
     - PurchasePaymentUpdate
-    - CustomerCreate
-    - CustomerRead
-    - CustomerUpdate
-    - CustomerDelete
-    - CustomerAddressCreate
-    - CustomerAddressRead
-    - CustomerAddressUpdate
-    - CustomerAddressDelete
-    - CustomerDebtRead
-    - CustomerDebtUpdate
-    - CustomerLoyaltyRead
-    - CustomerLoyaltyUpdate
+    - ClientCreate
+    - ClientRead
+    - ClientUpdate
+    - ClientDelete
+    - ClientAddressCreate
+    - ClientAddressRead
+    - ClientAddressUpdate
+    - ClientAddressDelete
+    - ClientDebtRead
+    - ClientDebtUpdate
+    - ClientLoyaltyRead
+    - ClientLoyaltyUpdate
     - SalesOrderCreate
     - SalesOrderRead
     - SalesOrderUpdate
@@ -1133,9 +868,13 @@ definitions:
     - ReportScheduleRead
     - ReportScheduleUpdate
     - ReportScheduleDelete
+    - AuditLogRead
+    - ModuleIntegrate
   entity.Product:
     properties:
       code:
+        type: string
+      created_at:
         type: string
       currency:
         type: string
@@ -1147,6 +886,12 @@ definitions:
         type: string
       unit_price:
         type: number
+      updated_at:
+        type: string
+      vendors:
+        items:
+          $ref: '#/definitions/entity.Vendor'
+        type: array
     type: object
   entity.ProductionOrder:
     properties:
@@ -1241,14 +986,14 @@ definitions:
         $ref: '#/definitions/entity.PurchaseOrderStatus'
       sub_total:
         type: number
-      supplier:
-        $ref: '#/definitions/entity.Supplier'
-      supplier_id:
-        type: integer
       tax_total:
         type: number
       updated_at:
         type: string
+      vendor:
+        $ref: '#/definitions/entity.Vendor'
+      vendor_id:
+        type: integer
     type: object
   entity.PurchaseOrderItem:
     properties:
@@ -1256,12 +1001,12 @@ definitions:
         type: string
       discount:
         type: number
-      item:
-        $ref: '#/definitions/entity.Item'
-      item_id:
-        type: string
       quantity:
         type: number
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
       tax_amount:
         type: number
       tax_rate:
@@ -1350,17 +1095,13 @@ definitions:
         $ref: '#/definitions/entity.User'
       received_by_id:
         type: integer
-      updated_at:
+      store_id:
         type: string
-      warehouse_id:
+      updated_at:
         type: string
     type: object
   entity.PurchaseReceiptItem:
     properties:
-      item:
-        $ref: '#/definitions/entity.Item'
-      item_id:
-        type: string
       notes:
         type: string
       ordered_quantity:
@@ -1369,6 +1110,10 @@ definitions:
         type: number
       rejected_quantity:
         type: number
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
       total_price:
         type: number
       unit_price:
@@ -1427,12 +1172,12 @@ definitions:
     properties:
       description:
         type: string
-      item:
-        $ref: '#/definitions/entity.Item'
-      item_id:
-        type: string
       quantity:
         type: number
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
     type: object
   entity.PurchaseRequestStatus:
     enum:
@@ -1510,21 +1255,87 @@ definitions:
       updated_at:
         type: string
     type: object
+  entity.SKU:
+    properties:
+      category:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      image_url:
+        type: string
+      manufacturer:
+        $ref: '#/definitions/entity.Vendor'
+      manufacturer_id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      sku_code:
+        type: string
+      status:
+        $ref: '#/definitions/entity.SKUStatus'
+      technical_specs:
+        $ref: '#/definitions/entity.JSONMap'
+      unit_of_measure:
+        type: string
+      updated_at:
+        type: string
+      vendor:
+        $ref: '#/definitions/entity.Vendor'
+      vendor_id:
+        type: integer
+    type: object
+  entity.SKUCategory:
+    properties:
+      children:
+        items:
+          $ref: '#/definitions/entity.SKUCategory'
+        type: array
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      parent:
+        $ref: '#/definitions/entity.SKUCategory'
+      parent_id:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.SKUStatus:
+    enum:
+    - ACTIVE
+    - INACTIVE
+    - ARCHIVED
+    type: string
+    x-enum-varnames:
+    - SKUStatusActive
+    - SKUStatusInactive
+    - SKUStatusArchived
   entity.SalesOrder:
     properties:
       billing_address:
         type: string
+      client:
+        allOf:
+        - $ref: '#/definitions/entity.User'
+        description: Using User as Client for now
+      client_id:
+        type: integer
       created_at:
         type: string
       created_by:
         $ref: '#/definitions/entity.User'
       created_by_id:
-        type: integer
-      customer:
-        allOf:
-        - $ref: '#/definitions/entity.User'
-        description: Using User as Customer for now
-      customer_id:
         type: integer
       delivery_orders:
         items:
@@ -1571,12 +1382,12 @@ definitions:
         type: string
       discount:
         type: number
-      item:
-        $ref: '#/definitions/entity.Item'
-      item_id:
-        type: string
       quantity:
         type: number
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
       tax_amount:
         type: number
       tax_rate:
@@ -1604,6 +1415,39 @@ definitions:
     - SalesOrderStatusDelivered
     - SalesOrderStatusCompleted
     - SalesOrderStatusCancelled
+  entity.Stock:
+    properties:
+      batch_number:
+        type: string
+      bin_location:
+        type: string
+      created_at:
+        type: string
+      expiry_date:
+        type: string
+      id:
+        type: string
+      lot_number:
+        type: string
+      manufacture_date:
+        type: string
+      quantity:
+        type: number
+      shelf_number:
+        type: string
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
+      store:
+        $ref: '#/definitions/entity.Store'
+      store_id:
+        type: string
+      updated_at:
+        type: string
+      zone_code:
+        type: string
+    type: object
   entity.StockEntry:
     properties:
       batch_number:
@@ -1612,69 +1456,79 @@ definitions:
         type: string
       created_by:
         type: string
+      expiry_date:
+        type: string
       id:
         type: string
       lot_number:
         type: string
-      note:
+      manufacture_date:
         type: string
-      product_id:
+      note:
         type: string
       quantity:
         type: number
       reference:
-        description: PO/SO number
+        type: string
+      sku:
+        $ref: '#/definitions/entity.SKU'
+      sku_id:
+        type: string
+      store:
+        $ref: '#/definitions/entity.Store'
+      store_id:
         type: string
       type:
-        description: IN/OUT
-        type: string
-      warehouse_id:
+        description: IN, OUT
         type: string
     type: object
-  entity.Supplier:
+  entity.Store:
     properties:
+      address:
+        type: string
       code:
         type: string
-      contact_info:
-        $ref: '#/definitions/entity.ContactInfo'
-      contracts:
-        items:
-          $ref: '#/definitions/entity.Contract'
-        type: array
+      contact:
+        type: string
       created_at:
         type: string
       id:
+        type: string
+      manager:
+        $ref: '#/definitions/entity.User'
+      manager_id:
         type: integer
       name:
         type: string
-      payment_terms:
-        $ref: '#/definitions/entity.PaymentTerms'
-      products:
+      status:
+        $ref: '#/definitions/entity.StoreStatus'
+      stocks:
         items:
-          $ref: '#/definitions/entity.Product'
+          $ref: '#/definitions/entity.Stock'
         type: array
-      rating:
-        type: number
       type:
-        $ref: '#/definitions/entity.SupplierType'
+        $ref: '#/definitions/entity.StoreType'
       updated_at:
         type: string
     type: object
-  entity.SupplierType:
+  entity.StoreStatus:
     enum:
-    - manufacturer
-    - wholesaler
-    - distributor
-    - retailer
+    - ACTIVE
+    - INACTIVE
     type: string
     x-enum-varnames:
-    - Manufacturer
-    - Wholesaler
-    - Distributor
-    - Retailer
-  entity.TechnicalSpecs:
-    additionalProperties: true
-    type: object
+    - StoreStatusActive
+    - StoreStatusInactive
+  entity.StoreType:
+    enum:
+    - RAW
+    - FINISHED
+    - GENERAL
+    type: string
+    x-enum-varnames:
+    - StoreTypeRaw
+    - StoreTypeFinished
+    - StoreTypeGeneral
   entity.UpdateFinanceInvoiceRequest:
     properties:
       discount_amount:
@@ -1755,45 +1609,74 @@ definitions:
     - StatusActive
     - StatusInactive
     - StatusLocked
-  entity.Warehouse:
+  entity.Vendor:
     properties:
       address:
         type: string
-      contact:
+      code:
+        type: string
+      contracts:
+        items:
+          $ref: '#/definitions/entity.Contract'
+        type: array
+      country:
+        type: string
+      created_at:
+        type: string
+      currency:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      payment_days:
+        type: integer
+      payment_method:
+        type: string
+      phone:
+        type: string
+      products:
+        items:
+          $ref: '#/definitions/entity.Product'
+        type: array
+      rating:
+        type: number
+      tax_id:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+      vendor_ratings:
+        items:
+          $ref: '#/definitions/entity.VendorRating'
+        type: array
+      website:
+        type: string
+    type: object
+  entity.VendorRating:
+    properties:
+      category:
+        type: string
+      comment:
         type: string
       created_at:
         type: string
       id:
-        type: string
-      manager_id:
-        type: string
-      name:
-        type: string
-      status:
-        $ref: '#/definitions/entity.WarehouseStatus'
-      type:
-        $ref: '#/definitions/entity.WarehouseType'
-      updated_at:
-        type: string
+        type: integer
+      rated_by:
+        $ref: '#/definitions/entity.User'
+      rated_by_id:
+        type: integer
+      score:
+        type: number
+      vendor:
+        $ref: '#/definitions/entity.Vendor'
+      vendor_id:
+        type: integer
     type: object
-  entity.WarehouseStatus:
-    enum:
-    - ACTIVE
-    - INACTIVE
-    type: string
-    x-enum-varnames:
-    - WarehouseStatusActive
-    - WarehouseStatusInactive
-  entity.WarehouseType:
-    enum:
-    - RAW
-    - FINISHED
-    - GENERAL
-    type: string
-    x-enum-varnames:
-    - WarehouseTypeRaw
-    - WarehouseTypeFinished
-    - WarehouseTypeGeneral
   server.AuditLogResponse:
     properties:
       logs:
@@ -1818,14 +1701,14 @@ definitions:
         type: string
       shipping_method:
         type: string
-      tracking_number:
+      store_id:
         type: string
-      warehouse_id:
+      tracking_number:
         type: string
     required:
     - delivery_date
     - items
-    - warehouse_id
+    - store_id
     type: object
   server.CreateInvoiceRequest:
     properties:
@@ -1862,7 +1745,7 @@ definitions:
     properties:
       billing_address:
         type: string
-      customer_id:
+      client_id:
         type: integer
       items:
         items:
@@ -1874,12 +1757,12 @@ definitions:
         $ref: '#/definitions/entity.PaymentMethod'
       shipping_address:
         type: string
-      warehouse_id:
+      store_id:
         type: string
     required:
-    - customer_id
+    - client_id
     - items
-    - warehouse_id
+    - store_id
     type: object
   server.ErrorResponse:
     properties:
@@ -2254,41 +2137,41 @@ paths:
       summary: Reset password
       tags:
       - auth
-  /customers:
+  /clients:
     get:
-      description: List customers with optional filtering
+      description: List clients with optional filtering
       parameters:
-      - description: Filter by code
+      - description: Client code
         in: query
         name: code
         type: string
-      - description: Filter by name
+      - description: Client name
         in: query
         name: name
         type: string
-      - description: Filter by type
-        in: query
-        name: type
-        type: string
-      - description: Filter by email
+      - description: Client email
         in: query
         name: email
         type: string
-      - description: Filter by phone number
+      - description: Client phone number
         in: query
         name: phone_number
         type: string
-      - description: Filter by loyalty tier
-        in: query
-        name: loyalty_tier
-        type: string
-      - description: Filter by city
+      - description: Client city
         in: query
         name: city
         type: string
-      - description: Filter by country
+      - description: Client country
         in: query
         name: country
+        type: string
+      - description: Client type
+        in: query
+        name: type
+        type: string
+      - description: Client loyalty tier
+        in: query
+        name: loyalty_tier
         type: string
       produces:
       - application/json
@@ -2297,53 +2180,53 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Customer'
+              $ref: '#/definitions/entity.Client'
             type: array
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: List customers
+      summary: List clients
       tags:
-      - customers
+      - clients
     post:
       consumes:
       - application/json
-      description: Create a new customer with the provided details
+      description: Create a new client with the provided details
       parameters:
-      - description: Customer details
+      - description: Client details
         in: body
-        name: customer
+        name: client
         required: true
         schema:
-          $ref: '#/definitions/entity.Customer'
+          $ref: '#/definitions/entity.Client'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/entity.Customer'
+            $ref: '#/definitions/entity.Client'
         "400":
-          description: Bad Request
+          description: Invalid input
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Create a new customer
+      summary: Create a new client
       tags:
-      - customers
-  /customers/{id}:
+      - clients
+  /clients/{id}:
     delete:
-      description: Delete a customer by their ID
+      description: Delete a client by ID
       parameters:
-      - description: Customer ID
+      - description: Client ID
         in: path
         name: id
         required: true
@@ -2354,22 +2237,22 @@ paths:
         "204":
           description: No Content
         "400":
-          description: Bad Request
+          description: Invalid client ID
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Delete a customer
+      summary: Delete a client
       tags:
-      - customers
+      - clients
     get:
-      description: Get a customer's details by their ID
+      description: Get a client's details by their ID
       parameters:
-      - description: Customer ID
+      - description: Client ID
         in: path
         name: id
         required: true
@@ -2380,65 +2263,61 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Customer'
-        "404":
-          description: Not Found
+            $ref: '#/definitions/entity.Client'
+        "400":
+          description: Invalid client ID
           schema:
             $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
+        "404":
+          description: Client not found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get a customer by ID
+      summary: Get a client by ID
       tags:
-      - customers
+      - clients
     put:
       consumes:
       - application/json
-      description: Update a customer's details
+      description: Update a client's details
       parameters:
-      - description: Customer ID
+      - description: Client ID
         in: path
         name: id
         required: true
         type: integer
-      - description: Updated customer details
+      - description: Client details
         in: body
-        name: customer
+        name: client
         required: true
         schema:
-          $ref: '#/definitions/entity.Customer'
+          $ref: '#/definitions/entity.Client'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Customer'
+            $ref: '#/definitions/entity.Client'
         "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
+          description: Invalid input
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Update a customer
+      summary: Update a client
       tags:
-      - customers
-  /customers/{id}/addresses:
+      - clients
+  /clients/{id}/addresses:
     get:
-      description: Get all addresses for a customer
+      description: Get all addresses for a client
       parameters:
-      - description: Customer ID
+      - description: Client ID
         in: path
         name: id
         required: true
@@ -2450,27 +2329,27 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.CustomerAddress'
+              $ref: '#/definitions/entity.ClientAddress'
             type: array
         "400":
-          description: Bad Request
+          description: Invalid client ID
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get all addresses for a customer
+      summary: Get client addresses
       tags:
-      - customers
+      - clients
     post:
       consumes:
       - application/json
-      description: Create a new address for a customer
+      description: Create a new address for a client
       parameters:
-      - description: Customer ID
+      - description: Client ID
         in: path
         name: id
         required: true
@@ -2480,243 +2359,36 @@ paths:
         name: address
         required: true
         schema:
-          $ref: '#/definitions/entity.CustomerAddress'
+          $ref: '#/definitions/entity.ClientAddress'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/entity.CustomerAddress'
+            $ref: '#/definitions/entity.ClientAddress'
         "400":
-          description: Bad Request
+          description: Invalid input
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Create a new address for a customer
+      summary: Create a client address
       tags:
-      - customers
-  /customers/{id}/debt:
-    get:
-      description: Get a customer's debt information
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.CustomerDebt'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get a customer's debt information
-      tags:
-      - customers
-    put:
-      consumes:
-      - application/json
-      description: Update a customer's debt amount
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Debt amount
-        in: body
-        name: debt
-        required: true
-        schema:
-          additionalProperties:
-            type: number
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a customer's debt amount
-      tags:
-      - customers
-  /customers/{id}/loyalty/calculate-tier:
-    get:
-      description: Calculate a customer's loyalty tier based on points and purchase
-        history
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Calculate a customer's loyalty tier
-      tags:
-      - customers
-  /customers/{id}/loyalty/points:
-    put:
-      consumes:
-      - application/json
-      description: Update a customer's loyalty points
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Loyalty points
-        in: body
-        name: points
-        required: true
-        schema:
-          additionalProperties:
-            type: integer
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a customer's loyalty points
-      tags:
-      - customers
-  /customers/{id}/loyalty/tier:
-    put:
-      consumes:
-      - application/json
-      description: Update a customer's loyalty tier
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Loyalty tier
-        in: body
-        name: tier
-        required: true
-        schema:
-          additionalProperties:
-            type: string
-          type: object
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            additionalProperties:
-              type: string
-            type: object
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update a customer's loyalty tier
-      tags:
-      - customers
-  /customers/{id}/orders:
-    get:
-      description: Get a summary of a customer's order history
-      parameters:
-      - description: Customer ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.CustomerOrderHistory'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get a customer's order history
-      tags:
-      - customers
-  /customers/addresses/{addressId}:
+      - clients
+  /clients/{id}/addresses/{addressId}:
     delete:
-      description: Delete a customer address
+      description: Delete an address for a client
       parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: Address ID
         in: path
         name: addressId
@@ -2728,54 +2400,90 @@ paths:
         "204":
           description: No Content
         "400":
-          description: Bad Request
+          description: Invalid address ID
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Delete a customer address
+      summary: Delete a client address
       tags:
-      - customers
+      - clients
     put:
       consumes:
       - application/json
-      description: Update a customer address
+      description: Update an address for a client
       parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: integer
       - description: Address ID
         in: path
         name: addressId
         required: true
         type: integer
-      - description: Updated address details
+      - description: Address details
         in: body
         name: address
         required: true
         schema:
-          $ref: '#/definitions/entity.CustomerAddress'
+          $ref: '#/definitions/entity.ClientAddress'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.CustomerAddress'
+            $ref: '#/definitions/entity.ClientAddress'
         "400":
-          description: Bad Request
+          description: Invalid input
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Update a customer address
+      summary: Update a client address
       tags:
-      - customers
+      - clients
+  /clients/{id}/history:
+    get:
+      description: Get a client's order history
+      parameters:
+      - description: Client ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.SalesOrder'
+            type: array
+        "400":
+          description: Invalid client ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get client order history
+      tags:
+      - clients
   /finance/invoices:
     get:
       description: List finance invoices based on filter criteria
@@ -3421,672 +3129,6 @@ paths:
       summary: Get finance report
       tags:
       - Finance
-  /inventory:
-    get:
-      description: List inventory with optional filters
-      parameters:
-      - description: Filter by warehouse ID
-        in: query
-        name: warehouse_id
-        type: string
-      - description: Filter by product ID
-        in: query
-        name: product_id
-        type: string
-      - description: Filter by batch number
-        in: query
-        name: batch_number
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entity.Inventory'
-            type: array
-      security:
-      - BearerAuth: []
-      summary: List inventory
-      tags:
-      - Inventory
-  /inventory/{id}/history:
-    get:
-      description: Get history of stock movements for an inventory item
-      parameters:
-      - description: Inventory ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entity.InventoryHistory'
-            type: array
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get inventory history
-      tags:
-      - Inventory
-  /inventory/{id}/location:
-    put:
-      consumes:
-      - application/json
-      description: Update stock location details
-      parameters:
-      - description: Inventory ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Location details
-        in: body
-        name: location
-        required: true
-        schema:
-          $ref: '#/definitions/entity.LocationUpdate'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update stock location
-      tags:
-      - Inventory
-  /inventory/batch-stock-entries:
-    post:
-      consumes:
-      - application/json
-      description: Process multiple stock entries in batch
-      parameters:
-      - description: Array of stock entries
-        in: body
-        name: entries
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/entity.StockEntry'
-          type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Process batch stock entry
-      tags:
-      - Inventory
-  /inventory/check-stock:
-    get:
-      description: Check stock level for a product in a warehouse
-      parameters:
-      - description: Warehouse ID
-        in: query
-        name: warehouse_id
-        required: true
-        type: string
-      - description: Product ID
-        in: query
-        name: product_id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.Inventory'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Check stock
-      tags:
-      - Inventory
-  /inventory/stock-entries:
-    post:
-      consumes:
-      - application/json
-      description: Process a stock entry (in/out)
-      parameters:
-      - description: Stock entry details
-        in: body
-        name: entry
-        required: true
-        schema:
-          $ref: '#/definitions/entity.StockEntry'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.StockEntry'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Process stock entry
-      tags:
-      - Inventory
-  /item-categories:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of all item categories
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entity.ItemCategory'
-            type: array
-      security:
-      - BearerAuth: []
-      summary: List item categories
-      tags:
-      - item-categories
-    post:
-      consumes:
-      - application/json
-      description: Create a new item category with the provided information
-      parameters:
-      - description: Item category object
-        in: body
-        name: category
-        required: true
-        schema:
-          $ref: '#/definitions/entity.ItemCategory'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/entity.ItemCategory'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new item category
-      tags:
-      - item-categories
-  /item-categories/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an item category by ID
-      parameters:
-      - description: Category ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete an item category
-      tags:
-      - item-categories
-    get:
-      consumes:
-      - application/json
-      description: Get detailed information about an item category
-      parameters:
-      - description: Category ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.ItemCategory'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get an item category by ID
-      tags:
-      - item-categories
-    put:
-      consumes:
-      - application/json
-      description: Update an existing item category's information
-      parameters:
-      - description: Category ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated category object
-        in: body
-        name: category
-        required: true
-        schema:
-          $ref: '#/definitions/entity.ItemCategory'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.ItemCategory'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update an item category
-      tags:
-      - item-categories
-  /item-categories/{id}/items:
-    get:
-      consumes:
-      - application/json
-      description: Get items belonging to a specific category
-      parameters:
-      - description: Category ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Page size
-        in: query
-        name: page_size
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.PaginatedResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get items by category
-      tags:
-      - items
-  /item-categories/tree:
-    get:
-      consumes:
-      - application/json
-      description: Get item categories in a hierarchical structure
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/entity.ItemCategory'
-            type: array
-      security:
-      - BearerAuth: []
-      summary: Get item categories tree
-      tags:
-      - item-categories
-  /items:
-    get:
-      consumes:
-      - application/json
-      description: Get a list of items with optional filters
-      parameters:
-      - description: SKU filter
-        in: query
-        name: sku
-        type: string
-      - description: Name filter
-        in: query
-        name: name
-        type: string
-      - description: Category filter
-        in: query
-        name: category
-        type: string
-      - description: Manufacturer ID filter
-        in: query
-        name: manufacturer_id
-        type: integer
-      - description: Supplier ID filter
-        in: query
-        name: supplier_id
-        type: integer
-      - description: Status filter (ACTIVE, INACTIVE, ARCHIVED)
-        in: query
-        name: status
-        type: string
-      - description: Minimum price filter
-        in: query
-        name: min_price
-        type: number
-      - description: Maximum price filter
-        in: query
-        name: max_price
-        type: number
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Page size
-        in: query
-        name: page_size
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.PaginatedResponse'
-      security:
-      - BearerAuth: []
-      summary: List items
-      tags:
-      - items
-    post:
-      consumes:
-      - application/json
-      description: Create a new item with the provided information
-      parameters:
-      - description: Item object
-        in: body
-        name: item
-        required: true
-        schema:
-          $ref: '#/definitions/entity.Item'
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Created
-          schema:
-            $ref: '#/definitions/entity.Item'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Create a new item
-      tags:
-      - items
-  /items/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Delete an item by ID
-      parameters:
-      - description: Item ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "204":
-          description: No Content
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Delete an item
-      tags:
-      - items
-    get:
-      consumes:
-      - application/json
-      description: Get detailed information about an item
-      parameters:
-      - description: Item ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.Item'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get an item by ID
-      tags:
-      - items
-    put:
-      consumes:
-      - application/json
-      description: Update an existing item's information
-      parameters:
-      - description: Item ID
-        in: path
-        name: id
-        required: true
-        type: string
-      - description: Updated item object
-        in: body
-        name: item
-        required: true
-        schema:
-          $ref: '#/definitions/entity.Item'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.Item'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Update an item
-      tags:
-      - items
-  /items/bulk:
-    post:
-      consumes:
-      - application/json
-      description: Create multiple items in a single request
-      parameters:
-      - description: Array of item objects
-        in: body
-        name: items
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/entity.Item'
-          type: array
-      produces:
-      - application/json
-      responses:
-        "201":
-          description: Items created successfully
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Bulk create items
-      tags:
-      - items
-    put:
-      consumes:
-      - application/json
-      description: Update multiple items in a single request
-      parameters:
-      - description: Array of item objects with IDs
-        in: body
-        name: items
-        required: true
-        schema:
-          items:
-            $ref: '#/definitions/entity.Item'
-          type: array
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Items updated successfully
-          schema:
-            type: string
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Bulk update items
-      tags:
-      - items
-  /items/search:
-    get:
-      consumes:
-      - application/json
-      description: Search for items based on a search term
-      parameters:
-      - description: Search term
-        in: query
-        name: q
-        required: true
-        type: string
-      - description: Page number
-        in: query
-        name: page
-        type: integer
-      - description: Page size
-        in: query
-        name: page_size
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/server.PaginatedResponse'
-      security:
-      - BearerAuth: []
-      summary: Search items
-      tags:
-      - items
-  /items/sku/{sku}:
-    get:
-      consumes:
-      - application/json
-      description: Get detailed information about an item using its SKU
-      parameters:
-      - description: Item SKU
-        in: path
-        name: sku
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/entity.Item'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/server.ErrorResponse'
-      security:
-      - BearerAuth: []
-      summary: Get an item by SKU
-      tags:
-      - items
   /manufacturing/bom:
     post:
       consumes:
@@ -6442,32 +5484,166 @@ paths:
       summary: Update role
       tags:
       - roles
-  /suppliers:
+  /sku-categories:
     get:
+      description: Get a list of all SKU categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.SKUCategory'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List all SKU categories
+      tags:
+      - sku-categories
+    post:
       consumes:
       - application/json
-      description: Get a list of suppliers with optional filters
+      description: Create a new SKU category with the provided details
       parameters:
-      - description: Supplier type
-        in: query
-        name: type
+      - description: Category details
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SKUCategory'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.SKUCategory'
+        "400":
+          description: Invalid input or parent category not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new SKU category
+      tags:
+      - sku-categories
+  /sku-categories/{id}:
+    delete:
+      description: Delete an SKU category by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
         type: string
-      - description: Country
-        in: query
-        name: country
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Cannot delete category with children or used by SKUs
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete an SKU category
+      tags:
+      - sku-categories
+    get:
+      description: Get an SKU category's details by its ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
         type: string
-      - description: Name search
-        in: query
-        name: name
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SKUCategory'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an SKU category by ID
+      tags:
+      - sku-categories
+    put:
+      consumes:
+      - application/json
+      description: Update an existing SKU category with the provided details
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
         type: string
-      - description: Code search
-        in: query
-        name: code
+      - description: Category details
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/entity.SKUCategory'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SKUCategory'
+        "400":
+          description: Invalid input or category cannot be its own parent
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update an SKU category
+      tags:
+      - sku-categories
+  /sku-categories/{id}/skus:
+    get:
+      description: Get SKUs belonging to a specific category
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
         type: string
-      - description: Minimum rating
-        in: query
-        name: min_rating
-        type: number
       - description: Page number
         in: query
         name: page
@@ -6482,124 +5658,880 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/entity.Supplier'
-            type: array
+            $ref: '#/definitions/server.PaginatedResponse'
+        "404":
+          description: Category not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: List suppliers
+      summary: Get SKUs by category
       tags:
-      - suppliers
+      - sku-categories
+  /sku-categories/tree:
+    get:
+      description: Get SKU categories in a hierarchical tree structure
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.SKUCategory'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get SKU categories tree
+      tags:
+      - sku-categories
+  /skus:
+    get:
+      description: List SKUs with optional filtering
+      parameters:
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      - description: SKU code
+        in: query
+        name: sku_code
+        type: string
+      - description: SKU name
+        in: query
+        name: name
+        type: string
+      - description: Category
+        in: query
+        name: category
+        type: string
+      - description: Status
+        in: query
+        name: status
+        type: string
+      - description: Vendor ID
+        in: query
+        name: vendor_id
+        type: integer
+      - description: Manufacturer ID
+        in: query
+        name: manufacturer_id
+        type: integer
+      - description: Minimum price
+        in: query
+        name: min_price
+        type: number
+      - description: Maximum price
+        in: query
+        name: max_price
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+        "400":
+          description: Invalid price range
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List SKUs
+      tags:
+      - skus
     post:
       consumes:
       - application/json
-      description: Create a new supplier with the provided information
+      description: Create a new SKU with the provided details
       parameters:
-      - description: Supplier object
+      - description: SKU details
         in: body
-        name: supplier
+        name: sku
         required: true
         schema:
-          $ref: '#/definitions/entity.Supplier'
+          $ref: '#/definitions/entity.SKU'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/entity.Supplier'
+            $ref: '#/definitions/entity.SKU'
         "400":
-          description: Bad Request
+          description: Invalid input or SKU code
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "409":
+          description: Duplicate SKU code
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Create a new supplier
+      summary: Create a new SKU
       tags:
-      - suppliers
-  /suppliers/{id}:
+      - skus
+  /skus/{id}:
     delete:
-      consumes:
-      - application/json
-      description: Delete a supplier by ID
+      description: Delete an SKU by its ID
       parameters:
-      - description: Supplier ID
+      - description: SKU ID
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "204":
           description: No Content
-        "400":
-          description: Bad Request
+        "404":
+          description: SKU not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Delete a supplier
+      summary: Delete an SKU
       tags:
-      - suppliers
+      - skus
     get:
-      consumes:
-      - application/json
-      description: Get detailed information about a supplier
+      description: Get an SKU's details by its ID
       parameters:
-      - description: Supplier ID
+      - description: SKU ID
         in: path
         name: id
         required: true
-        type: integer
+        type: string
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Supplier'
+            $ref: '#/definitions/entity.SKU'
         "404":
-          description: Not Found
+          description: SKU not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get a supplier by ID
+      summary: Get an SKU by ID
       tags:
-      - suppliers
+      - skus
     put:
       consumes:
       - application/json
-      description: Update an existing supplier's information
+      description: Update an existing SKU with the provided details
       parameters:
-      - description: Supplier ID
+      - description: SKU ID
         in: path
         name: id
         required: true
-        type: integer
-      - description: Updated supplier object
+        type: string
+      - description: SKU details
         in: body
-        name: supplier
+        name: sku
         required: true
         schema:
-          $ref: '#/definitions/entity.Supplier'
+          $ref: '#/definitions/entity.SKU'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Supplier'
+            $ref: '#/definitions/entity.SKU'
         "400":
-          description: Bad Request
+          description: Invalid input or SKU code
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: SKU not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "409":
+          description: Duplicate SKU code
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Update a supplier
+      summary: Update an SKU
       tags:
-      - suppliers
+      - skus
+  /skus/bulk:
+    post:
+      consumes:
+      - application/json
+      description: Create multiple SKUs in a single request
+      parameters:
+      - description: Array of SKU details
+        in: body
+        name: skus
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.SKU'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Bulk create SKUs
+      tags:
+      - skus
+    put:
+      consumes:
+      - application/json
+      description: Update multiple SKUs in a single request
+      parameters:
+      - description: Array of SKU details
+        in: body
+        name: skus
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.SKU'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Bulk update SKUs
+      tags:
+      - skus
+  /skus/code/{code}:
+    get:
+      description: Get an SKU's details by its SKU code
+      parameters:
+      - description: SKU Code
+        in: path
+        name: code
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.SKU'
+        "404":
+          description: SKU not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get an SKU by code
+      tags:
+      - skus
+  /skus/search:
+    get:
+      description: Search for SKUs by a search term
+      parameters:
+      - description: Search term
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Search SKUs
+      tags:
+      - skus
+  /stocks:
+    get:
+      description: List stocks with optional filtering
+      parameters:
+      - description: SKU ID
+        in: query
+        name: sku_id
+        type: string
+      - description: Store ID
+        in: query
+        name: store_id
+        type: string
+      - description: Batch number
+        in: query
+        name: batch_number
+        type: string
+      - description: Lot number
+        in: query
+        name: lot_number
+        type: string
+      - description: Zone code
+        in: query
+        name: zone_code
+        type: string
+      - description: Bin location
+        in: query
+        name: bin_location
+        type: string
+      - description: Shelf number
+        in: query
+        name: shelf_number
+        type: string
+      - description: Minimum quantity
+        in: query
+        name: min_quantity
+        type: number
+      - description: Maximum quantity
+        in: query
+        name: max_quantity
+        type: number
+      - description: Expiry date from (RFC3339 format)
+        in: query
+        name: expiry_date_from
+        type: string
+      - description: Expiry date to (RFC3339 format)
+        in: query
+        name: expiry_date_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Stock'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List stocks
+      tags:
+      - stocks
+  /stocks/{id}/history:
+    get:
+      description: Get the history of a stock
+      parameters:
+      - description: Stock ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.StockEntry'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get stock history
+      tags:
+      - stocks
+  /stocks/{id}/location:
+    put:
+      consumes:
+      - application/json
+      description: Update a stock's location information
+      parameters:
+      - description: Stock ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Location details
+        in: body
+        name: location
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update stock location
+      tags:
+      - stocks
+  /stocks/batch-stock-entries:
+    post:
+      consumes:
+      - application/json
+      description: Process multiple stock entries in a single request
+      parameters:
+      - description: Array of stock entry details
+        in: body
+        name: entries
+        required: true
+        schema:
+          items:
+            $ref: '#/definitions/entity.StockEntry'
+          type: array
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Process multiple stock entries
+      tags:
+      - stocks
+  /stocks/check-stock:
+    get:
+      description: Check stock availability for a specific SKU in a store
+      parameters:
+      - description: SKU ID
+        in: query
+        name: sku_id
+        required: true
+        type: string
+      - description: Store ID
+        in: query
+        name: store_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Stock'
+        "400":
+          description: Missing required parameters
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Check stock availability
+      tags:
+      - stocks
+  /stocks/stock-entries:
+    post:
+      consumes:
+      - application/json
+      description: Process a stock entry (add, remove, transfer, adjust)
+      parameters:
+      - description: Stock entry details
+        in: body
+        name: entry
+        required: true
+        schema:
+          $ref: '#/definitions/entity.StockEntry'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.StockEntry'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "401":
+          description: User not authenticated
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Process stock entry
+      tags:
+      - stocks
+  /stores:
+    get:
+      description: List stores with optional filtering
+      parameters:
+      - description: Store name
+        in: query
+        name: name
+        type: string
+      - description: Store type
+        in: query
+        name: type
+        type: string
+      - description: Store status
+        in: query
+        name: status
+        type: string
+      - description: Manager ID
+        in: query
+        name: manager_id
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: page_size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.PaginatedResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List stores
+      tags:
+      - stores
+    post:
+      consumes:
+      - application/json
+      description: Create a new store with the provided details
+      parameters:
+      - description: Store details
+        in: body
+        name: store
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Store'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Store'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new store
+      tags:
+      - stores
+  /stores/{id}:
+    delete:
+      description: Delete a store by ID
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete a store
+      tags:
+      - stores
+    get:
+      description: Get a store's details by its ID
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Store'
+        "404":
+          description: Store not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a store by ID
+      tags:
+      - stores
+    put:
+      consumes:
+      - application/json
+      description: Update a store's details
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Store details
+        in: body
+        name: store
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Store'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Store'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a store
+      tags:
+      - stores
+  /stores/{id}/manager:
+    post:
+      consumes:
+      - application/json
+      description: Assign a manager to a store
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Manager details
+        in: body
+        name: manager
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Assign manager to store
+      tags:
+      - stores
+  /stores/{id}/status:
+    put:
+      consumes:
+      - application/json
+      description: Update a store's status
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Status details
+        in: body
+        name: status
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update store status
+      tags:
+      - stores
+  /stores/{id}/stock-value:
+    get:
+      description: Get the total value of stocks in a store
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: number
+            type: object
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get store stock value
+      tags:
+      - stores
+  /stores/{id}/stocks:
+    get:
+      description: Get all stocks in a store
+      parameters:
+      - description: Store ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Stock'
+            type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get store stocks
+      tags:
+      - stores
   /users:
     get:
       description: Get a list of all users
@@ -6613,17 +6545,17 @@ paths:
               $ref: '#/definitions/entity.User'
             type: array
         "500":
-          description: Server error
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: List all users
+      summary: List users
       tags:
       - users
   /users/{id}:
     delete:
-      description: Delete user by ID
+      description: Delete a user
       parameters:
       - description: User ID
         in: path
@@ -6633,16 +6565,14 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: User deleted successfully
-          schema:
-            $ref: '#/definitions/server.MessageResponse'
+        "204":
+          description: No Content
         "400":
-          description: Invalid user ID
+          description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Server error
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
@@ -6651,7 +6581,7 @@ paths:
       tags:
       - users
     get:
-      description: Get user details by user ID
+      description: Get a user's details by their ID
       parameters:
       - description: User ID
         in: path
@@ -6666,11 +6596,11 @@ paths:
           schema:
             $ref: '#/definitions/entity.User'
         "400":
-          description: Invalid user ID
+          description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "404":
-          description: User not found
+          description: Not Found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
@@ -6679,16 +6609,14 @@ paths:
       tags:
       - users
     put:
-      consumes:
-      - application/json
-      description: Update user details
+      description: Update a user's details
       parameters:
       - description: User ID
         in: path
         name: id
         required: true
         type: integer
-      - description: User details to update
+      - description: User details
         in: body
         name: request
         required: true
@@ -6702,11 +6630,11 @@ paths:
           schema:
             $ref: '#/definitions/entity.User'
         "400":
-          description: Invalid input
+          description: Bad Request
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Server error
+          description: Internal Server Error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
@@ -6733,18 +6661,34 @@ paths:
       summary: User logout
       tags:
       - auth
-  /warehouses:
+  /vendors:
     get:
-      description: List all warehouses with optional filters
+      description: List vendors with optional filtering
       parameters:
-      - description: Warehouse type
+      - description: Vendor code
+        in: query
+        name: code
+        type: string
+      - description: Vendor name
+        in: query
+        name: name
+        type: string
+      - description: Vendor type
         in: query
         name: type
         type: string
-      - description: Warehouse status
+      - description: Vendor country
         in: query
-        name: status
+        name: country
         type: string
+      - description: Minimum rating
+        in: query
+        name: min_rating
+        type: number
+      - description: Product IDs
+        in: query
+        name: product_ids[]
+        type: array
       produces:
       - application/json
       responses:
@@ -6752,127 +6696,403 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/entity.Warehouse'
+              $ref: '#/definitions/entity.Vendor'
             type: array
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: List warehouses
+      summary: List vendors
       tags:
-      - Warehouses
+      - vendors
     post:
       consumes:
       - application/json
-      description: Create a new warehouse
+      description: Create a new vendor with the provided details
       parameters:
-      - description: Warehouse info
+      - description: Vendor details
         in: body
-        name: warehouse
+        name: vendor
         required: true
         schema:
-          $ref: '#/definitions/entity.Warehouse'
+          $ref: '#/definitions/entity.Vendor'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/entity.Warehouse'
+            $ref: '#/definitions/entity.Vendor'
         "400":
-          description: Bad Request
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Create warehouse
+      summary: Create a new vendor
       tags:
-      - Warehouses
-  /warehouses/{id}:
+      - vendors
+  /vendors/{id}:
     delete:
-      description: Delete a warehouse by ID
+      description: Delete a vendor by ID
       parameters:
-      - description: Warehouse ID
+      - description: Vendor ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "204":
           description: No Content
-        "404":
-          description: Not Found
+        "400":
+          description: Invalid vendor ID
           schema:
             $ref: '#/definitions/server.ErrorResponse'
         "500":
-          description: Internal Server Error
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Delete warehouse
+      summary: Delete a vendor
       tags:
-      - Warehouses
+      - vendors
     get:
-      description: Get warehouse by ID
+      description: Get a vendor's details by its ID
       parameters:
-      - description: Warehouse ID
+      - description: Vendor ID
         in: path
         name: id
         required: true
-        type: string
+        type: integer
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Warehouse'
+            $ref: '#/definitions/entity.Vendor'
+        "400":
+          description: Invalid vendor ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
         "404":
-          description: Not Found
+          description: Vendor not found
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Get warehouse
+      summary: Get a vendor by ID
       tags:
-      - Warehouses
+      - vendors
     put:
       consumes:
       - application/json
-      description: Update an existing warehouse
+      description: Update a vendor's details
       parameters:
-      - description: Warehouse ID
+      - description: Vendor ID
         in: path
         name: id
         required: true
-        type: string
-      - description: Warehouse info
+        type: integer
+      - description: Vendor details
         in: body
-        name: warehouse
+        name: vendor
         required: true
         schema:
-          $ref: '#/definitions/entity.Warehouse'
+          $ref: '#/definitions/entity.Vendor'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entity.Warehouse'
+            $ref: '#/definitions/entity.Vendor'
         "400":
-          description: Bad Request
+          description: Invalid input
           schema:
             $ref: '#/definitions/server.ErrorResponse'
-        "404":
-          description: Not Found
+        "500":
+          description: Server error
           schema:
             $ref: '#/definitions/server.ErrorResponse'
       security:
       - BearerAuth: []
-      summary: Update warehouse
+      summary: Update a vendor
       tags:
-      - Warehouses
+      - vendors
+  /vendors/{id}/contracts:
+    post:
+      consumes:
+      - application/json
+      description: Create a new contract for a vendor
+      parameters:
+      - description: Vendor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Contract details
+        in: body
+        name: contract
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Contract'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Contract'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a vendor contract
+      tags:
+      - vendors
+  /vendors/{id}/products/{productId}:
+    delete:
+      description: Remove a product from a vendor
+      parameters:
+      - description: Vendor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Remove product from vendor
+      tags:
+      - vendors
+    post:
+      description: Add a product to a vendor
+      parameters:
+      - description: Vendor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Product ID
+        in: path
+        name: productId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Invalid ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add product to vendor
+      tags:
+      - vendors
+  /vendors/{id}/ratings:
+    get:
+      description: Get all ratings for a vendor
+      parameters:
+      - description: Vendor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.VendorRating'
+            type: array
+        "400":
+          description: Invalid vendor ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get vendor ratings
+      tags:
+      - vendors
+    post:
+      consumes:
+      - application/json
+      description: Add a rating for a vendor
+      parameters:
+      - description: Vendor ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Rating details
+        in: body
+        name: rating
+        required: true
+        schema:
+          $ref: '#/definitions/entity.VendorRating'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.VendorRating'
+        "400":
+          description: Invalid input or rating
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Add a vendor rating
+      tags:
+      - vendors
+  /vendors/contracts/{contractId}:
+    get:
+      description: Get a contract's details by its ID
+      parameters:
+      - description: Contract ID
+        in: path
+        name: contractId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Contract'
+        "400":
+          description: Invalid contract ID
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "404":
+          description: Contract not found
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get a contract by ID
+      tags:
+      - vendors
+    put:
+      consumes:
+      - application/json
+      description: Update an existing contract
+      parameters:
+      - description: Contract ID
+        in: path
+        name: contractId
+        required: true
+        type: integer
+      - description: Contract details
+        in: body
+        name: contract
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Contract'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Contract'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update a contract
+      tags:
+      - vendors
+  /vendors/products:
+    post:
+      consumes:
+      - application/json
+      description: Create a new product with the provided details
+      parameters:
+      - description: Product details
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Product'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/entity.Product'
+        "400":
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/server.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new product
+      tags:
+      - vendors
 schemes:
 - http
 - https

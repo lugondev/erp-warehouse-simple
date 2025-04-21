@@ -20,23 +20,23 @@ var (
 )
 
 type PurchaseUseCase struct {
-	purchaseRepo  *repository.PurchaseRepository
-	inventoryRepo *repository.InventoryRepository
-	supplierRepo  *repository.SupplierRepository
-	itemRepo      *repository.ItemRepository
+	purchaseRepo *repository.PurchaseRepository
+	stocksRepo   *repository.StocksRepository
+	vendorRepo   *repository.VendorRepository
+	skuRepo      *repository.SKURepository
 }
 
 func NewPurchaseUseCase(
 	purchaseRepo *repository.PurchaseRepository,
-	inventoryRepo *repository.InventoryRepository,
-	supplierRepo *repository.SupplierRepository,
-	itemRepo *repository.ItemRepository,
+	stocksRepo *repository.StocksRepository,
+	vendorRepo *repository.VendorRepository,
+	skuRepo *repository.SKURepository,
 ) *PurchaseUseCase {
 	return &PurchaseUseCase{
-		purchaseRepo:  purchaseRepo,
-		inventoryRepo: inventoryRepo,
-		supplierRepo:  supplierRepo,
-		itemRepo:      itemRepo,
+		purchaseRepo: purchaseRepo,
+		stocksRepo:   stocksRepo,
+		vendorRepo:   vendorRepo,
+		skuRepo:      skuRepo,
 	}
 }
 
@@ -169,8 +169,8 @@ func (u *PurchaseUseCase) CreatePurchaseOrder(ctx context.Context, order *entity
 		return err
 	}
 
-	// Verify supplier exists
-	if _, err := u.supplierRepo.GetSupplierByID(ctx, order.SupplierID); err != nil {
+	// Verify vendor exists
+	if _, err := u.vendorRepo.FindByID(ctx, order.VendorID); err != nil {
 		return err
 	}
 
@@ -267,7 +267,7 @@ func (u *PurchaseUseCase) ApprovePurchaseOrder(ctx context.Context, id string, a
 	return u.purchaseRepo.UpdatePurchaseOrder(ctx, order)
 }
 
-// SendPurchaseOrder marks a purchase order as sent to supplier
+// SendPurchaseOrder marks a purchase order as sent to vendor
 func (u *PurchaseUseCase) SendPurchaseOrder(ctx context.Context, id string) error {
 	order, err := u.purchaseRepo.GetPurchaseOrderByID(ctx, id)
 	if err != nil {
@@ -283,7 +283,7 @@ func (u *PurchaseUseCase) SendPurchaseOrder(ctx context.Context, id string) erro
 	return u.purchaseRepo.UpdatePurchaseOrder(ctx, order)
 }
 
-// ConfirmPurchaseOrder marks a purchase order as confirmed by supplier
+// ConfirmPurchaseOrder marks a purchase order as confirmed by vendor
 func (u *PurchaseUseCase) ConfirmPurchaseOrder(ctx context.Context, id string) error {
 	order, err := u.purchaseRepo.GetPurchaseOrderByID(ctx, id)
 	if err != nil {
@@ -338,7 +338,7 @@ func (u *PurchaseUseCase) ClosePurchaseOrder(ctx context.Context, id string) err
 }
 
 // CreatePurchaseOrderFromRequest creates a purchase order from a purchase request
-func (u *PurchaseUseCase) CreatePurchaseOrderFromRequest(ctx context.Context, requestID string, supplierID uint, createdByID uint) (*entity.PurchaseOrder, error) {
+func (u *PurchaseUseCase) CreatePurchaseOrderFromRequest(ctx context.Context, requestID string, vendorID uint, createdByID uint) (*entity.PurchaseOrder, error) {
 	request, err := u.purchaseRepo.GetPurchaseRequestByID(ctx, requestID)
 	if err != nil {
 		return nil, err
@@ -348,8 +348,8 @@ func (u *PurchaseUseCase) CreatePurchaseOrderFromRequest(ctx context.Context, re
 		return nil, errors.New("can only create purchase orders from approved purchase requests")
 	}
 
-	// Verify supplier exists
-	if _, err := u.supplierRepo.GetSupplierByID(ctx, supplierID); err != nil {
+	// Verify vendor exists
+	if _, err := u.vendorRepo.FindByID(ctx, vendorID); err != nil {
 		return nil, err
 	}
 
@@ -359,20 +359,20 @@ func (u *PurchaseUseCase) CreatePurchaseOrderFromRequest(ctx context.Context, re
 	taxTotal := 0.0
 
 	for _, item := range request.Items {
-		// Get item details
-		itemEntity, err := u.itemRepo.GetItemByID(ctx, item.ItemID)
+		// Get SKU details
+		sku, err := u.skuRepo.GetSKUByID(ctx, item.SKUID)
 		if err != nil {
 			return nil, err
 		}
 
 		// Calculate item totals
-		unitPrice := itemEntity.Price
+		unitPrice := sku.Price
 		taxRate := 0.0 // Default tax rate
 		taxAmount := unitPrice * item.Quantity * (taxRate / 100)
 		totalPrice := (unitPrice * item.Quantity) + taxAmount
 
 		orderItem := entity.PurchaseOrderItem{
-			ItemID:      item.ItemID,
+			SKUID:       item.SKUID,
 			Quantity:    item.Quantity,
 			UnitPrice:   unitPrice,
 			TaxRate:     taxRate,
@@ -389,7 +389,7 @@ func (u *PurchaseUseCase) CreatePurchaseOrderFromRequest(ctx context.Context, re
 
 	// Create purchase order
 	order := &entity.PurchaseOrder{
-		SupplierID:    supplierID,
+		VendorID:      vendorID,
 		OrderDate:     time.Now(),
 		ExpectedDate:  request.RequiredDate,
 		Items:         orderItems,
@@ -450,16 +450,16 @@ func (u *PurchaseUseCase) CreatePurchaseReceipt(ctx context.Context, receipt *en
 
 		// Create stock entry
 		stockEntry := &entity.StockEntry{
-			WarehouseID: receipt.WarehouseID,
-			ProductID:   item.ItemID,
-			Type:        "IN",
-			Quantity:    item.ReceivedQuantity,
-			Reference:   receipt.ReceiptNumber,
-			Note:        "Purchase receipt",
-			CreatedBy:   userID,
+			StoreID:   receipt.StoreID,
+			SKUID:     item.SKUID,
+			Type:      "IN",
+			Quantity:  item.ReceivedQuantity,
+			Reference: receipt.ReceiptNumber,
+			Note:      "Purchase receipt",
+			CreatedBy: userID,
 		}
 
-		if err := u.inventoryRepo.ProcessStockEntry(ctx, stockEntry, userID); err != nil {
+		if err := u.stocksRepo.ProcessStockEntry(ctx, stockEntry, userID); err != nil {
 			return err
 		}
 	}
@@ -553,8 +553,8 @@ func (u *PurchaseUseCase) validatePurchaseRequest(request *entity.PurchaseReques
 	}
 
 	for _, item := range request.Items {
-		if item.ItemID == "" {
-			return errors.New("item ID is required")
+		if item.SKUID == "" {
+			return errors.New("SKU ID is required")
 		}
 		if item.Quantity <= 0 {
 			return errors.New("item quantity must be greater than zero")
@@ -565,8 +565,8 @@ func (u *PurchaseUseCase) validatePurchaseRequest(request *entity.PurchaseReques
 }
 
 func (u *PurchaseUseCase) validatePurchaseOrder(order *entity.PurchaseOrder) error {
-	if order.SupplierID == 0 {
-		return errors.New("supplier is required")
+	if order.VendorID == 0 {
+		return errors.New("vendor is required")
 	}
 
 	if order.CreatedByID == 0 {
@@ -578,8 +578,8 @@ func (u *PurchaseUseCase) validatePurchaseOrder(order *entity.PurchaseOrder) err
 	}
 
 	for _, item := range order.Items {
-		if item.ItemID == "" {
-			return errors.New("item ID is required")
+		if item.SKUID == "" {
+			return errors.New("SKU ID is required")
 		}
 		if item.Quantity <= 0 {
 			return errors.New("item quantity must be greater than zero")
@@ -597,8 +597,8 @@ func (u *PurchaseUseCase) validatePurchaseReceipt(receipt *entity.PurchaseReceip
 		return errors.New("purchase order ID is required")
 	}
 
-	if receipt.WarehouseID == "" {
-		return errors.New("warehouse ID is required")
+	if receipt.StoreID == "" {
+		return errors.New("store ID is required")
 	}
 
 	if receipt.ReceivedByID == 0 {
@@ -610,8 +610,8 @@ func (u *PurchaseUseCase) validatePurchaseReceipt(receipt *entity.PurchaseReceip
 	}
 
 	for _, item := range receipt.Items {
-		if item.ItemID == "" {
-			return errors.New("item ID is required")
+		if item.SKUID == "" {
+			return errors.New("SKU ID is required")
 		}
 		if item.OrderedQuantity <= 0 {
 			return errors.New("ordered quantity must be greater than zero")

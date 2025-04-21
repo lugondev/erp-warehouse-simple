@@ -1,0 +1,13 @@
+DROP INDEX IF EXISTS idx_vendor_sku_mappings_sku;
+DROP INDEX IF EXISTS idx_vendor_sku_mappings_vendor;
+DROP INDEX IF EXISTS idx_vendor_ratings;
+DROP INDEX IF EXISTS idx_contracts_dates;
+DROP INDEX IF EXISTS idx_contracts_vendor;
+DROP INDEX IF EXISTS idx_vendor_skus_code;
+DROP INDEX IF EXISTS idx_vendors_name;
+DROP INDEX IF EXISTS idx_vendors_code;
+DROP TABLE IF EXISTS vendor_ratings;
+DROP TABLE IF EXISTS contracts;
+DROP TABLE IF EXISTS vendor_sku_mappings;
+DROP TABLE IF EXISTS vendor_skus;
+DROP TABLE IF EXISTS vendors;

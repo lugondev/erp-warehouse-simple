@@ -1,5 +1,5 @@
--- Create customers table
-CREATE TABLE IF NOT EXISTS customers (
+-- Create clients table
+CREATE TABLE IF NOT EXISTS clients (
 	id SERIAL PRIMARY KEY,
 	code VARCHAR(50) NOT NULL UNIQUE,
 	name VARCHAR(255) NOT NULL,
@@ -16,10 +16,10 @@ CREATE TABLE IF NOT EXISTS customers (
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
--- Create customer addresses table
-CREATE TABLE IF NOT EXISTS customer_addresses (
+-- Create client addresses table
+CREATE TABLE IF NOT EXISTS client_addresses (
 	id SERIAL PRIMARY KEY,
-	customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
+	client_id INTEGER NOT NULL REFERENCES clients(id) ON DELETE CASCADE,
 	type VARCHAR(50) NOT NULL DEFAULT 'BOTH',
 	street VARCHAR(255) NOT NULL,
 	city VARCHAR(100) NOT NULL,
@@ -30,16 +30,16 @@ CREATE TABLE IF NOT EXISTS customer_addresses (
 	created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 	updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
--- Create index on customer_id for faster lookups
-CREATE INDEX IF NOT EXISTS idx_customer_addresses_customer_id ON customer_addresses(customer_id);
--- Create index on customer name for faster searches
-CREATE INDEX IF NOT EXISTS idx_customers_name ON customers(name);
--- Create index on customer email for faster searches
-CREATE INDEX IF NOT EXISTS idx_customers_email ON customers(email);
--- Create index on customer type for filtering
-CREATE INDEX IF NOT EXISTS idx_customers_type ON customers(type);
--- Create index on customer loyalty tier for filtering
-CREATE INDEX IF NOT EXISTS idx_customers_loyalty_tier ON customers(loyalty_tier);
+-- Create index on client_id for faster lookups
+CREATE INDEX IF NOT EXISTS idx_client_addresses_client_id ON client_addresses(client_id);
+-- Create index on client name for faster searches
+CREATE INDEX IF NOT EXISTS idx_clients_name ON clients(name);
+-- Create index on client email for faster searches
+CREATE INDEX IF NOT EXISTS idx_clients_email ON clients(email);
+-- Create index on client type for filtering
+CREATE INDEX IF NOT EXISTS idx_clients_type ON clients(type);
+-- Create index on client loyalty tier for filtering
+CREATE INDEX IF NOT EXISTS idx_clients_loyalty_tier ON clients(loyalty_tier);
 -- Add foreign key to sales_orders table if it exists
 DO $$ BEGIN IF EXISTS (
 	SELECT
@@ -50,10 +50,10 @@ IF NOT EXISTS (
 	SELECT
 	FROM information_schema.columns
 	WHERE table_name = 'sales_orders'
-		AND column_name = 'customer_id'
+		AND column_name = 'client_id'
 ) THEN
 ALTER TABLE sales_orders
-ADD COLUMN customer_id INTEGER REFERENCES customers(id);
+ADD COLUMN client_id INTEGER REFERENCES clients(id);
 END IF;
 END IF;
 END $$;

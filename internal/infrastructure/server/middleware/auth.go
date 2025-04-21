@@ -43,26 +43,26 @@ func AuthMiddleware(authService *auth.JWTService) gin.HandlerFunc {
 
 func RoleMiddleware(roles ...string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// role, exists := c.Get("role")
-		// if !exists {
-		// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "Role not found in context"})
-		// 	c.Abort()
-		// 	return
-		// }
+		role, exists := c.Get("role")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Role not found in context"})
+			c.Abort()
+			return
+		}
 
-		// hasRole := false
-		// for _, r := range roles {
-		// 	if r == role.(string) {
-		// 		hasRole = true
-		// 		break
-		// 	}
-		// }
+		hasRole := false
+		for _, r := range roles {
+			if r == role.(string) {
+				hasRole = true
+				break
+			}
+		}
 
-		// if !hasRole {
-		// 	c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
-		// 	c.Abort()
-		// 	return
-		// }
+		if !hasRole {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
+			c.Abort()
+			return
+		}
 
 		c.Next()
 	}
@@ -70,26 +70,26 @@ func RoleMiddleware(roles ...string) gin.HandlerFunc {
 
 func PermissionMiddleware(requiredPermission entity.Permission) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// permissions, exists := c.Get("permissions")
-		// if !exists {
-		// 	c.JSON(http.StatusUnauthorized, gin.H{"error": "Permissions not found in context"})
-		// 	c.Abort()
-		// 	return
-		// }
+		permissions, exists := c.Get("permissions")
+		if !exists {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": "Permissions not found in context"})
+			c.Abort()
+			return
+		}
 
-		// hasPermission := false
-		// for _, p := range permissions.([]entity.Permission) {
-		// 	if p == requiredPermission {
-		// 		hasPermission = true
-		// 		break
-		// 	}
-		// }
+		hasPermission := false
+		for _, p := range permissions.([]entity.Permission) {
+			if p == requiredPermission {
+				hasPermission = true
+				break
+			}
+		}
 
-		// if !hasPermission {
-		// 	c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
-		// 	c.Abort()
-		// 	return
-		// }
+		if !hasPermission {
+			c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
+			c.Abort()
+			return
+		}
 
 		c.Next()
 	}

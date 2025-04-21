@@ -8,13 +8,13 @@ IF EXISTS (
 	SELECT
 	FROM information_schema.columns
 	WHERE table_name = 'sales_orders'
-		AND column_name = 'customer_id'
+		AND column_name = 'client_id'
 ) THEN
-ALTER TABLE sales_orders DROP COLUMN customer_id;
+ALTER TABLE sales_orders DROP COLUMN client_id;
 END IF;
 END IF;
 END $$;
--- Drop customer addresses table
-DROP TABLE IF EXISTS customer_addresses;
--- Drop customers table
-DROP TABLE IF EXISTS customers;
+-- Drop client addresses table
+DROP TABLE IF EXISTS client_addresses;
+-- Drop clients table
+DROP TABLE IF EXISTS clients;

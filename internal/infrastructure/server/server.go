@@ -19,14 +19,14 @@ type Server struct {
 	router          *gin.Engine
 	userUC          *usecase.UserUseCase
 	roleUC          *usecase.RoleUseCase
-	warehouseUC     *usecase.WarehouseUseCase
-	inventoryUC     *usecase.InventoryUseCase
-	supplierUC      *usecase.SupplierUseCase
+	storeUC         *usecase.StoreUseCase
+	stocksUC        *usecase.StocksUseCase
+	vendorUC        *usecase.VendorUseCase
 	manufacturingUC *usecase.ManufacturingUseCase
-	itemUC          *usecase.ItemUseCase
+	skuUC           *usecase.SKUUseCase
 	purchaseUC      *usecase.PurchaseUseCase
 	orderUC         *usecase.OrderUseCase
-	customerUC      usecase.CustomerUseCase
+	clientUC        usecase.ClientUseCase // Changed from *usecase.ClientUseCase
 	financeUC       *usecase.FinanceUseCase
 	reportUC        *usecase.ReportUseCase
 	jwtService      *auth.JWTService
@@ -49,30 +49,30 @@ func NewServer(cfg *config.Config) (*Server, error) {
 	userRepo := repository.NewUserRepository(db)
 	roleRepo := repository.NewRoleRepository(db)
 	auditRepo := repository.NewAuditLogRepository(db)
-	warehouseRepo := repository.NewWarehouseRepository(db)
-	inventoryRepo := repository.NewInventoryRepository(db)
-	supplierRepo := repository.NewSupplierRepository(db)
+	storeRepo := repository.NewStoreRepository(db)
+	stocksRepo := repository.NewStocksRepository(db)
+	vendorRepo := repository.NewVendorRepository(db)
 	manufacturingRepo := repository.NewManufacturingRepository(db)
-	itemRepo := repository.NewItemRepository(db)
+	skuRepo := repository.NewSKURepository(db)
 	purchaseRepo := repository.NewPurchaseRepository(db)
-	orderRepo := repository.NewOrderRepository(db, inventoryRepo)
-	customerRepo := repository.NewCustomerRepository(db)
+	orderRepo := repository.NewOrderRepository(db, stocksRepo)
+	clientRepo := repository.NewClientRepository(db)
 	financeRepo := repository.NewFinanceRepository(db)
 	reportRepo := repository.NewReportRepository(db)
 
 	// Initialize use cases
 	userUC := usecase.NewUserUseCase(userRepo)
 	roleUC := usecase.NewRoleUseCase(roleRepo)
-	warehouseUC := usecase.NewWarehouseUseCase(warehouseRepo)
-	inventoryUC := usecase.NewInventoryUseCase(inventoryRepo, warehouseRepo)
-	supplierUC := usecase.NewSupplierUseCase(supplierRepo)
-	manufacturingUC := usecase.NewManufacturingUseCase(manufacturingRepo, inventoryRepo)
-	itemUC := usecase.NewItemUseCase(itemRepo)
-	purchaseUC := usecase.NewPurchaseUseCase(purchaseRepo, inventoryRepo, supplierRepo, itemRepo)
-	orderUC := usecase.NewOrderUseCase(orderRepo, inventoryRepo)
-	customerUC := usecase.NewCustomerUseCase(customerRepo)
+	storeUC := usecase.NewStoreUseCase(storeRepo)
+	stocksUC := usecase.NewStocksUseCase(stocksRepo, storeRepo)
+	vendorUC := usecase.NewVendorUseCase(vendorRepo)
+	manufacturingUC := usecase.NewManufacturingUseCase(manufacturingRepo, stocksRepo)
+	skuUC := usecase.NewSKUUseCase(skuRepo)
+	purchaseUC := usecase.NewPurchaseUseCase(purchaseRepo, stocksRepo, vendorRepo, skuRepo)
+	orderUC := usecase.NewOrderUseCase(orderRepo, stocksRepo)
+	clientUC := usecase.NewClientUseCase(clientRepo)
 	financeUC := usecase.NewFinanceUseCase(financeRepo)
-	reportUC := usecase.NewReportUseCase(reportRepo, inventoryRepo, orderRepo, purchaseRepo, itemRepo)
+	reportUC := usecase.NewReportUseCase(reportRepo, stocksRepo, orderRepo, purchaseRepo, skuRepo)
 
 	// Initialize services
 	jwtService := auth.NewJWTService(cfg.JWT.AccessSecret, cfg.JWT.RefreshSecret)
@@ -84,14 +84,14 @@ func NewServer(cfg *config.Config) (*Server, error) {
 		router:          gin.Default(),
 		userUC:          userUC,
 		roleUC:          roleUC,
-		warehouseUC:     warehouseUC,
-		inventoryUC:     inventoryUC,
-		supplierUC:      supplierUC,
+		storeUC:         storeUC,
+		stocksUC:        stocksUC,
+		vendorUC:        vendorUC,
 		manufacturingUC: manufacturingUC,
-		itemUC:          itemUC,
+		skuUC:           skuUC,
 		purchaseUC:      purchaseUC,
 		orderUC:         orderUC,
-		customerUC:      customerUC,
+		clientUC:        clientUC, // Using interface instead of pointer
 		financeUC:       financeUC,
 		reportUC:        reportUC,
 		jwtService:      jwtService,
@@ -160,56 +160,56 @@ func (s *Server) setupRoutes() {
 		}
 
 		// Initialize handlers
-		warehouseHandler := NewWarehouseHandler(s.warehouseUC, s.inventoryUC)
-		inventoryHandler := NewInventoryHandler(s.inventoryUC)
-		supplierHandler := NewSupplierHandler(s.supplierUC)
+		storeHandler := NewStoreHandler(s.storeUC, s.stocksUC)
+		stocksHandler := NewStocksHandler(s.stocksUC)
+		vendorHandler := NewVendorHandler(s.vendorUC)
 		manufacturingHandler := NewManufacturingHandler(s.manufacturingUC)
-		itemHandler := NewItemHandler(s.itemUC)
+		skuHandler := NewSKUHandler(s.skuUC)
 		purchaseHandler := NewPurchaseHandler(s.purchaseUC)
 
-		// Warehouse routes
-		warehouses := protected.Group("/warehouses")
+		// Store routes
+		stores := protected.Group("/stores")
 		{
-			warehouses.POST("", middleware.PermissionMiddleware(entity.WarehouseCreate), warehouseHandler.CreateWarehouse)
-			warehouses.GET("", middleware.PermissionMiddleware(entity.WarehouseRead), warehouseHandler.ListWarehouses)
-			warehouses.GET("/:id", middleware.PermissionMiddleware(entity.WarehouseRead), warehouseHandler.GetWarehouse)
-			warehouses.PUT("/:id", middleware.PermissionMiddleware(entity.WarehouseUpdate), warehouseHandler.UpdateWarehouse)
-			warehouses.DELETE("/:id", middleware.PermissionMiddleware(entity.WarehouseDelete), warehouseHandler.DeleteWarehouse)
+			stores.POST("", middleware.PermissionMiddleware(entity.StoreCreate), storeHandler.CreateStore)
+			stores.GET("", middleware.PermissionMiddleware(entity.StoreRead), storeHandler.ListStores)
+			stores.GET("/:id", middleware.PermissionMiddleware(entity.StoreRead), storeHandler.GetStore)
+			stores.PUT("/:id", middleware.PermissionMiddleware(entity.StoreUpdate), storeHandler.UpdateStore)
+			stores.DELETE("/:id", middleware.PermissionMiddleware(entity.StoreDelete), storeHandler.DeleteStore)
 		}
 
-		// Inventory routes
-		inventory := protected.Group("/inventory")
+		// Stocks routes
+		stocks := protected.Group("/stocks")
 		{
-			inventory.GET("", middleware.PermissionMiddleware(entity.InventoryRead), inventoryHandler.ListInventory)
-			inventory.GET("/check-stock", middleware.PermissionMiddleware(entity.InventoryRead), inventoryHandler.CheckStock)
-			inventory.POST("/stock-entries", middleware.PermissionMiddleware(entity.StockEntryCreate), inventoryHandler.ProcessStockEntry)
-			inventory.POST("/batch-stock-entries", middleware.PermissionMiddleware(entity.StockEntryCreate), inventoryHandler.BatchStockEntry)
-			inventory.PUT("/:id/location", middleware.PermissionMiddleware(entity.InventoryUpdate), inventoryHandler.UpdateStockLocation)
-			inventory.GET("/:id/history", middleware.PermissionMiddleware(entity.StockEntryRead), inventoryHandler.GetInventoryHistory)
+			stocks.GET("", middleware.PermissionMiddleware(entity.StockRead), stocksHandler.ListStocks)
+			stocks.GET("/check-stock", middleware.PermissionMiddleware(entity.StockRead), stocksHandler.CheckStock)
+			stocks.POST("/stock-entries", middleware.PermissionMiddleware(entity.StockEntryCreate), stocksHandler.ProcessStockEntry)
+			stocks.POST("/batch-stock-entries", middleware.PermissionMiddleware(entity.StockEntryCreate), stocksHandler.BatchStockEntry)
+			stocks.PUT("/:id/location", middleware.PermissionMiddleware(entity.StockUpdate), stocksHandler.UpdateStockLocation)
+			stocks.GET("/:id/history", middleware.PermissionMiddleware(entity.StockEntryRead), stocksHandler.GetStockHistory)
 		}
 
-		// Supplier routes
-		suppliers := protected.Group("/suppliers")
+		// Vendor routes
+		vendors := protected.Group("/vendors")
 		{
-			suppliers.POST("", middleware.PermissionMiddleware(entity.SupplierCreate), supplierHandler.CreateSupplier)
-			suppliers.GET("", middleware.PermissionMiddleware(entity.SupplierRead), supplierHandler.ListSuppliers)
-			suppliers.GET("/:id", middleware.PermissionMiddleware(entity.SupplierRead), supplierHandler.GetSupplier)
-			suppliers.PUT("/:id", middleware.PermissionMiddleware(entity.SupplierUpdate), supplierHandler.UpdateSupplier)
-			suppliers.DELETE("/:id", middleware.PermissionMiddleware(entity.SupplierDelete), supplierHandler.DeleteSupplier)
+			vendors.POST("", middleware.PermissionMiddleware(entity.VendorCreate), vendorHandler.CreateVendor)
+			vendors.GET("", middleware.PermissionMiddleware(entity.VendorRead), vendorHandler.ListVendors)
+			vendors.GET("/:id", middleware.PermissionMiddleware(entity.VendorRead), vendorHandler.GetVendor)
+			vendors.PUT("/:id", middleware.PermissionMiddleware(entity.VendorUpdate), vendorHandler.UpdateVendor)
+			vendors.DELETE("/:id", middleware.PermissionMiddleware(entity.VendorDelete), vendorHandler.DeleteVendor)
 
 			// Product management
-			suppliers.POST("/products", middleware.PermissionMiddleware(entity.ProductCreate), supplierHandler.CreateProduct)
-			suppliers.POST("/:id/products/:productId", middleware.PermissionMiddleware(entity.ProductCreate), supplierHandler.AddProductToSupplier)
-			suppliers.DELETE("/:id/products/:productId", middleware.PermissionMiddleware(entity.ProductDelete), supplierHandler.RemoveProductFromSupplier)
+			vendors.POST("/products", middleware.PermissionMiddleware(entity.ProductCreate), vendorHandler.CreateProduct)
+			vendors.POST("/:id/products/:productId", middleware.PermissionMiddleware(entity.ProductCreate), vendorHandler.AddProductToVendor)
+			vendors.DELETE("/:id/products/:productId", middleware.PermissionMiddleware(entity.ProductDelete), vendorHandler.RemoveProductFromVendor)
 
 			// Contract management
-			suppliers.POST("/:id/contracts", middleware.PermissionMiddleware(entity.ContractCreate), supplierHandler.CreateContract)
-			suppliers.PUT("/contracts/:contractId", middleware.PermissionMiddleware(entity.ContractUpdate), supplierHandler.UpdateContract)
-			suppliers.GET("/contracts/:contractId", middleware.PermissionMiddleware(entity.ContractRead), supplierHandler.GetContract)
+			vendors.POST("/:id/contracts", middleware.PermissionMiddleware(entity.ContractCreate), vendorHandler.CreateContract)
+			vendors.PUT("/contracts/:contractId", middleware.PermissionMiddleware(entity.ContractUpdate), vendorHandler.UpdateContract)
+			vendors.GET("/contracts/:contractId", middleware.PermissionMiddleware(entity.ContractRead), vendorHandler.GetContract)
 
 			// Rating management
-			suppliers.POST("/:id/ratings", middleware.PermissionMiddleware(entity.RatingCreate), supplierHandler.AddRating)
-			suppliers.GET("/:id/ratings", middleware.PermissionMiddleware(entity.RatingRead), supplierHandler.GetRatings)
+			vendors.POST("/:id/ratings", middleware.PermissionMiddleware(entity.RatingCreate), vendorHandler.AddRating)
+			vendors.GET("/:id/ratings", middleware.PermissionMiddleware(entity.RatingRead), vendorHandler.GetRatings)
 		}
 
 		// Manufacturing routes
@@ -229,30 +229,30 @@ func (s *Server) setupRoutes() {
 			manufacturing.POST("/bom", middleware.PermissionMiddleware(entity.BOMCreate), manufacturingHandler.CreateBOM)
 		}
 
-		// Item routes
-		items := protected.Group("/items")
+		// SKU routes
+		skus := protected.Group("/skus")
 		{
-			items.POST("", middleware.PermissionMiddleware(entity.ProductCreate), itemHandler.CreateItem)
-			items.GET("", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.ListItems)
-			items.GET("/search", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.SearchItems)
-			items.GET("/:id", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.GetItem)
-			items.GET("/sku/:sku", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.GetItemBySKU)
-			items.PUT("/:id", middleware.PermissionMiddleware(entity.ProductUpdate), itemHandler.UpdateItem)
-			items.DELETE("/:id", middleware.PermissionMiddleware(entity.ProductDelete), itemHandler.DeleteItem)
-			items.POST("/bulk", middleware.PermissionMiddleware(entity.ProductCreate), itemHandler.BulkCreateItems)
-			items.PUT("/bulk", middleware.PermissionMiddleware(entity.ProductUpdate), itemHandler.BulkUpdateItems)
+			skus.POST("", middleware.PermissionMiddleware(entity.ProductCreate), skuHandler.CreateSKU)
+			skus.GET("", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.ListSKUs)
+			skus.GET("/search", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.SearchSKUs)
+			skus.GET("/:id", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.GetSKU)
+			skus.GET("/code/:code", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.GetSKUByCode)
+			skus.PUT("/:id", middleware.PermissionMiddleware(entity.ProductUpdate), skuHandler.UpdateSKU)
+			skus.DELETE("/:id", middleware.PermissionMiddleware(entity.ProductDelete), skuHandler.DeleteSKU)
+			skus.POST("/bulk", middleware.PermissionMiddleware(entity.ProductCreate), skuHandler.BulkCreateSKUs)
+			skus.PUT("/bulk", middleware.PermissionMiddleware(entity.ProductUpdate), skuHandler.BulkUpdateSKUs)
 		}
 
-		// Item category routes
-		itemCategories := protected.Group("/item-categories")
+		// SKU category routes
+		skuCategories := protected.Group("/sku-categories")
 		{
-			itemCategories.POST("", middleware.PermissionMiddleware(entity.ProductCreate), itemHandler.CreateItemCategory)
-			itemCategories.GET("", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.ListItemCategories)
-			itemCategories.GET("/tree", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.GetItemCategoriesTree)
-			itemCategories.GET("/:id", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.GetItemCategory)
-			itemCategories.PUT("/:id", middleware.PermissionMiddleware(entity.ProductUpdate), itemHandler.UpdateItemCategory)
-			itemCategories.DELETE("/:id", middleware.PermissionMiddleware(entity.ProductDelete), itemHandler.DeleteItemCategory)
-			itemCategories.GET("/:id/items", middleware.PermissionMiddleware(entity.ProductRead), itemHandler.GetItemsByCategory)
+			skuCategories.POST("", middleware.PermissionMiddleware(entity.ProductCreate), skuHandler.CreateSKUCategory)
+			skuCategories.GET("", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.ListSKUCategories)
+			skuCategories.GET("/tree", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.GetSKUCategoriesTree)
+			skuCategories.GET("/:id", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.GetSKUCategory)
+			skuCategories.PUT("/:id", middleware.PermissionMiddleware(entity.ProductUpdate), skuHandler.UpdateSKUCategory)
+			skuCategories.DELETE("/:id", middleware.PermissionMiddleware(entity.ProductDelete), skuHandler.DeleteSKUCategory)
+			skuCategories.GET("/:id/skus", middleware.PermissionMiddleware(entity.ProductRead), skuHandler.GetSKUsByCategory)
 		}
 
 		// Purchase routes
@@ -285,9 +285,9 @@ func (s *Server) setupRoutes() {
 			orders.POST("/invoices/:id/pay", middleware.PermissionMiddleware(entity.InvoicePay), orderHandler.PayInvoice)
 		}
 
-		// Customer routes
-		customerHandler := NewCustomerHandler(s.customerUC)
-		customerHandler.RegisterRoutes(protected)
+		// Client routes
+		clientHandler := NewClientHandler(s.clientUC)
+		clientHandler.RegisterRoutes(protected)
 
 		// Finance routes
 		financeHandler := NewFinanceHandlers(s.financeUC)

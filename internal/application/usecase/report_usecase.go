@@ -11,27 +11,27 @@ import (
 
 // ReportUseCase handles business logic for reports and analytics
 type ReportUseCase struct {
-	reportRepo    *repository.ReportRepository
-	inventoryRepo *repository.InventoryRepository
-	orderRepo     *repository.OrderRepository
-	purchaseRepo  *repository.PurchaseRepository
-	itemRepo      *repository.ItemRepository
+	reportRepo   *repository.ReportRepository
+	stocksRepo   *repository.StocksRepository
+	orderRepo    *repository.OrderRepository
+	purchaseRepo *repository.PurchaseRepository
+	skuRepo      *repository.SKURepository
 }
 
 // NewReportUseCase creates a new report use case
 func NewReportUseCase(
 	reportRepo *repository.ReportRepository,
-	inventoryRepo *repository.InventoryRepository,
+	stocksRepo *repository.StocksRepository,
 	orderRepo *repository.OrderRepository,
 	purchaseRepo *repository.PurchaseRepository,
-	itemRepo *repository.ItemRepository,
+	skuRepo *repository.SKURepository,
 ) *ReportUseCase {
 	return &ReportUseCase{
-		reportRepo:    reportRepo,
-		inventoryRepo: inventoryRepo,
-		orderRepo:     orderRepo,
-		purchaseRepo:  purchaseRepo,
-		itemRepo:      itemRepo,
+		reportRepo:   reportRepo,
+		stocksRepo:   stocksRepo,
+		orderRepo:    orderRepo,
+		purchaseRepo: purchaseRepo,
+		skuRepo:      skuRepo,
 	}
 }
 

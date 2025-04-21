@@ -7,31 +7,9 @@ import (
 	"github.com/lib/pq"
 )
 
-type Permission string
-
+// Additional permissions specific to roles and modules
 const (
-	UserCreate      Permission = "user:create"
-	UserRead        Permission = "user:read"
-	UserUpdate      Permission = "user:update"
-	UserDelete      Permission = "user:delete"
-	RoleCreate      Permission = "role:create"
-	RoleRead        Permission = "role:read"
-	RoleUpdate      Permission = "role:update"
-	RoleDelete      Permission = "role:delete"
-	AuditLogRead    Permission = "audit:read"
 	ModuleIntegrate Permission = "module:integrate"
-
-	// Warehouse permissions
-	WarehouseCreate Permission = "warehouse:create"
-	WarehouseRead   Permission = "warehouse:read"
-	WarehouseUpdate Permission = "warehouse:update"
-	WarehouseDelete Permission = "warehouse:delete"
-
-	// Inventory permissions
-	InventoryRead    Permission = "inventory:read"
-	InventoryUpdate  Permission = "inventory:update"
-	StockEntryCreate Permission = "stock:create"
-	StockEntryRead   Permission = "stock:read"
 )
 
 // GormPermissionSlice is a helper type for GORM operations

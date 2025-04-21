@@ -56,7 +56,7 @@ const (
 
 // SalesOrderItem represents an item in a sales order
 type SalesOrderItem struct {
-	ItemID      string  `json:"item_id" gorm:"not null"`
+	SKUID       string  `json:"sku_id" gorm:"not null"`
 	Quantity    float64 `json:"quantity" gorm:"not null"`
 	UnitPrice   float64 `json:"unit_price" gorm:"type:decimal(15,2);not null"`
 	Discount    float64 `json:"discount" gorm:"type:decimal(15,2);default:0"`
@@ -64,7 +64,7 @@ type SalesOrderItem struct {
 	TaxAmount   float64 `json:"tax_amount" gorm:"type:decimal(15,2);default:0"`
 	TotalPrice  float64 `json:"total_price" gorm:"type:decimal(15,2);not null"`
 	Description string  `json:"description"`
-	Item        *Item   `json:"item,omitempty" gorm:"foreignKey:ItemID"`
+	SKU         *SKU    `json:"sku,omitempty" gorm:"foreignKey:SKUID"`
 }
 
 // Scan implements the sql.Scanner interface for SalesOrderItems
@@ -100,7 +100,7 @@ type SalesOrderItems []SalesOrderItem
 type SalesOrder struct {
 	ID              string           `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	OrderNumber     string           `json:"order_number" gorm:"uniqueIndex;not null"`
-	CustomerID      uint             `json:"customer_id" gorm:"not null"`
+	ClientID        uint             `json:"client_id" gorm:"not null"`
 	OrderDate       time.Time        `json:"order_date" gorm:"not null"`
 	Items           SalesOrderItems  `json:"items" gorm:"type:jsonb;not null"`
 	SubTotal        float64          `json:"sub_total" gorm:"type:decimal(15,2);not null"`
@@ -116,7 +116,7 @@ type SalesOrder struct {
 	CreatedByID     uint             `json:"created_by_id" gorm:"not null"`
 	CreatedAt       time.Time        `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt       time.Time        `json:"updated_at" gorm:"autoUpdateTime"`
-	Customer        *User            `json:"customer,omitempty" gorm:"foreignKey:CustomerID"` // Using User as Customer for now
+	Client          *User            `json:"client,omitempty" gorm:"foreignKey:ClientID"` // Using User as Client for now
 	CreatedBy       *User            `json:"created_by,omitempty" gorm:"foreignKey:CreatedByID"`
 	DeliveryOrders  []DeliveryOrder  `json:"delivery_orders,omitempty" gorm:"foreignKey:SalesOrderID"`
 	Invoices        []Invoice        `json:"invoices,omitempty" gorm:"foreignKey:SalesOrderID"`
@@ -124,12 +124,12 @@ type SalesOrder struct {
 
 // DeliveryOrderItem represents an item in a delivery order
 type DeliveryOrderItem struct {
-	ItemID            string  `json:"item_id" gorm:"not null"`
+	SKUID             string  `json:"sku_id" gorm:"not null"`
 	OrderedQuantity   float64 `json:"ordered_quantity" gorm:"not null"`
 	ShippedQuantity   float64 `json:"shipped_quantity" gorm:"not null"`
 	RemainingQuantity float64 `json:"remaining_quantity" gorm:"default:0"`
 	Notes             string  `json:"notes"`
-	Item              *Item   `json:"item,omitempty" gorm:"foreignKey:ItemID"`
+	SKU               *SKU    `json:"sku,omitempty" gorm:"foreignKey:SKUID"`
 }
 
 // Scan implements the sql.Scanner interface for DeliveryOrderItems
@@ -172,7 +172,7 @@ type DeliveryOrder struct {
 	Status          DeliveryOrderStatus `json:"status" gorm:"not null;default:'PENDING'"`
 	TrackingNumber  string              `json:"tracking_number"`
 	ShippingMethod  string              `json:"shipping_method"`
-	WarehouseID     string              `json:"warehouse_id" gorm:"not null"`
+	StoreID         string              `json:"store_id" gorm:"not null"`
 	Notes           string              `json:"notes" gorm:"type:text"`
 	CreatedByID     uint                `json:"created_by_id" gorm:"not null"`
 	CreatedAt       time.Time           `json:"created_at" gorm:"autoCreateTime"`
@@ -203,12 +203,12 @@ type Invoice struct {
 // SalesOrderFilter represents filters for searching sales orders
 type SalesOrderFilter struct {
 	OrderNumber   string            `json:"order_number,omitempty"`
-	CustomerID    *uint             `json:"customer_id,omitempty"`
+	ClientID      *uint             `json:"client_id,omitempty"`
 	Status        *SalesOrderStatus `json:"status,omitempty"`
 	PaymentStatus *PaymentStatus    `json:"payment_status,omitempty"`
 	StartDate     *time.Time        `json:"start_date,omitempty"`
 	EndDate       *time.Time        `json:"end_date,omitempty"`
-	ItemID        string            `json:"item_id,omitempty"`
+	SKUID         string            `json:"sku_id,omitempty"`
 }
 
 // DeliveryOrderFilter represents filters for searching delivery orders
@@ -218,7 +218,7 @@ type DeliveryOrderFilter struct {
 	Status         *DeliveryOrderStatus `json:"status,omitempty"`
 	StartDate      *time.Time           `json:"start_date,omitempty"`
 	EndDate        *time.Time           `json:"end_date,omitempty"`
-	WarehouseID    string               `json:"warehouse_id,omitempty"`
+	StoreID        string               `json:"store_id,omitempty"`
 }
 
 // InvoiceFilter represents filters for searching invoices

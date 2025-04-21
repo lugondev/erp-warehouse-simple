@@ -29,12 +29,12 @@ func NewDatabase(cfg *config.Config) (*gorm.DB, error) {
 		&entity.Role{},
 		&entity.User{},
 		&entity.AuditLog{},
-		&entity.Warehouse{},
-		&entity.Inventory{},
+		&entity.Store{},
+		&entity.Stock{},
 		&entity.StockEntry{},
-		&entity.InventoryHistory{},
-		&entity.Customer{},
-		&entity.CustomerAddress{},
+		&entity.StockHistory{},
+		&entity.Client{},
+		&entity.ClientAddress{},
 	); err != nil {
 		return nil, fmt.Errorf("failed to migrate database: %w", err)
 	}
@@ -56,31 +56,31 @@ func NewDatabase(cfg *config.Config) (*gorm.DB, error) {
 				entity.AuditLogRead,
 				entity.ModuleIntegrate,
 
-				// Warehouse permissions
-				entity.WarehouseCreate,
-				entity.WarehouseRead,
-				entity.WarehouseUpdate,
-				entity.WarehouseDelete,
+				// Store permissions
+				entity.StoreCreate,
+				entity.StoreRead,
+				entity.StoreUpdate,
+				entity.StoreDelete,
 
-				// Inventory permissions
-				entity.InventoryRead,
-				entity.InventoryUpdate,
+				// Stock permissions
+				entity.StockRead,
+				entity.StockUpdate,
 				entity.StockEntryCreate,
 				entity.StockEntryRead,
 
-				// Customer permissions
-				entity.CustomerCreate,
-				entity.CustomerRead,
-				entity.CustomerUpdate,
-				entity.CustomerDelete,
-				entity.CustomerAddressCreate,
-				entity.CustomerAddressRead,
-				entity.CustomerAddressUpdate,
-				entity.CustomerAddressDelete,
-				entity.CustomerDebtRead,
-				entity.CustomerDebtUpdate,
-				entity.CustomerLoyaltyRead,
-				entity.CustomerLoyaltyUpdate,
+				// Client permissions
+				entity.ClientCreate,
+				entity.ClientRead,
+				entity.ClientUpdate,
+				entity.ClientDelete,
+				entity.ClientAddressCreate,
+				entity.ClientAddressRead,
+				entity.ClientAddressUpdate,
+				entity.ClientAddressDelete,
+				entity.ClientDebtRead,
+				entity.ClientDebtUpdate,
+				entity.ClientLoyaltyRead,
+				entity.ClientLoyaltyUpdate,
 			},
 		}
 

@@ -19,106 +19,31 @@ model audit_logs {
   users      users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_audit_logs_user")
 }
 
-model customer_addresses {
-  id          BigInt    @id @default(autoincrement())
-  customer_id BigInt
-  type        String    @default("BOTH")
-  street      String
-  city        String
-  state       String?
-  postal_code String?
-  country     String
-  is_default  Boolean?  @default(false)
-  created_at  DateTime? @db.Timestamptz(6)
-  updated_at  DateTime? @db.Timestamptz(6)
-  customers   customers @relation(fields: [customer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_customers_addresses")
-}
-
-model customers {
-  id                 BigInt               @id @default(autoincrement())
-  code               String               @unique(map: "idx_customers_code")
-  name               String
-  type               String               @default("INDIVIDUAL")
-  email              String?              @unique(map: "idx_customers_email")
-  phone_number       String?
-  tax_id             String?
-  contacts           Json?
-  credit_limit       Decimal?             @default(0) @db.Decimal(15, 2)
-  current_debt       Decimal?             @default(0) @db.Decimal(15, 2)
-  loyalty_tier       String               @default("STANDARD")
-  loyalty_points     BigInt?              @default(0)
-  notes              String?
-  created_at         DateTime?            @db.Timestamptz(6)
-  updated_at         DateTime?            @db.Timestamptz(6)
-  customer_addresses customer_addresses[]
-}
-
-model inventories {
-  id               String    @id
-  product_id       String
-  warehouse_id     String
-  quantity         Decimal   @db.Decimal
-  bin_location     String?
-  shelf_number     String?
-  zone_code        String?
-  batch_number     String?
-  lot_number       String?
-  manufacture_date DateTime? @db.Timestamptz(6)
-  expiry_date      DateTime? @db.Timestamptz(6)
-  created_at       DateTime? @db.Timestamptz(6)
-  updated_at       DateTime? @db.Timestamptz(6)
-}
-
-model inventory_histories {
-  id           String    @id
-  inventory_id String
-  type         String
-  quantity     Decimal   @db.Decimal
-  previous_qty Decimal?  @db.Decimal
-  new_qty      Decimal?  @db.Decimal
-  reference    String?
-  note         String?
-  created_at   DateTime? @db.Timestamptz(6)
-  created_by   String
-}
-
-model item_categories {
-  id                    String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name                  String            @unique @db.VarChar(255)
-  description           String?
-  parent_id             String?           @db.Uuid
-  created_at            DateTime?         @default(now()) @db.Timestamptz(6)
-  updated_at            DateTime?         @default(now()) @db.Timestamptz(6)
-  item_categories       item_categories?  @relation("item_categoriesToitem_categories", fields: [parent_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  other_item_categories item_categories[] @relation("item_categoriesToitem_categories")
-}
-
 model roles {
   id          BigInt    @id @default(autoincrement())
   name        String    @unique
-  permissions String[]  @default([])
+  permissions String[]
   created_at  DateTime? @db.Timestamptz(6)
   updated_at  DateTime? @db.Timestamptz(6)
   users       users[]
 }
 
-model sequences {
-  id    String @id @db.VarChar(50)
-  value Int    @default(1)
-}
-
 model stock_entries {
-  id           String    @id
-  warehouse_id String
-  product_id   String
-  type         String
-  quantity     Decimal   @db.Decimal
-  batch_number String?
-  lot_number   String?
-  reference    String?
-  note         String?
-  created_at   DateTime? @db.Timestamptz(6)
-  created_by   String
+  id               String    @id @db.Uuid
+  sk_uid           String    @db.Uuid
+  store_id         String    @db.Uuid
+  type             String
+  quantity         Decimal   @db.Decimal
+  batch_number     String?
+  lot_number       String?
+  manufacture_date DateTime? @db.Timestamptz(6)
+  expiry_date      DateTime? @db.Timestamptz(6)
+  reference        String?
+  note             String?
+  created_at       DateTime? @db.Timestamptz(6)
+  created_by       String
+  skus             skus      @relation(fields: [sk_uid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stock_entries_sku")
+  stores           stores    @relation(fields: [store_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stock_entries_store")
 }
 
 model users {
@@ -136,34 +61,131 @@ model users {
   created_at           DateTime?    @db.Timestamptz(6)
   updated_at           DateTime?    @db.Timestamptz(6)
   audit_logs           audit_logs[]
+  stores               stores[]
   roles                roles        @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_users_role")
 }
 
-model warehouses {
-  id         String    @id
-  name       String
-  address    String?
-  type       String
-  manager_id String
-  contact    String?
-  status     String
-  created_at DateTime? @db.Timestamptz(6)
-  updated_at DateTime? @db.Timestamptz(6)
+model client_addresses {
+  id          BigInt    @id @default(autoincrement())
+  client_id   BigInt
+  type        String    @default("BOTH")
+  street      String
+  city        String
+  state       String?
+  postal_code String?
+  country     String
+  is_default  Boolean?  @default(false)
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  clients     clients   @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_clients_addresses")
 }
 
-enum item_status {
-  ACTIVE
-  INACTIVE
-  ARCHIVED
+model clients {
+  id               BigInt             @id @default(autoincrement())
+  code             String             @unique
+  name             String
+  type             String             @default("INDIVIDUAL")
+  email            String?            @unique
+  phone_number     String?
+  tax_id           String?
+  contacts         Json?
+  credit_limit     Decimal?           @default(0) @db.Decimal(15, 2)
+  current_debt     Decimal?           @default(0) @db.Decimal(15, 2)
+  loyalty_tier     String             @default("STANDARD")
+  loyalty_points   BigInt?            @default(0)
+  notes            String?
+  created_at       DateTime?          @db.Timestamptz(6)
+  updated_at       DateTime?          @db.Timestamptz(6)
+  client_addresses client_addresses[]
 }
 
-enum warehouse_status {
-  ACTIVE
-  INACTIVE
+model skus {
+  id                                    String          @id @db.Uuid
+  sku_code                              String          @unique(map: "idx_skus_sku_code")
+  name                                  String
+  description                           String?
+  unit_of_measure                       String
+  price                                 Decimal?        @default(0) @db.Decimal
+  category                              String?
+  technical_specs                       Json?
+  manufacturer_id                       BigInt?
+  vendor_id                             BigInt?
+  image_url                             String?
+  status                                String?         @default("ACTIVE")
+  created_at                            DateTime?       @db.Timestamptz(6)
+  updated_at                            DateTime?       @db.Timestamptz(6)
+  vendors_skus_manufacturer_idTovendors vendors?        @relation("skus_manufacturer_idTovendors", fields: [manufacturer_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_skus_manufacturer")
+  vendors_skus_vendor_idTovendors       vendors?        @relation("skus_vendor_idTovendors", fields: [vendor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_skus_vendor")
+  stock_entries                         stock_entries[]
+  stocks                                stocks[]
 }
 
-enum warehouse_type {
-  RAW
-  FINISHED
-  GENERAL
+model stock_histories {
+  id           String    @id @db.Uuid
+  stock_id     String    @db.Uuid
+  type         String
+  quantity     Decimal   @db.Decimal
+  previous_qty Decimal   @db.Decimal
+  new_qty      Decimal   @db.Decimal
+  reference    String?
+  note         String?
+  created_at   DateTime? @db.Timestamptz(6)
+  created_by   String
+  stocks       stocks    @relation(fields: [stock_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stock_histories_stock")
+}
+
+model stocks {
+  id               String            @id @db.Uuid
+  sk_uid           String            @db.Uuid
+  store_id         String            @db.Uuid
+  quantity         Decimal           @default(0) @db.Decimal
+  bin_location     String?
+  shelf_number     String?
+  zone_code        String?
+  batch_number     String?
+  lot_number       String?
+  manufacture_date DateTime?         @db.Timestamptz(6)
+  expiry_date      DateTime?         @db.Timestamptz(6)
+  created_at       DateTime?         @db.Timestamptz(6)
+  updated_at       DateTime?         @db.Timestamptz(6)
+  stock_histories  stock_histories[]
+  skus             skus              @relation(fields: [sk_uid], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stocks_sku")
+  stores           stores            @relation(fields: [store_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stores_stocks")
+}
+
+model stores {
+  id            String          @id @db.Uuid
+  name          String          @unique
+  code          String?         @unique
+  address       String?
+  type          String
+  manager_id    BigInt
+  contact       String?
+  status        String          @default("ACTIVE")
+  created_at    DateTime?       @db.Timestamptz(6)
+  updated_at    DateTime?       @db.Timestamptz(6)
+  stock_entries stock_entries[]
+  stocks        stocks[]
+  users         users           @relation(fields: [manager_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk_stores_manager")
+}
+
+model vendors {
+  id                                 BigInt    @id @default(autoincrement())
+  code                               String    @unique
+  name                               String
+  type                               String?
+  address                            String?
+  country                            String?
+  email                              String?
+  phone                              String?
+  website                            String?
+  tax_id                             String?
+  payment_method                     String?
+  payment_days                       BigInt?
+  currency                           String?
+  rating                             Decimal?  @default(0) @db.Decimal(3, 2)
+  created_at                         DateTime? @db.Timestamptz(6)
+  updated_at                         DateTime? @db.Timestamptz(6)
+  skus_skus_manufacturer_idTovendors skus[]    @relation("skus_manufacturer_idTovendors")
+  skus_skus_vendor_idTovendors       skus[]    @relation("skus_vendor_idTovendors")
 }

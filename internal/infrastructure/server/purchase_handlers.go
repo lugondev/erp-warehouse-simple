@@ -203,7 +203,7 @@ func (h *PurchaseHandler) ListPurchaseRequests(c *gin.Context) {
 
 	filter := &entity.PurchaseRequestFilter{
 		RequestNumber: c.Query("request_number"),
-		ItemID:        c.Query("item_id"),
+		SKUID:         c.Query("item_id"),
 	}
 
 	if requesterID, err := strconv.ParseUint(c.Query("requester_id"), 10, 32); err == nil {
@@ -509,12 +509,12 @@ func (h *PurchaseHandler) ListPurchaseOrders(c *gin.Context) {
 
 	filter := &entity.PurchaseOrderFilter{
 		OrderNumber: c.Query("order_number"),
-		ItemID:      c.Query("item_id"),
+		SKUID:       c.Query("item_id"),
 	}
 
-	if supplierID, err := strconv.ParseUint(c.Query("supplier_id"), 10, 32); err == nil {
-		supplierIDUint := uint(supplierID)
-		filter.SupplierID = &supplierIDUint
+	if vendorID, err := strconv.ParseUint(c.Query("supplier_id"), 10, 32); err == nil {
+		vendorIDUint := uint(vendorID)
+		filter.VendorID = &vendorIDUint
 	}
 
 	if status := c.Query("status"); status != "" {

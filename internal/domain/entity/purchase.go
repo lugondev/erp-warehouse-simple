@@ -47,10 +47,10 @@ const (
 
 // Purchase Request Item represents an item in a purchase request
 type PurchaseRequestItem struct {
-	ItemID      string  `json:"item_id" gorm:"not null"`
+	SKUID       string  `json:"sku_id" gorm:"not null"`
 	Quantity    float64 `json:"quantity" gorm:"not null"`
 	Description string  `json:"description"`
-	Item        *Item   `json:"item,omitempty" gorm:"foreignKey:ItemID"`
+	SKU         *SKU    `json:"sku,omitempty" gorm:"foreignKey:SKUID"`
 }
 
 // Scan implements the sql.Scanner interface for PurchaseRequestItems
@@ -109,7 +109,7 @@ type PurchaseRequest struct {
 
 // PurchaseOrderItem represents an item in a purchase order
 type PurchaseOrderItem struct {
-	ItemID      string  `json:"item_id" gorm:"not null"`
+	SKUID       string  `json:"sku_id" gorm:"not null"`
 	Quantity    float64 `json:"quantity" gorm:"not null"`
 	UnitPrice   float64 `json:"unit_price" gorm:"type:decimal(15,2);not null"`
 	TaxRate     float64 `json:"tax_rate" gorm:"type:decimal(5,2);default:0"`
@@ -117,7 +117,7 @@ type PurchaseOrderItem struct {
 	Discount    float64 `json:"discount" gorm:"type:decimal(15,2);default:0"`
 	TotalPrice  float64 `json:"total_price" gorm:"type:decimal(15,2);not null"`
 	Description string  `json:"description"`
-	Item        *Item   `json:"item,omitempty" gorm:"foreignKey:ItemID"`
+	SKU         *SKU    `json:"sku,omitempty" gorm:"foreignKey:SKUID"`
 }
 
 // Scan implements the sql.Scanner interface for PurchaseOrderItems
@@ -153,7 +153,7 @@ type PurchaseOrderItems []PurchaseOrderItem
 type PurchaseOrder struct {
 	ID               string              `json:"id" gorm:"primaryKey;type:uuid;default:gen_random_uuid()"`
 	OrderNumber      string              `json:"order_number" gorm:"uniqueIndex;not null"`
-	SupplierID       uint                `json:"supplier_id" gorm:"not null"`
+	VendorID         uint                `json:"vendor_id" gorm:"not null"`
 	OrderDate        time.Time           `json:"order_date" gorm:"not null"`
 	ExpectedDate     time.Time           `json:"expected_date"`
 	Items            PurchaseOrderItems  `json:"items" gorm:"type:jsonb;not null"`
@@ -174,7 +174,7 @@ type PurchaseOrder struct {
 	ApprovalDate     *time.Time          `json:"approval_date"`
 	CreatedAt        time.Time           `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt        time.Time           `json:"updated_at" gorm:"autoUpdateTime"`
-	Supplier         *Supplier           `json:"supplier,omitempty" gorm:"foreignKey:SupplierID"`
+	Vendor           *Vendor             `json:"vendor,omitempty" gorm:"foreignKey:VendorID"`
 	CreatedBy        *User               `json:"created_by,omitempty" gorm:"foreignKey:CreatedByID"`
 	ApprovedBy       *User               `json:"approved_by,omitempty" gorm:"foreignKey:ApprovedByID"`
 	PurchaseRequests []PurchaseRequest   `json:"purchase_requests,omitempty" gorm:"foreignKey:PurchaseOrderID"`
@@ -182,14 +182,14 @@ type PurchaseOrder struct {
 
 // PurchaseReceiptItem represents an item in a purchase receipt
 type PurchaseReceiptItem struct {
-	ItemID           string  `json:"item_id" gorm:"not null"`
+	SKUID            string  `json:"sku_id" gorm:"not null"`
 	OrderedQuantity  float64 `json:"ordered_quantity" gorm:"not null"`
 	ReceivedQuantity float64 `json:"received_quantity" gorm:"not null"`
 	RejectedQuantity float64 `json:"rejected_quantity" gorm:"default:0"`
 	UnitPrice        float64 `json:"unit_price" gorm:"type:decimal(15,2);not null"`
 	TotalPrice       float64 `json:"total_price" gorm:"type:decimal(15,2);not null"`
 	Notes            string  `json:"notes"`
-	Item             *Item   `json:"item,omitempty" gorm:"foreignKey:ItemID"`
+	SKU              *SKU    `json:"sku,omitempty" gorm:"foreignKey:SKUID"`
 }
 
 // Scan implements the sql.Scanner interface for PurchaseReceiptItems
@@ -228,7 +228,7 @@ type PurchaseReceipt struct {
 	PurchaseOrderID string               `json:"purchase_order_id" gorm:"type:uuid;not null"`
 	ReceiptDate     time.Time            `json:"receipt_date" gorm:"not null"`
 	Items           PurchaseReceiptItems `json:"items" gorm:"type:jsonb;not null"`
-	WarehouseID     string               `json:"warehouse_id" gorm:"not null"`
+	StoreID         string               `json:"store_id" gorm:"not null"`
 	ReceivedByID    uint                 `json:"received_by_id" gorm:"not null"`
 	Notes           string               `json:"notes" gorm:"type:text"`
 	AttachmentURLs  []string             `json:"attachment_urls" gorm:"type:text[]"`
@@ -262,16 +262,16 @@ type PurchaseRequestFilter struct {
 	Status        *PurchaseRequestStatus `json:"status,omitempty"`
 	StartDate     *time.Time             `json:"start_date,omitempty"`
 	EndDate       *time.Time             `json:"end_date,omitempty"`
-	ItemID        string                 `json:"item_id,omitempty"`
+	SKUID         string                 `json:"sku_id,omitempty"`
 }
 
 // PurchaseOrderFilter represents filters for searching purchase orders
 type PurchaseOrderFilter struct {
 	OrderNumber   string               `json:"order_number,omitempty"`
-	SupplierID    *uint                `json:"supplier_id,omitempty"`
+	VendorID      *uint                `json:"vendor_id,omitempty"`
 	Status        *PurchaseOrderStatus `json:"status,omitempty"`
 	PaymentStatus *PaymentStatus       `json:"payment_status,omitempty"`
 	StartDate     *time.Time           `json:"start_date,omitempty"`
 	EndDate       *time.Time           `json:"end_date,omitempty"`
-	ItemID        string               `json:"item_id,omitempty"`
+	SKUID         string               `json:"sku_id,omitempty"`
 }

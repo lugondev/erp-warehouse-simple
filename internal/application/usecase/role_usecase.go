@@ -70,6 +70,7 @@ func (uc *RoleUseCase) DeleteRole(id uint) error {
 
 func (uc *RoleUseCase) ValidatePermissions(permissions []entity.Permission) bool {
 	validPerms := map[entity.Permission]bool{
+		// User permissions
 		entity.UserCreate:      true,
 		entity.UserRead:        true,
 		entity.UserUpdate:      true,
@@ -80,6 +81,18 @@ func (uc *RoleUseCase) ValidatePermissions(permissions []entity.Permission) bool
 		entity.RoleDelete:      true,
 		entity.AuditLogRead:    true,
 		entity.ModuleIntegrate: true,
+
+		// Store permissions
+		entity.StoreCreate: true,
+		entity.StoreRead:   true,
+		entity.StoreUpdate: true,
+		entity.StoreDelete: true,
+
+		// Stock permissions
+		entity.StockRead:        true,
+		entity.StockUpdate:      true,
+		entity.StockEntryCreate: true,
+		entity.StockEntryRead:   true,
 	}
 
 	for _, p := range permissions {

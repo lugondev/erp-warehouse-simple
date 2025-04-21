@@ -11,14 +11,14 @@ import (
 )
 
 type ManufacturingUseCase struct {
-	repo          *repository.ManufacturingRepository
-	inventoryRepo *repository.InventoryRepository
+	repo       *repository.ManufacturingRepository
+	stocksRepo *repository.StocksRepository
 }
 
-func NewManufacturingUseCase(repo *repository.ManufacturingRepository, inventoryRepo *repository.InventoryRepository) *ManufacturingUseCase {
+func NewManufacturingUseCase(repo *repository.ManufacturingRepository, stocksRepo *repository.StocksRepository) *ManufacturingUseCase {
 	return &ManufacturingUseCase{
-		repo:          repo,
-		inventoryRepo: inventoryRepo,
+		repo:       repo,
+		stocksRepo: stocksRepo,
 	}
 }
 
@@ -41,8 +41,9 @@ func (uc *ManufacturingUseCase) UpdateFacility(ctx context.Context, facility *en
 
 // Production order management
 func (uc *ManufacturingUseCase) CreateProductionOrder(ctx context.Context, order *entity.ProductionOrder) error {
-	// Validate product exists in inventory
-	if _, err := uc.inventoryRepo.GetByID(ctx, fmt.Sprintf("%d", order.ProductID)); err != nil {
+	// Validate product exists in stock by checking if it has any stock records
+	stocks, err := uc.stocksRepo.List(ctx, &entity.StockFilter{SKUID: fmt.Sprintf("%d", order.ProductID)})
+	if err != nil || len(stocks) == 0 {
 		return errors.New("invalid product ID")
 	}
 
@@ -73,8 +74,8 @@ func (uc *ManufacturingUseCase) UpdateProductionProgress(ctx context.Context, or
 	if completedQty >= order.Quantity {
 		order.Status = entity.OrderStatusCompleted
 
-		// Update inventory
-		if err := uc.updateInventoryOnCompletion(ctx, order); err != nil {
+		// Update stock levels
+		if err := uc.updateStocksOnCompletion(ctx, order); err != nil {
 			return err
 		}
 	}
@@ -132,21 +133,27 @@ func (uc *ManufacturingUseCase) calculateMRP(ctx context.Context, order *entity.
 		return err
 	}
 
-	// Calculate required quantities and check inventory
+	// Calculate required quantities and check stock levels
 	for _, item := range items {
-		inventory, err := uc.inventoryRepo.GetByID(ctx, fmt.Sprintf("%d", item.MaterialID))
-		if err != nil {
-			return err
+		stocks, err := uc.stocksRepo.List(ctx, &entity.StockFilter{SKUID: fmt.Sprintf("%d", item.MaterialID)})
+		if err != nil || len(stocks) == 0 {
+			return errors.New("material not found in stock")
+		}
+
+		// Sum up available quantity across all locations
+		var availableQty float64
+		for _, stock := range stocks {
+			availableQty += stock.Quantity
 		}
 
 		requiredQty := item.QuantityNeeded * float64(order.Quantity)
-		shortageQty := requiredQty - float64(inventory.Quantity)
+		shortageQty := requiredQty - availableQty
 
 		mrp := &entity.MRPCalculation{
 			ProductionID:  order.ID,
 			MaterialID:    item.MaterialID,
 			RequiredQty:   requiredQty,
-			AvailableQty:  float64(inventory.Quantity),
+			AvailableQty:  availableQty,
 			ShortageQty:   shortageQty,
 			UnitOfMeasure: item.UnitOfMeasure,
 			CalculatedAt:  time.Now(),
@@ -160,35 +167,51 @@ func (uc *ManufacturingUseCase) calculateMRP(ctx context.Context, order *entity.
 	return nil
 }
 
-func (uc *ManufacturingUseCase) updateInventoryOnCompletion(ctx context.Context, order *entity.ProductionOrder) error {
-	// Update finished product inventory
-	product, err := uc.inventoryRepo.GetByID(ctx, fmt.Sprintf("%d", order.ProductID))
+func (uc *ManufacturingUseCase) updateStocksOnCompletion(ctx context.Context, order *entity.ProductionOrder) error {
+	// Update finished product stock
+	skuID := fmt.Sprintf("%d", order.ProductID)
+	stocks, err := uc.stocksRepo.List(ctx, &entity.StockFilter{SKUID: skuID})
 	if err != nil {
 		return err
 	}
 
-	product.Quantity += float64(order.CompletedQty)
-	if err := uc.inventoryRepo.UpdateQuantity(ctx, product.ID, float64(product.Quantity)); err != nil {
-		return err
+	var stock *entity.Stock
+	if len(stocks) == 0 {
+		// Create new stock record for the finished product
+		stock = &entity.Stock{
+			SKUID:    skuID,
+			Quantity: float64(order.CompletedQty),
+		}
+		if err := uc.stocksRepo.CreateOrUpdateStock(ctx, stock); err != nil {
+			return err
+		}
+	} else {
+		// Update existing stock record
+		stock = &stocks[0]
+		stock.Quantity += float64(order.CompletedQty)
+		if err := uc.stocksRepo.CreateOrUpdateStock(ctx, stock); err != nil {
+			return err
+		}
 	}
 
-	// Update raw materials inventory based on BOM
+	// Update raw materials stock based on BOM
 	mrpCalculations, err := uc.repo.GetMRPCalculations(ctx, order.ID)
 	if err != nil {
 		return err
 	}
 
 	for _, mrp := range mrpCalculations {
-		material, err := uc.inventoryRepo.GetByID(ctx, fmt.Sprintf("%d", mrp.MaterialID))
-		if err != nil {
-			return err
+		materialID := fmt.Sprintf("%d", mrp.MaterialID)
+		stocks, err := uc.stocksRepo.List(ctx, &entity.StockFilter{SKUID: materialID})
+		if err != nil || len(stocks) == 0 {
+			return errors.New("material not found in stock")
 		}
 
-		// Deduct used materials
-		usedQty := int(mrp.RequiredQty)
-		material.Quantity -= float64(usedQty)
+		// Deduct from the first available stock location
+		stock = &stocks[0]
+		stock.Quantity -= mrp.RequiredQty
 
-		if err := uc.inventoryRepo.UpdateQuantity(ctx, material.ID, float64(material.Quantity)); err != nil {
+		if err := uc.stocksRepo.CreateOrUpdateStock(ctx, stock); err != nil {
 			return err
 		}
 	}
