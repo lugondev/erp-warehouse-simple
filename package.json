@@ -8,7 +8,9 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^5.10.0",
-		"bcryptjs": "^3.0.2"
+		"@types/uuid": "^10.0.0",
+		"bcryptjs": "^3.0.2",
+		"uuid": "^11.1.0"
 	},
 	"devDependencies": {
 		"@faker-js/faker": "^8.4.1",

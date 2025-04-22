@@ -105,22 +105,22 @@ func LoadConfig() (*Config, error) {
 	viper.SetDefault("apigateway.services.audit.retry_count", 3)
 	viper.SetDefault("apigateway.services.audit.health_check", "/health")
 
-	viper.SetDefault("apigateway.services.warehouse.url", "http://localhost:8080")
-	viper.SetDefault("apigateway.services.warehouse.timeout", 30)
-	viper.SetDefault("apigateway.services.warehouse.retry_count", 3)
-	viper.SetDefault("apigateway.services.warehouse.health_check", "/health")
+	viper.SetDefault("apigateway.services.stock.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.stock.timeout", 30)
+	viper.SetDefault("apigateway.services.stock.retry_count", 3)
+	viper.SetDefault("apigateway.services.stock.health_check", "/health")
 
-	viper.SetDefault("apigateway.services.inventory.url", "http://localhost:8080")
-	viper.SetDefault("apigateway.services.inventory.timeout", 30)
-	viper.SetDefault("apigateway.services.inventory.retry_count", 3)
-	viper.SetDefault("apigateway.services.inventory.health_check", "/health")
+	viper.SetDefault("apigateway.services.vendor.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.vendor.timeout", 30)
+	viper.SetDefault("apigateway.services.vendor.retry_count", 3)
+	viper.SetDefault("apigateway.services.vendor.health_check", "/health")
 
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("ERP")
 
 	// Load services from environment
 	services := make(map[string]ServiceConfig)
-	for _, svc := range []string{"audit", "user", "auth", "warehouse", "inventory", "supplier", "manufacturing", "item", "purchase", "order", "customer", "finance", "report"} {
+	for _, svc := range []string{"audit", "user", "auth", "stock", "sku", "vendor", "manufacturing", "purchase", "order", "client", "finance", "report"} {
 		services[svc] = ServiceConfig{
 			URL:         viper.GetString(fmt.Sprintf("apigateway.services.%s.url", svc)),
 			Timeout:     viper.GetInt(fmt.Sprintf("apigateway.services.%s.timeout", svc)),
