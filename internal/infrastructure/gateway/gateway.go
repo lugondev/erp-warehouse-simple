@@ -160,43 +160,47 @@ func (g *Gateway) setupRoutes() {
 				audit.GET("/logs/user/:id", g.proxy.ProxyRequest("audit", "/api/v1/audit/logs/user/:id"))
 			}
 
-			// Warehouse routes
-			warehouses := protected.Group("/warehouses")
+			// Store routes
+			stores := protected.Group("/stores")
 			{
-				warehouses.POST("", g.proxy.ProxyRequest("warehouse", "/api/v1/warehouses"))
-				warehouses.GET("", g.proxy.ProxyRequest("warehouse", "/api/v1/warehouses"))
-				warehouses.GET("/:id", g.proxy.ProxyRequest("warehouse", "/api/v1/warehouses/:id"))
-				warehouses.PUT("/:id", g.proxy.ProxyRequest("warehouse", "/api/v1/warehouses/:id"))
-				warehouses.DELETE("/:id", g.proxy.ProxyRequest("warehouse", "/api/v1/warehouses/:id"))
+				stores.POST("", g.proxy.ProxyRequest("store", "/api/v1/stores"))
+				stores.GET("", g.proxy.ProxyRequest("store", "/api/v1/stores"))
+				stores.GET("/:id", g.proxy.ProxyRequest("store", "/api/v1/stores/:id"))
+				stores.PUT("/:id", g.proxy.ProxyRequest("store", "/api/v1/stores/:id"))
+				stores.DELETE("/:id", g.proxy.ProxyRequest("store", "/api/v1/stores/:id"))
+				stores.POST("/:id/manager", g.proxy.ProxyRequest("store", "/api/v1/stores/:id/manager"))
+				stores.PUT("/:id/status", g.proxy.ProxyRequest("store", "/api/v1/stores/:id/status"))
+				stores.GET("/:id/stock-value", g.proxy.ProxyRequest("store", "/api/v1/stores/:id/stock-value"))
+				stores.GET("/:id/stocks", g.proxy.ProxyRequest("store", "/api/v1/stores/:id/stocks"))
 			}
 
-			// Inventory routes
-			inventory := protected.Group("/inventory")
+			// Stock routes
+			stocks := protected.Group("/stocks")
 			{
-				inventory.GET("", g.proxy.ProxyRequest("inventory", "/api/v1/inventory"))
-				inventory.GET("/check-stock", g.proxy.ProxyRequest("inventory", "/api/v1/inventory/check-stock"))
-				inventory.POST("/stock-entries", g.proxy.ProxyRequest("inventory", "/api/v1/inventory/stock-entries"))
-				inventory.POST("/batch-stock-entries", g.proxy.ProxyRequest("inventory", "/api/v1/inventory/batch-stock-entries"))
-				inventory.PUT("/:id/location", g.proxy.ProxyRequest("inventory", "/api/v1/inventory/:id/location"))
-				inventory.GET("/:id/history", g.proxy.ProxyRequest("inventory", "/api/v1/inventory/:id/history"))
+				stocks.GET("", g.proxy.ProxyRequest("stock", "/api/v1/stocks"))
+				stocks.GET("/check-stock", g.proxy.ProxyRequest("stock", "/api/v1/stocks/check-stock"))
+				stocks.POST("/stock-entries", g.proxy.ProxyRequest("stock", "/api/v1/stocks/stock-entries"))
+				stocks.POST("/batch-stock-entries", g.proxy.ProxyRequest("stock", "/api/v1/stocks/batch-stock-entries"))
+				stocks.PUT("/:id/location", g.proxy.ProxyRequest("stock", "/api/v1/stocks/:id/location"))
+				stocks.GET("/:id/history", g.proxy.ProxyRequest("stock", "/api/v1/stocks/:id/history"))
 			}
 
-			// Supplier routes
-			suppliers := protected.Group("/suppliers")
+			// Vendors routes
+			vendors := protected.Group("/vendors")
 			{
-				suppliers.POST("", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers"))
-				suppliers.GET("", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers"))
-				suppliers.GET("/:id", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id"))
-				suppliers.PUT("/:id", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id"))
-				suppliers.DELETE("/:id", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id"))
-				suppliers.POST("/products", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/products"))
-				suppliers.POST("/:id/products/:productId", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id/products/:productId"))
-				suppliers.DELETE("/:id/products/:productId", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id/products/:productId"))
-				suppliers.POST("/:id/contracts", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id/contracts"))
-				suppliers.PUT("/contracts/:contractId", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/contracts/:contractId"))
-				suppliers.GET("/contracts/:contractId", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/contracts/:contractId"))
-				suppliers.POST("/:id/ratings", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id/ratings"))
-				suppliers.GET("/:id/ratings", g.proxy.ProxyRequest("supplier", "/api/v1/suppliers/:id/ratings"))
+				vendors.POST("", g.proxy.ProxyRequest("vendor", "/api/v1/vendors"))
+				vendors.GET("", g.proxy.ProxyRequest("vendor", "/api/v1/vendors"))
+				vendors.GET("/:id", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id"))
+				vendors.PUT("/:id", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id"))
+				vendors.DELETE("/:id", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id"))
+				vendors.POST("/products", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/products"))
+				vendors.POST("/:id/products/:productId", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id/products/:productId"))
+				vendors.DELETE("/:id/products/:productId", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id/products/:productId"))
+				vendors.POST("/:id/contracts", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id/contracts"))
+				vendors.PUT("/contracts/:contractId", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/contracts/:contractId"))
+				vendors.GET("/contracts/:contractId", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/contracts/:contractId"))
+				vendors.POST("/:id/ratings", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id/ratings"))
+				vendors.GET("/:id/ratings", g.proxy.ProxyRequest("vendor", "/api/v1/vendors/:id/ratings"))
 			}
 
 			// Manufacturing routes
@@ -209,32 +213,6 @@ func (g *Gateway) setupRoutes() {
 				manufacturing.POST("/orders/:id/start", g.proxy.ProxyRequest("manufacturing", "/api/v1/manufacturing/orders/:id/start"))
 				manufacturing.PUT("/orders/:id/progress", g.proxy.ProxyRequest("manufacturing", "/api/v1/manufacturing/orders/:id/progress"))
 				manufacturing.POST("/bom", g.proxy.ProxyRequest("manufacturing", "/api/v1/manufacturing/bom"))
-			}
-
-			// Item routes
-			items := protected.Group("/items")
-			{
-				items.POST("", g.proxy.ProxyRequest("item", "/api/v1/items"))
-				items.GET("", g.proxy.ProxyRequest("item", "/api/v1/items"))
-				items.GET("/search", g.proxy.ProxyRequest("item", "/api/v1/items/search"))
-				items.GET("/:id", g.proxy.ProxyRequest("item", "/api/v1/items/:id"))
-				items.GET("/sku/:sku", g.proxy.ProxyRequest("item", "/api/v1/items/sku/:sku"))
-				items.PUT("/:id", g.proxy.ProxyRequest("item", "/api/v1/items/:id"))
-				items.DELETE("/:id", g.proxy.ProxyRequest("item", "/api/v1/items/:id"))
-				items.POST("/bulk", g.proxy.ProxyRequest("item", "/api/v1/items/bulk"))
-				items.PUT("/bulk", g.proxy.ProxyRequest("item", "/api/v1/items/bulk"))
-			}
-
-			// Item category routes
-			itemCategories := protected.Group("/item-categories")
-			{
-				itemCategories.POST("", g.proxy.ProxyRequest("item", "/api/v1/item-categories"))
-				itemCategories.GET("", g.proxy.ProxyRequest("item", "/api/v1/item-categories"))
-				itemCategories.GET("/tree", g.proxy.ProxyRequest("item", "/api/v1/item-categories/tree"))
-				itemCategories.GET("/:id", g.proxy.ProxyRequest("item", "/api/v1/item-categories/:id"))
-				itemCategories.PUT("/:id", g.proxy.ProxyRequest("item", "/api/v1/item-categories/:id"))
-				itemCategories.DELETE("/:id", g.proxy.ProxyRequest("item", "/api/v1/item-categories/:id"))
-				itemCategories.GET("/:id/items", g.proxy.ProxyRequest("item", "/api/v1/item-categories/:id/items"))
 			}
 
 			// Purchase routes
@@ -272,13 +250,13 @@ func (g *Gateway) setupRoutes() {
 			}
 
 			// Customer routes
-			customers := protected.Group("/customers")
+			clients := protected.Group("/clients")
 			{
-				customers.POST("", g.proxy.ProxyRequest("customer", "/api/v1/customers"))
-				customers.GET("", g.proxy.ProxyRequest("customer", "/api/v1/customers"))
-				customers.GET("/:id", g.proxy.ProxyRequest("customer", "/api/v1/customers/:id"))
-				customers.PUT("/:id", g.proxy.ProxyRequest("customer", "/api/v1/customers/:id"))
-				customers.DELETE("/:id", g.proxy.ProxyRequest("customer", "/api/v1/customers/:id"))
+				clients.POST("", g.proxy.ProxyRequest("client", "/api/v1/clients"))
+				clients.GET("", g.proxy.ProxyRequest("client", "/api/v1/clients"))
+				clients.GET("/:id", g.proxy.ProxyRequest("client", "/api/v1/clients/:id"))
+				clients.PUT("/:id", g.proxy.ProxyRequest("client", "/api/v1/clients/:id"))
+				clients.DELETE("/:id", g.proxy.ProxyRequest("client", "/api/v1/clients/:id"))
 			}
 
 			// Finance routes
@@ -299,6 +277,32 @@ func (g *Gateway) setupRoutes() {
 				reports.GET("/purchases", g.proxy.ProxyRequest("report", "/api/v1/reports/purchases"))
 				reports.GET("/manufacturing", g.proxy.ProxyRequest("report", "/api/v1/reports/manufacturing"))
 				reports.GET("/custom", g.proxy.ProxyRequest("report", "/api/v1/reports/custom"))
+			}
+
+			// SKU routes
+			skus := protected.Group("/skus")
+			{
+				skus.POST("", g.proxy.ProxyRequest("sku", "/api/v1/skus"))
+				skus.GET("", g.proxy.ProxyRequest("sku", "/api/v1/skus"))
+				skus.GET("/search", g.proxy.ProxyRequest("sku", "/api/v1/skus/search"))
+				skus.GET("/:id", g.proxy.ProxyRequest("sku", "/api/v1/skus/:id"))
+				skus.GET("/sku/:sku", g.proxy.ProxyRequest("sku", "/api/v1/skus/sku/:sku"))
+				skus.PUT("/:id", g.proxy.ProxyRequest("sku", "/api/v1/skus/:id"))
+				skus.DELETE("/:id", g.proxy.ProxyRequest("sku", "/api/v1/skus/:id"))
+				skus.POST("/bulk", g.proxy.ProxyRequest("sku", "/api/v1/skus/bulk"))
+				skus.PUT("/bulk", g.proxy.ProxyRequest("sku", "/api/v1/skus/bulk"))
+			}
+
+			// SKU category routes
+			skuCategories := protected.Group("/sku-categories")
+			{
+				skuCategories.POST("", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories"))
+				skuCategories.GET("", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories"))
+				skuCategories.GET("/tree", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories/tree"))
+				skuCategories.GET("/:id", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories/:id"))
+				skuCategories.PUT("/:id", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories/:id"))
+				skuCategories.DELETE("/:id", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories/:id"))
+				skuCategories.GET("/:id/items", g.proxy.ProxyRequest("sku", "/api/v1/sku-categories/:id/skus"))
 			}
 		}
 	}

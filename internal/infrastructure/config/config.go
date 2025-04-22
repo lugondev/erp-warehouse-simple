@@ -110,6 +110,16 @@ func LoadConfig() (*Config, error) {
 	viper.SetDefault("apigateway.services.stock.retry_count", 3)
 	viper.SetDefault("apigateway.services.stock.health_check", "/health")
 
+	viper.SetDefault("apigateway.services.sku.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.sku.timeout", 30)
+	viper.SetDefault("apigateway.services.sku.retry_count", 3)
+	viper.SetDefault("apigateway.services.sku.health_check", "/health")
+
+	viper.SetDefault("apigateway.services.client.url", "http://localhost:8080")
+	viper.SetDefault("apigateway.services.client.timeout", 30)
+	viper.SetDefault("apigateway.services.client.retry_count", 3)
+	viper.SetDefault("apigateway.services.client.health_check", "/health")
+
 	viper.SetDefault("apigateway.services.vendor.url", "http://localhost:8080")
 	viper.SetDefault("apigateway.services.vendor.timeout", 30)
 	viper.SetDefault("apigateway.services.vendor.retry_count", 3)
