@@ -36,7 +36,7 @@ func (s *JWTService) GenerateAccessToken(user *entity.User) (string, error) {
 
 	claims := &Claims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 		UserID:      user.ID,
@@ -50,7 +50,7 @@ func (s *JWTService) GenerateAccessToken(user *entity.User) (string, error) {
 }
 
 func (s *JWTService) GenerateRefreshToken(user *entity.User) (string, time.Time, error) {
-	expiry := time.Now().Add(7 * 24 * time.Hour) // 7 days
+	expiry := time.Now().Add(30 * 24 * time.Hour) // 7 days
 
 	claims := &Claims{
 		RegisteredClaims: jwt.RegisteredClaims{
